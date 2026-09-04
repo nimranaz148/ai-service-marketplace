@@ -1,0 +1,10 @@
+{
+  "name": "ai-service-marketplace-root",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "npm --prefix admin-web run dev",
+    "build": "npm --prefix admin-web run build",
+    "start": "npm --prefix admin-web run start"
+  }
+}
