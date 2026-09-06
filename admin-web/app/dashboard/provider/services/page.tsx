@@ -180,22 +180,22 @@ export default function ProviderServicesPage() {
   return (
     <div className="space-y-8 pb-16">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#1C2C24] pb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/8 pb-6">
         <div>
           <div className="flex items-center gap-2 mb-2">
             <Link
               href="/dashboard/provider"
-              className="inline-flex items-center gap-1 text-xs font-code text-[#8EAAA0] hover:text-[#34D399] transition-colors"
+              className="inline-flex items-center gap-1 text-xs font-code text-zinc-400 hover:text-[#0054F9] transition-colors"
             >
               <ChevronLeft size={14} /> Back to HUD
             </Link>
             <span className="text-[#3D5245]">/</span>
             <span className="text-xs font-code text-[#D4A843] uppercase tracking-wider">Services & Live Preview</span>
           </div>
-          <h1 className="font-display font-extrabold text-2xl sm:text-3xl text-[#F2F7F4] tracking-tight">
+          <h1 className="font-display font-extrabold text-2xl sm:text-3xl text-white tracking-tight">
             Services Catalog & Live Client Preview
           </h1>
-          <p className="font-body text-xs sm:text-sm text-[#A3B8AF] mt-1">
+          <p className="font-body text-xs sm:text-sm text-zinc-400 mt-1">
             Manage your service offerings, pricing in PKR, and see how customers view your profile in real-time.
           </p>
         </div>
@@ -215,11 +215,11 @@ export default function ProviderServicesPage() {
         {/* LEFT COLUMN: Service Management List */}
         <div className="lg:col-span-7 space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="font-display font-bold text-lg text-[#F2F7F4] flex items-center gap-2">
+            <h2 className="font-display font-bold text-lg text-white flex items-center gap-2">
               <Layers size={18} className="text-[#D4A843]" />
               <span>Published Services ({services.length})</span>
             </h2>
-            <span className="text-xs font-code text-[#8EAAA0]">
+            <span className="text-xs font-code text-zinc-400">
               {activeServices.length} Active in Search
             </span>
           </div>
@@ -230,14 +230,14 @@ export default function ProviderServicesPage() {
                 key={service.id}
                 className={`p-5 rounded-2xl border transition-all ${
                   service.isActive
-                    ? "bg-[#111A15] border-[#21352A] hover:border-[#34D399]/40"
-                    : "bg-[#0C120F] border-[#1C2C24] opacity-60"
+                    ? "bg-[#111118] border-[#21352A] hover:border-[#34D399]/40"
+                    : "bg-[#0C120F] border-white/8 opacity-60"
                 }`}
               >
                 <div className="flex items-start justify-between gap-4">
                   <div className="space-y-1.5 flex-1">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <span className="px-2 py-0.5 rounded-md bg-[#182820] text-[#8EAAA0] text-[10px] font-code font-bold uppercase border border-[#274033]">
+                      <span className="px-2 py-0.5 rounded-md bg-[#141420] text-zinc-400 text-[10px] font-code font-bold uppercase border border-[#274033]">
                         {service.category}
                       </span>
                       <span className="inline-flex items-center gap-1 text-[10px] font-code text-[#34D399] bg-[#12241B] px-2 py-0.5 rounded border border-[#1F3D2E]">
@@ -251,20 +251,20 @@ export default function ProviderServicesPage() {
                       )}
                     </div>
 
-                    <h3 className="font-display font-bold text-base text-[#F2F7F4]">
+                    <h3 className="font-display font-bold text-base text-white">
                       {service.title}
                     </h3>
-                    <p className="font-body text-xs text-[#8EAAA0] line-clamp-2">
+                    <p className="font-body text-xs text-zinc-400 line-clamp-2">
                       {service.description}
                     </p>
 
-                    <div className="flex items-center gap-4 pt-2 text-xs font-code text-[#A3B8AF]">
+                    <div className="flex items-center gap-4 pt-2 text-xs font-code text-zinc-400">
                       <span className="flex items-center gap-1 text-[#D4A843] font-bold text-sm">
                         PKR {service.pricePKR.toLocaleString()}
                       </span>
                       <span>·</span>
                       <span className="flex items-center gap-1">
-                        <Clock size={12} className="text-[#8EAAA0]" />
+                        <Clock size={12} className="text-zinc-400" />
                         ~{service.durationMinutes} mins
                       </span>
                     </div>
@@ -277,7 +277,7 @@ export default function ProviderServicesPage() {
                       className={`text-[11px] font-code px-2.5 py-1 rounded-lg border transition-colors ${
                         service.isActive
                           ? "border-[#34D399]/40 text-[#34D399] hover:bg-[#34D399]/10"
-                          : "border-[#A3B8AF]/30 text-[#A3B8AF] hover:bg-white/5"
+                          : "border-[#A3B8AF]/30 text-zinc-400 hover:bg-white/5"
                       }`}
                     >
                       {service.isActive ? "Active" : "Activate"}
@@ -286,14 +286,14 @@ export default function ProviderServicesPage() {
                     <div className="flex items-center gap-1">
                       <button
                         onClick={() => openEditModal(service)}
-                        className="p-1.5 rounded-lg text-[#8EAAA0] hover:text-[#F2F7F4] hover:bg-[#1C2C24] transition-colors"
+                        className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-[#1C2C24] transition-colors"
                         title="Edit Service"
                       >
                         <Edit2 size={14} />
                       </button>
                       <button
                         onClick={() => deleteService(service.id)}
-                        className="p-1.5 rounded-lg text-[#8EAAA0] hover:text-[#EF4444] hover:bg-[#291316] transition-colors"
+                        className="p-1.5 rounded-lg text-zinc-400 hover:text-[#EF4444] hover:bg-[#291316] transition-colors"
                         title="Delete Service"
                       >
                         <Trash2 size={14} />
@@ -309,7 +309,7 @@ export default function ProviderServicesPage() {
         {/* RIGHT COLUMN: Live Client Preview Card */}
         <div className="lg:col-span-5 space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="font-display font-bold text-lg text-[#F2F7F4] flex items-center gap-2">
+            <h2 className="font-display font-bold text-lg text-white flex items-center gap-2">
               <Eye size={18} className="text-[#34D399]" />
               <span>Live Client Preview</span>
             </h2>
@@ -319,7 +319,7 @@ export default function ProviderServicesPage() {
             </span>
           </div>
 
-          <p className="font-body text-xs text-[#8EAAA0]">
+          <p className="font-body text-xs text-zinc-400">
             This exact interactive card is presented to homeowners searching for artisans in your metro cluster.
           </p>
 
@@ -334,7 +334,7 @@ export default function ProviderServicesPage() {
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
-                  <h3 className="font-display font-bold text-lg text-[#F2F7F4] truncate">
+                  <h3 className="font-display font-bold text-lg text-white truncate">
                     {user?.name || "Tariq Mehmood"}
                   </h3>
                   <ShieldCheck size={16} className="text-[#34D399] shrink-0" />
@@ -342,7 +342,7 @@ export default function ProviderServicesPage() {
                 <p className="font-body text-xs text-[#D4A843] font-semibold mt-0.5">
                   {user?.category || "Master HVAC & AC Specialist"}
                 </p>
-                <p className="font-body text-[11px] text-[#8EAAA0] flex items-center gap-1 mt-1">
+                <p className="font-body text-[11px] text-zinc-400 flex items-center gap-1 mt-1">
                   <MapPin size={11} className="text-[#34D399]" />
                   {user?.area || "Sector G-13, Islamabad"}
                 </p>
@@ -350,27 +350,27 @@ export default function ProviderServicesPage() {
             </div>
 
             {/* Badges / Rating */}
-            <div className="grid grid-cols-3 gap-2 mt-5 py-3 px-4 rounded-2xl bg-[#0B120E] border border-[#1C2C24] text-center">
+            <div className="grid grid-cols-3 gap-2 mt-5 py-3 px-4 rounded-2xl bg-[#0A0A0F] border border-white/8 text-center">
               <div>
                 <div className="flex items-center justify-center gap-1 text-[#D4A843] font-display font-bold text-sm">
                   <Star size={13} fill="#D4A843" />
                   <span>{user?.rating || 4.96}</span>
                 </div>
-                <div className="text-[10px] font-code text-[#8EAAA0]">142 Reviews</div>
+                <div className="text-[10px] font-code text-zinc-400">142 Reviews</div>
               </div>
-              <div className="border-x border-[#1C2C24]">
+              <div className="border-x border-white/8">
                 <div className="font-display font-bold text-sm text-[#34D399]">98%</div>
-                <div className="text-[10px] font-code text-[#8EAAA0]">On-Time</div>
+                <div className="text-[10px] font-code text-zinc-400">On-Time</div>
               </div>
               <div>
-                <div className="font-display font-bold text-sm text-[#F2F7F4]">NADRA</div>
+                <div className="font-display font-bold text-sm text-white">NADRA</div>
                 <div className="text-[10px] font-code text-[#34D399]">Verified</div>
               </div>
             </div>
 
             {/* Dynamic Services Pill list */}
             <div className="mt-5 space-y-2">
-              <div className="text-[11px] font-code uppercase text-[#8EAAA0] font-bold">
+              <div className="text-[11px] font-code uppercase text-zinc-400 font-bold">
                 Available Services ({activeServices.length})
               </div>
               <div className="space-y-1.5 max-h-48 overflow-y-auto pr-1">
@@ -385,8 +385,8 @@ export default function ProviderServicesPage() {
                       className="flex items-center justify-between p-2.5 rounded-xl bg-[#16251E] border border-[#233B2F] text-xs font-body"
                     >
                       <div className="min-w-0 pr-2">
-                        <div className="font-semibold text-[#F2F7F4] truncate">{s.title}</div>
-                        <div className="text-[10px] text-[#8EAAA0] flex items-center gap-1">
+                        <div className="font-semibold text-white truncate">{s.title}</div>
+                        <div className="text-[10px] text-zinc-400 flex items-center gap-1">
                           <Clock size={10} /> ~{s.durationMinutes} mins · {s.warranty}
                         </div>
                       </div>
@@ -400,9 +400,9 @@ export default function ProviderServicesPage() {
             </div>
 
             {/* Price Preview & Booking CTA */}
-            <div className="mt-6 pt-4 border-t border-[#1C2C24] flex items-center justify-between">
+            <div className="mt-6 pt-4 border-t border-white/8 flex items-center justify-between">
               <div>
-                <span className="text-[10px] font-code text-[#8EAAA0] uppercase">Starting From</span>
+                <span className="text-[10px] font-code text-zinc-400 uppercase">Starting From</span>
                 <div className="font-display font-bold text-lg text-[#34D399]">
                   {minPrice > 0 ? `PKR ${minPrice.toLocaleString()}` : "N/A"}
                 </div>
@@ -418,7 +418,7 @@ export default function ProviderServicesPage() {
           </div>
 
           {/* Quick Notice Card */}
-          <div className="p-4 rounded-2xl bg-[#121A15] border border-[#1E3025] flex items-start gap-3 text-xs text-[#8EAAA0]">
+          <div className="p-4 rounded-2xl bg-[#121A15] border border-[#1E3025] flex items-start gap-3 text-xs text-zinc-400">
             <Sparkles size={16} className="text-[#D4A843] shrink-0 mt-0.5" />
             <p>
               Changes made to service titles, rates, or guarantees are pushed instantly to the AI Dispatcher and Vapi Voice Agent knowledge graph.
@@ -430,14 +430,14 @@ export default function ProviderServicesPage() {
       {/* ADD / EDIT MODAL */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#111A15] border border-[#21352A] rounded-3xl max-w-lg w-full p-6 sm:p-8 space-y-6 shadow-2xl relative">
-            <div className="flex items-center justify-between border-b border-[#1C2C24] pb-4">
-              <h2 className="font-display font-extrabold text-xl text-[#F2F7F4]">
+          <div className="bg-[#111118] border border-[#21352A] rounded-3xl max-w-lg w-full p-6 sm:p-8 space-y-6 shadow-2xl relative">
+            <div className="flex items-center justify-between border-b border-white/8 pb-4">
+              <h2 className="font-display font-extrabold text-xl text-white">
                 {editingService ? "Edit Service Offering" : "Create New Service"}
               </h2>
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="text-[#8EAAA0] hover:text-[#F2F7F4] font-code text-sm"
+                className="text-zinc-400 hover:text-white font-code text-sm"
               >
                 ✕
               </button>
@@ -445,7 +445,7 @@ export default function ProviderServicesPage() {
 
             <form onSubmit={handleSave} className="space-y-4">
               <div>
-                <label className="block text-xs font-code uppercase text-[#8EAAA0] mb-1.5">
+                <label className="block text-xs font-code uppercase text-zinc-400 mb-1.5">
                   Service Title *
                 </label>
                 <input
@@ -454,19 +454,19 @@ export default function ProviderServicesPage() {
                   placeholder="e.g. PCB Board Inspection & Overhaul"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className="w-full bg-[#0C120F] border border-[#1C2C24] rounded-xl px-4 py-2.5 text-sm text-[#F2F7F4] focus:outline-none focus:border-[#34D399]"
+                  className="w-full bg-[#0C120F] border border-white/8 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#0054F9]"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-code uppercase text-[#8EAAA0] mb-1.5">
+                  <label className="block text-xs font-code uppercase text-zinc-400 mb-1.5">
                     Category
                   </label>
                   <select
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
-                    className="w-full bg-[#0C120F] border border-[#1C2C24] rounded-xl px-4 py-2.5 text-sm text-[#F2F7F4] focus:outline-none focus:border-[#34D399]"
+                    className="w-full bg-[#0C120F] border border-white/8 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#0054F9]"
                   >
                     <option value="HVAC Diagnostics">HVAC Diagnostics</option>
                     <option value="HVAC Servicing">HVAC Servicing</option>
@@ -478,7 +478,7 @@ export default function ProviderServicesPage() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-code uppercase text-[#8EAAA0] mb-1.5">
+                  <label className="block text-xs font-code uppercase text-zinc-400 mb-1.5">
                     Price (PKR) *
                   </label>
                   <input
@@ -488,14 +488,14 @@ export default function ProviderServicesPage() {
                     required
                     value={pricePKR}
                     onChange={(e) => setPricePKR(Number(e.target.value))}
-                    className="w-full bg-[#0C120F] border border-[#1C2C24] rounded-xl px-4 py-2.5 text-sm text-[#F2F7F4] focus:outline-none focus:border-[#34D399]"
+                    className="w-full bg-[#0C120F] border border-white/8 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#0054F9]"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-code uppercase text-[#8EAAA0] mb-1.5">
+                  <label className="block text-xs font-code uppercase text-zinc-400 mb-1.5">
                     Estimated Time (Mins)
                   </label>
                   <input
@@ -504,12 +504,12 @@ export default function ProviderServicesPage() {
                     step="15"
                     value={durationMinutes}
                     onChange={(e) => setDurationMinutes(Number(e.target.value))}
-                    className="w-full bg-[#0C120F] border border-[#1C2C24] rounded-xl px-4 py-2.5 text-sm text-[#F2F7F4] focus:outline-none focus:border-[#34D399]"
+                    className="w-full bg-[#0C120F] border border-white/8 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#0054F9]"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-code uppercase text-[#8EAAA0] mb-1.5">
+                  <label className="block text-xs font-code uppercase text-zinc-400 mb-1.5">
                     Warranty / Guarantee
                   </label>
                   <input
@@ -517,13 +517,13 @@ export default function ProviderServicesPage() {
                     value={warranty}
                     onChange={(e) => setWarranty(e.target.value)}
                     placeholder="e.g. 30-Day Guarantee"
-                    className="w-full bg-[#0C120F] border border-[#1C2C24] rounded-xl px-4 py-2.5 text-sm text-[#F2F7F4] focus:outline-none focus:border-[#34D399]"
+                    className="w-full bg-[#0C120F] border border-white/8 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#0054F9]"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-code uppercase text-[#8EAAA0] mb-1.5">
+                <label className="block text-xs font-code uppercase text-zinc-400 mb-1.5">
                   Detailed Scope / Description
                 </label>
                 <textarea
@@ -531,16 +531,16 @@ export default function ProviderServicesPage() {
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="Outline the exact diagnostic tests or steps included in this service..."
-                  className="w-full bg-[#0C120F] border border-[#1C2C24] rounded-xl px-4 py-2.5 text-sm text-[#F2F7F4] focus:outline-none focus:border-[#34D399]"
+                  className="w-full bg-[#0C120F] border border-white/8 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#0054F9]"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-3 pt-4 border-t border-[#1C2C24]">
+              <div className="flex items-center justify-end gap-3 pt-4 border-t border-white/8">
                 <Button
                   type="button"
                   variant="outline"
                   onClick={() => setIsModalOpen(false)}
-                  className="border-[#1C2C24] text-[#8EAAA0] hover:bg-white/5"
+                  className="border-white/8 text-zinc-400 hover:bg-white/5"
                 >
                   Cancel
                 </Button>

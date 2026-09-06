@@ -32,7 +32,7 @@ const CUSTOMER_LEADERBOARD = [
     totalBookings: 24,
     lifetimeSpend: "PKR 98,500",
     tier: "Titanium",
-    tierColor: "bg-[#34D399]/15 text-[#34D399] border-[#34D399]/40",
+    tierColor: "bg-[#0054F9]/15 text-[#0054F9] border-[#0054F9]/40",
     favoriteTrade: "AC Technician & Detailing",
     lastActive: "Today at 02:30 PM",
   },
@@ -102,25 +102,25 @@ const PROVIDER_LEADERBOARD = [
   },
   {
     id: "p-02",
-    name: "Bilal Ahmed",
-    category: "Solar & Electrical Systems",
-    metro: "DHA Phase 5, Lahore",
-    rating: 4.98,
+    name: "Arshad Hussain",
+    category: "Hydro Plumbing & Sanitary",
+    metro: "Gulshan-e-Iqbal, Karachi",
+    rating: 4.94,
     completedJobs: 128,
     onTimeRate: "98.8%",
-    grossRevenue: "PKR 410,000",
+    grossRevenue: "PKR 288,000",
     rankBadge: "🥈 Rank #2",
-    badgeColor: "bg-[#94A3B8]/20 text-[#E2E8F0] border-[#94A3B8]/40",
+    badgeColor: "bg-slate-300/20 text-slate-200 border-slate-300/40",
   },
   {
     id: "p-03",
-    name: "Arshad Hussain",
-    category: "Hydro & Sanitary Engineering",
-    metro: "Gulshan Block 4, Karachi",
-    rating: 4.94,
+    name: "Bilal Ahmed",
+    category: "Solar & Inverter Engineer",
+    metro: "DHA Phase 5, Lahore",
+    rating: 4.98,
     completedJobs: 119,
     onTimeRate: "97.5%",
-    grossRevenue: "PKR 238,000",
+    grossRevenue: "PKR 438,000",
     rankBadge: "🥉 Rank #3",
     badgeColor: "bg-[#B45309]/20 text-[#F59E0B] border-[#B45309]/40",
   },
@@ -134,7 +134,7 @@ const PROVIDER_LEADERBOARD = [
     onTimeRate: "100%",
     grossRevenue: "PKR 445,000",
     rankBadge: "Top STEM",
-    badgeColor: "bg-[#38BDF8]/20 text-[#38BDF8] border-[#38BDF8]/40",
+    badgeColor: "bg-[#0054F9]/20 text-[#0054F9] border-[#0054F9]/40",
   },
   {
     id: "p-05",
@@ -146,7 +146,7 @@ const PROVIDER_LEADERBOARD = [
     onTimeRate: "96.9%",
     grossRevenue: "PKR 324,800",
     rankBadge: "Top Auto",
-    badgeColor: "bg-[#34D399]/20 text-[#34D399] border-[#34D399]/40",
+    badgeColor: "bg-emerald-500/20 text-emerald-400 border-emerald-500/40",
   },
 ];
 
@@ -171,19 +171,19 @@ export default function AdminDashboardPage() {
   return (
     <div className="space-y-8 pb-12">
       {/* 1. TOP HEADER BANNER */}
-      <div className="relative rounded-3xl p-6 sm:p-8 bg-gradient-to-r from-[#111C17] via-[#14231D] to-[#0D1813] border border-[#20332B] shadow-[0_16px_40px_rgba(0,0,0,0.4)] overflow-hidden">
-        <div className="absolute -right-16 -top-16 w-64 h-64 rounded-full bg-[#34D399]/10 blur-3xl pointer-events-none" />
+      <div className="relative rounded-[2rem] p-6 sm:p-8 bg-[#111118] border border-white/10 shadow-[0_16px_40px_rgba(0,0,0,0.5)] overflow-hidden">
+        <div className="absolute -right-16 -top-16 w-64 h-64 rounded-full bg-[#0054F9]/15 blur-[120px] pointer-events-none" />
 
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#1A2D25] border border-[#2B473A] text-[#34D399] text-xs font-semibold font-code mb-3">
-              <ShieldCheck size={13} />
+            <div className="catalis-badge mb-3">
+              <ShieldCheck size={13} className="text-[#0054F9]" />
               <span>SUPER ADMIN COMMAND DECK</span>
             </div>
-            <h1 className="font-display font-extrabold text-2xl sm:text-4xl text-[#F2F7F4] tracking-tight">
+            <h1 className="font-display font-extrabold text-2xl sm:text-4xl text-white tracking-tight">
               Executive Telemetry & Observability
             </h1>
-            <p className="font-body text-xs sm:text-sm text-[#A3B8AF] mt-2 max-w-2xl leading-relaxed">
+            <p className="font-body text-xs sm:text-sm text-zinc-400 mt-2 max-w-2xl leading-relaxed">
               Global governance view across Islamabad, Karachi, and Lahore clusters. Monitor active customer spend, provider performance rankings, and 5-agent orchestrator traces.
             </p>
           </div>
@@ -191,21 +191,21 @@ export default function AdminDashboardPage() {
           <div className="flex flex-wrap gap-2.5">
             <Link
               href="/dashboard/admin/customers"
-              className="h-10 px-4 rounded-xl bg-[#162920] hover:bg-[#1E3B2E] text-[#F2F7F4] border border-[#254234] text-xs font-semibold flex items-center gap-2 transition-all"
+              className="h-10 px-4 rounded-xl bg-[#141420] hover:bg-[#1A1A28] text-white border border-white/10 text-xs font-semibold flex items-center gap-2 transition-all shadow-sm"
             >
               <Users size={14} className="text-[#38BDF8]" />
               <span>Customer CRUD</span>
             </Link>
             <Link
               href="/dashboard/admin/providers"
-              className="h-10 px-4 rounded-xl bg-[#162920] hover:bg-[#1E3B2E] text-[#F2F7F4] border border-[#254234] text-xs font-semibold flex items-center gap-2 transition-all"
+              className="h-10 px-4 rounded-xl bg-[#141420] hover:bg-[#1A1A28] text-white border border-white/10 text-xs font-semibold flex items-center gap-2 transition-all shadow-sm"
             >
               <Wrench size={14} className="text-[#D4A843]" />
               <span>Provider Roster</span>
             </Link>
             <Link
               href="/traces"
-              className="h-10 px-4 rounded-xl bg-[#34D399] hover:bg-[#2EB885] text-[#090E0C] font-display font-bold text-xs flex items-center gap-2 transition-all"
+              className="catalis-btn catalis-btn-primary h-10 px-4 text-xs font-display font-bold shadow-[0_0_20px_rgba(0,84,249,0.3)]"
             >
               <Activity size={14} />
               <span>Live Traces</span>
@@ -223,7 +223,7 @@ export default function AdminDashboardPage() {
             sub: "Cumulative verified jobs",
             badge: "+18.4% WoW",
             icon: TrendingUp,
-            badgeColor: "text-[#34D399] bg-[#162D23]",
+            badgeColor: "text-emerald-400 bg-emerald-500/10",
           },
           {
             title: "Active Bookings",
@@ -231,7 +231,7 @@ export default function AdminDashboardPage() {
             sub: "Atomic PostgreSQL slots",
             badge: "0 Lock Conflicts",
             icon: CalendarCheck,
-            badgeColor: "text-[#38BDF8] bg-[#0E202B]",
+            badgeColor: "text-[#38BDF8] bg-[#38BDF8]/10",
           },
           {
             title: "Agent Sessions",
@@ -239,7 +239,7 @@ export default function AdminDashboardPage() {
             sub: "Multi-lingual Vapi/Chat",
             badge: "99.4% Accuracy",
             icon: Bot,
-            badgeColor: "text-[#34D399] bg-[#162D23]",
+            badgeColor: "text-[#0054F9] bg-[#0054F9]/10",
           },
           {
             title: "Vetted Master Artisans",
@@ -247,7 +247,7 @@ export default function AdminDashboardPage() {
             sub: "NADRA Biometric verified",
             badge: "3 Metros Online",
             icon: Wrench,
-            badgeColor: "text-[#D4A843] bg-[#292212]",
+            badgeColor: "text-[#D4A843] bg-[#D4A843]/10",
           },
           {
             title: "Median Agent Latency",
@@ -255,32 +255,32 @@ export default function AdminDashboardPage() {
             sub: "Sub-second 5-agent hop",
             badge: "< 1.2s SLA",
             icon: Clock,
-            badgeColor: "text-[#34D399] bg-[#162D23]",
+            badgeColor: "text-emerald-400 bg-emerald-500/10",
           },
         ].map((kpi, idx) => {
           const Icon = kpi.icon;
           return (
             <div
               key={idx}
-              className="p-4 rounded-2xl bg-[#111C17] border border-[#20332B] hover:border-[#34D399]/40 transition-all shadow-[0_8px_24px_rgba(0,0,0,0.25)] flex flex-col justify-between group"
+              className="p-4 rounded-2xl bg-[#111118] border border-white/8 hover:border-[#0054F9]/40 transition-all shadow-[0_8px_24px_rgba(0,0,0,0.3)] flex flex-col justify-between group"
             >
               <div className="flex items-center justify-between mb-2">
-                <span className="font-display font-bold text-[11px] uppercase tracking-wider text-[#8BA499]">
+                <span className="font-display font-bold text-[11px] uppercase tracking-wider text-zinc-400">
                   {kpi.title}
                 </span>
-                <div className="w-7 h-7 rounded-lg bg-[#162D23] border border-[#263F34] flex items-center justify-center text-[#34D399]">
+                <div className="w-7 h-7 rounded-lg bg-[#141420] border border-white/10 flex items-center justify-center text-[#0054F9]">
                   <Icon size={14} />
                 </div>
               </div>
 
               <div className="my-1.5">
-                <span className="font-display font-extrabold text-xl sm:text-2xl text-[#F2F7F4] tracking-tight group-hover:text-[#34D399] transition-colors">
+                <span className="font-display font-extrabold text-xl sm:text-2xl text-white tracking-tight group-hover:text-[#0054F9] transition-colors">
                   {kpi.value}
                 </span>
               </div>
 
-              <div className="flex items-center justify-between pt-2 border-t border-[#1C2E25] text-[10px]">
-                <span className="font-body text-[#6B8579] truncate">{kpi.sub}</span>
+              <div className="flex items-center justify-between pt-2 border-t border-white/5 text-[10px]">
+                <span className="font-body text-zinc-400 truncate">{kpi.sub}</span>
                 <span className={`font-code px-1.5 py-0.5 rounded font-semibold shrink-0 ml-1 ${kpi.badgeColor}`}>
                   {kpi.badge}
                 </span>
@@ -290,28 +290,28 @@ export default function AdminDashboardPage() {
         })}
       </div>
 
-      {/* 3. TWO LEADERBOARDS SIDE-BY-SIDE (User Requested) */}
+      {/* 3. TWO LEADERBOARDS SIDE-BY-SIDE */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Left: Top Customers Leaderboard */}
-        <div className="rounded-3xl bg-[#111C17] border border-[#20332B] p-6 shadow-[0_16px_40px_rgba(0,0,0,0.3)] flex flex-col justify-between">
+        <div className="rounded-[2rem] bg-[#111118] border border-white/8 p-6 shadow-[0_16px_40px_rgba(0,0,0,0.4)] flex flex-col justify-between">
           <div>
-            <div className="flex items-center justify-between pb-4 mb-4 border-b border-[#1C2E25]">
+            <div className="flex items-center justify-between pb-4 mb-4 border-b border-white/5">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-xl bg-[#0E202B] border border-[#18394D] text-[#38BDF8] flex items-center justify-center">
+                <div className="w-8 h-8 rounded-xl bg-[#0054F9]/15 border border-[#0054F9]/30 text-[#0054F9] flex items-center justify-center">
                   <Award size={16} />
                 </div>
                 <div>
-                  <h3 className="font-display font-bold text-base text-[#F2F7F4]">
+                  <h3 className="font-display font-bold text-base text-white">
                     High-Active Customers Leaderboard
                   </h3>
-                  <p className="text-[11px] text-[#8BA499]">
+                  <p className="text-[11px] text-zinc-400">
                     Top clients by booking frequency & marketplace expenditure
                   </p>
                 </div>
               </div>
               <Link
                 href="/dashboard/admin/customers"
-                className="text-xs text-[#38BDF8] hover:underline font-semibold flex items-center gap-1"
+                className="text-xs text-[#0054F9] hover:underline font-semibold flex items-center gap-1"
               >
                 <span>View All</span>
                 <ArrowUpRight size={13} />
@@ -322,32 +322,32 @@ export default function AdminDashboardPage() {
               {CUSTOMER_LEADERBOARD.map((cust, idx) => (
                 <div
                   key={cust.id}
-                  className="p-3.5 rounded-2xl bg-[#0B1310] border border-[#1F3329] hover:border-[#38BDF8]/40 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3 group"
+                  className="p-3.5 rounded-2xl bg-[#141420] border border-white/5 hover:border-[#0054F9]/40 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3 group"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-xl bg-[#14221B] border border-[#233B2F] text-[#F2F7F4] flex items-center justify-center font-display font-bold text-xs shrink-0">
+                    <div className="w-8 h-8 rounded-xl bg-[#1A1A28] border border-white/10 text-white flex items-center justify-center font-display font-bold text-xs shrink-0">
                       #{idx + 1}
                     </div>
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className="font-display font-bold text-xs text-[#F2F7F4]">
+                        <span className="font-display font-bold text-xs text-white">
                           {cust.name}
                         </span>
                         <span className={`px-2 py-0.2 rounded-full border text-[9px] font-code font-bold ${cust.tierColor}`}>
                           {cust.tier}
                         </span>
                       </div>
-                      <span className="text-[11px] text-[#6B8579] block">
-                        {cust.metro} · <span className="text-[#8EAAA0]">{cust.favoriteTrade}</span>
+                      <span className="text-[11px] text-zinc-400 block">
+                        {cust.metro} · <span className="text-zinc-300">{cust.favoriteTrade}</span>
                       </span>
                     </div>
                   </div>
 
-                  <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center border-t sm:border-t-0 pt-2 sm:pt-0 border-[#1A2C23]">
-                    <span className="font-display font-bold text-xs text-[#34D399]">
+                  <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center border-t sm:border-t-0 pt-2 sm:pt-0 border-white/5">
+                    <span className="font-display font-bold text-xs text-emerald-400">
                       {cust.lifetimeSpend}
                     </span>
-                    <span className="font-code text-[10px] text-[#8BA499]">
+                    <span className="font-code text-[10px] text-zinc-400">
                       {cust.totalBookings} Completed Jobs
                     </span>
                   </div>
@@ -358,18 +358,18 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* Right: Top Provider Master Artisans Leaderboard */}
-        <div className="rounded-3xl bg-[#111C17] border border-[#20332B] p-6 shadow-[0_16px_40px_rgba(0,0,0,0.3)] flex flex-col justify-between">
+        <div className="rounded-[2rem] bg-[#111118] border border-white/8 p-6 shadow-[0_16px_40px_rgba(0,0,0,0.4)] flex flex-col justify-between">
           <div>
-            <div className="flex items-center justify-between pb-4 mb-4 border-b border-[#1C2E25]">
+            <div className="flex items-center justify-between pb-4 mb-4 border-b border-white/5">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-xl bg-[#292212] border border-[#473B1F] text-[#D4A843] flex items-center justify-center">
+                <div className="w-8 h-8 rounded-xl bg-[#D4A843]/15 border border-[#D4A843]/30 text-[#D4A843] flex items-center justify-center">
                   <Award size={16} />
                 </div>
                 <div>
-                  <h3 className="font-display font-bold text-base text-[#F2F7F4]">
+                  <h3 className="font-display font-bold text-base text-white">
                     Top Master Artisans Leaderboard
                   </h3>
-                  <p className="text-[11px] text-[#8BA499]">
+                  <p className="text-[11px] text-zinc-400">
                     Highest customer rating, on-time arrivals & completion velocity
                   </p>
                 </div>
@@ -387,29 +387,29 @@ export default function AdminDashboardPage() {
               {PROVIDER_LEADERBOARD.map((artisan) => (
                 <div
                   key={artisan.id}
-                  className="p-3.5 rounded-2xl bg-[#0B1310] border border-[#1F3329] hover:border-[#D4A843]/40 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3 group"
+                  className="p-3.5 rounded-2xl bg-[#141420] border border-white/5 hover:border-[#D4A843]/40 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3 group"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-xl bg-[#162D23] border border-[#2B493B] text-[#34D399] flex items-center justify-center font-display font-bold text-xs shrink-0">
+                    <div className="w-8 h-8 rounded-xl bg-[#D4A843]/20 border border-[#D4A843]/30 text-[#D4A843] flex items-center justify-center font-display font-bold text-xs shrink-0">
                       {artisan.rating}★
                     </div>
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className="font-display font-bold text-xs text-[#F2F7F4]">
+                        <span className="font-display font-bold text-xs text-white">
                           {artisan.name}
                         </span>
                         <span className={`px-2 py-0.2 rounded-full border text-[9px] font-code font-bold ${artisan.badgeColor}`}>
                           {artisan.rankBadge}
                         </span>
                       </div>
-                      <span className="text-[11px] text-[#6B8579] block">
-                        {artisan.category} · <span className="text-[#8EAAA0]">{artisan.metro}</span>
+                      <span className="text-[11px] text-zinc-400 block">
+                        {artisan.category} · <span className="text-zinc-300">{artisan.metro}</span>
                       </span>
                     </div>
                   </div>
 
-                  <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center border-t sm:border-t-0 pt-2 sm:pt-0 border-[#1A2C23]">
-                    <span className="font-display font-bold text-xs text-[#F2F7F4]">
+                  <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center border-t sm:border-t-0 pt-2 sm:pt-0 border-white/5">
+                    <span className="font-display font-bold text-xs text-white">
                       {artisan.completedJobs} Jobs ({artisan.onTimeRate})
                     </span>
                     <span className="font-code text-[10px] text-[#D4A843]">
@@ -427,56 +427,56 @@ export default function AdminDashboardPage() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <Link
           href="/dashboard/admin/customers"
-          className="p-5 rounded-2xl bg-[#111C17] border border-[#20332B] hover:border-[#34D399]/40 transition-all flex items-center justify-between group"
+          className="p-5 rounded-2xl bg-[#111118] border border-white/8 hover:border-[#0054F9]/40 transition-all flex items-center justify-between group shadow-sm"
         >
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#162D23] text-[#34D399] flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-[#0054F9]/15 text-[#0054F9] flex items-center justify-center">
               <Users size={18} />
             </div>
             <div>
-              <span className="font-display font-bold text-sm text-[#F2F7F4] block">
+              <span className="font-display font-bold text-sm text-white block">
                 Manage Customers
               </span>
-              <span className="text-xs text-[#8EAAA0]">Search, edit, suspend & create accounts</span>
+              <span className="text-xs text-zinc-400">Search, edit, suspend & create accounts</span>
             </div>
           </div>
-          <ChevronRight size={16} className="text-[#5E796F] group-hover:translate-x-1 transition-transform" />
+          <ChevronRight size={16} className="text-zinc-500 group-hover:translate-x-1 transition-transform" />
         </Link>
 
         <Link
           href="/dashboard/admin/providers"
-          className="p-5 rounded-2xl bg-[#111C17] border border-[#20332B] hover:border-[#34D399]/40 transition-all flex items-center justify-between group"
+          className="p-5 rounded-2xl bg-[#111118] border border-white/8 hover:border-[#D4A843]/40 transition-all flex items-center justify-between group shadow-sm"
         >
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#292212] text-[#D4A843] flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-[#D4A843]/15 text-[#D4A843] flex items-center justify-center">
               <Wrench size={18} />
             </div>
             <div>
-              <span className="font-display font-bold text-sm text-[#F2F7F4] block">
+              <span className="font-display font-bold text-sm text-white block">
                 Provider Roster CRUD
               </span>
-              <span className="text-xs text-[#8EAAA0]">NADRA vetting, pricing & specialties</span>
+              <span className="text-xs text-zinc-400">NADRA vetting, pricing & specialties</span>
             </div>
           </div>
-          <ChevronRight size={16} className="text-[#5E796F] group-hover:translate-x-1 transition-transform" />
+          <ChevronRight size={16} className="text-zinc-500 group-hover:translate-x-1 transition-transform" />
         </Link>
 
         <Link
           href="/dashboard/admin/settings"
-          className="p-5 rounded-2xl bg-[#111C17] border border-[#20332B] hover:border-[#34D399]/40 transition-all flex items-center justify-between group"
+          className="p-5 rounded-2xl bg-[#111118] border border-white/8 hover:border-[#38BDF8]/40 transition-all flex items-center justify-between group shadow-sm"
         >
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#122119] text-[#38BDF8] flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-[#38BDF8]/15 text-[#38BDF8] flex items-center justify-center">
               <Activity size={18} />
             </div>
             <div>
-              <span className="font-display font-bold text-sm text-[#F2F7F4] block">
+              <span className="font-display font-bold text-sm text-white block">
                 Platform Settings
               </span>
-              <span className="text-xs text-[#8EAAA0]">Cluster configs, commissions & Vapi</span>
+              <span className="text-xs text-zinc-400">Cluster configs, commissions & Vapi</span>
             </div>
           </div>
-          <ChevronRight size={16} className="text-[#5E796F] group-hover:translate-x-1 transition-transform" />
+          <ChevronRight size={16} className="text-zinc-500 group-hover:translate-x-1 transition-transform" />
         </Link>
       </div>
     </div>

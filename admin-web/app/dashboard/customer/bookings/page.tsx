@@ -137,22 +137,22 @@ export default function CustomerBookingsPage() {
   return (
     <div className="space-y-8 pb-16">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#1C2C24] pb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/8 pb-6">
         <div>
           <div className="flex items-center gap-2 mb-2">
             <Link
               href="/dashboard/customer"
-              className="inline-flex items-center gap-1 text-xs font-code text-[#8EAAA0] hover:text-[#34D399] transition-colors"
+              className="inline-flex items-center gap-1 text-xs font-code text-zinc-400 hover:text-[#0054F9] transition-colors"
             >
               <ChevronLeft size={14} /> Back to Concierge
             </Link>
             <span className="text-[#3D5245]">/</span>
             <span className="text-xs font-code text-[#34D399] uppercase tracking-wider">Bookings Ledger</span>
           </div>
-          <h1 className="font-display font-extrabold text-2xl sm:text-3xl text-[#F2F7F4] tracking-tight">
+          <h1 className="font-display font-extrabold text-2xl sm:text-3xl text-white tracking-tight">
             My Bookings & Service History
           </h1>
-          <p className="font-body text-xs sm:text-sm text-[#A3B8AF] mt-1">
+          <p className="font-body text-xs sm:text-sm text-zinc-400 mt-1">
             Track active dispatches, view completion tokens, and rate your verified master artisans.
           </p>
         </div>
@@ -170,7 +170,7 @@ export default function CustomerBookingsPage() {
               className={`px-3.5 py-2 rounded-xl text-xs font-code font-bold transition-all cursor-pointer ${
                 filter === tab.key
                   ? "bg-[#34D399] text-[#090E0C] shadow-[0_0_15px_rgba(52,211,153,0.3)]"
-                  : "bg-[#111A15] border border-[#1C2C24] text-[#8EAAA0] hover:text-[#F2F7F4]"
+                  : "bg-[#111118] border border-white/8 text-zinc-400 hover:text-white"
               }`}
             >
               {tab.label}
@@ -189,7 +189,7 @@ export default function CustomerBookingsPage() {
               className={`p-6 rounded-3xl border transition-all ${
                 isActive
                   ? "bg-gradient-to-r from-[#12221A] to-[#0E1B14] border-2 border-[#34D399]/40 shadow-[0_10px_30px_rgba(0,0,0,0.4)]"
-                  : "bg-[#111A15] border-[#1C2C24]"
+                  : "bg-[#111118] border-white/8"
               }`}
             >
               <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
@@ -207,20 +207,20 @@ export default function CustomerBookingsPage() {
                       <span
                         className={`px-2 py-0.5 rounded text-[10px] font-code font-bold uppercase border ${
                           isActive
-                            ? "bg-[#132A1F] text-[#34D399] border-[#214735] animate-pulse"
-                            : "bg-[#16251E] text-[#8EAAA0] border-[#233B2F]"
+                            ? "bg-[#132A1F] text-[#34D399] border-white/10 animate-pulse"
+                            : "bg-[#16251E] text-zinc-400 border-[#233B2F]"
                         }`}
                       >
                         {isActive ? "DISPATCH IN PROGRESS" : "COMPLETED"}
                       </span>
                     </div>
 
-                    <h3 className="font-display font-bold text-base sm:text-lg text-[#F2F7F4]">
+                    <h3 className="font-display font-bold text-base sm:text-lg text-white">
                       {b.serviceTitle}
                     </h3>
 
-                    <div className="flex flex-wrap items-center gap-4 text-xs font-body text-[#8EAAA0]">
-                      <span className="text-[#F2F7F4] font-semibold flex items-center gap-1">
+                    <div className="flex flex-wrap items-center gap-4 text-xs font-body text-zinc-400">
+                      <span className="text-white font-semibold flex items-center gap-1">
                         Artisan: {b.artisanName}
                       </span>
                       <span>·</span>
@@ -230,7 +230,7 @@ export default function CustomerBookingsPage() {
                       </span>
                       <span>·</span>
                       <span className="flex items-center gap-1">
-                        <MapPin size={12} className="text-[#8EAAA0]" />
+                        <MapPin size={12} className="text-zinc-400" />
                         {b.address}
                       </span>
                     </div>
@@ -248,19 +248,19 @@ export default function CustomerBookingsPage() {
                             />
                           ))}
                         </div>
-                        <span className="text-[#A3B8AF] italic text-[11px]">"{b.review}"</span>
+                        <span className="text-zinc-400 italic text-[11px]">"{b.review}"</span>
                       </div>
                     )}
                   </div>
                 </div>
 
                 {/* Right: Amount & Actions */}
-                <div className="flex flex-row lg:flex-col items-center lg:items-end justify-between gap-3 pt-4 lg:pt-0 border-t lg:border-t-0 border-[#1C2C24]">
+                <div className="flex flex-row lg:flex-col items-center lg:items-end justify-between gap-3 pt-4 lg:pt-0 border-t lg:border-t-0 border-white/8">
                   <div>
                     <div className="font-display font-extrabold text-lg text-[#34D399] text-right">
                       PKR {b.amountPKR.toLocaleString()}
                     </div>
-                    <div className="text-[10px] font-code text-[#8EAAA0] text-right">
+                    <div className="text-[10px] font-code text-zinc-400 text-right">
                       {b.paymentMethod}
                     </div>
                   </div>
@@ -269,7 +269,7 @@ export default function CustomerBookingsPage() {
                     {isActive ? (
                       <a
                         href={`tel:${b.artisanPhone}`}
-                        className="h-9 px-3.5 rounded-xl bg-[#182820] hover:bg-[#20362B] border border-[#284435] text-[#34D399] font-code text-xs font-bold flex items-center gap-1.5 transition-colors"
+                        className="h-9 px-3.5 rounded-xl bg-[#141420] hover:bg-[#20362B] border border-[#284435] text-[#34D399] font-code text-xs font-bold flex items-center gap-1.5 transition-colors"
                       >
                         <Phone size={13} />
                         <span>Call Artisan</span>
@@ -278,7 +278,7 @@ export default function CustomerBookingsPage() {
                       <Button
                         onClick={() => openReviewModal(b)}
                         variant="outline"
-                        className="h-9 border-[#1C2C24] text-[#D4A843] hover:bg-[#D4A843]/10 text-xs font-display flex items-center gap-1.5"
+                        className="h-9 border-white/8 text-[#D4A843] hover:bg-[#D4A843]/10 text-xs font-display flex items-center gap-1.5"
                       >
                         <Star size={13} />
                         <span>{b.rating ? "Edit Review" : "Leave Review"}</span>
@@ -287,7 +287,7 @@ export default function CustomerBookingsPage() {
 
                     <button
                       onClick={() => toast.info(`Invoice ${b.token}.pdf downloaded.`)}
-                      className="p-2 rounded-xl text-[#8EAAA0] hover:text-[#F2F7F4] hover:bg-[#1C2C24] border border-transparent hover:border-[#2F4A3B] transition-colors"
+                      className="p-2 rounded-xl text-zinc-400 hover:text-white hover:bg-[#1C2C24] border border-transparent hover:border-[#2F4A3B] transition-colors"
                       title="Download Invoice"
                     >
                       <Download size={15} />
@@ -303,17 +303,17 @@ export default function CustomerBookingsPage() {
       {/* REVIEW MODAL */}
       {reviewModalBooking && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#111A15] border border-[#21352A] rounded-3xl max-w-md w-full p-6 space-y-5 shadow-2xl relative">
-            <div className="flex items-center justify-between border-b border-[#1C2C24] pb-4">
+          <div className="bg-[#111118] border border-[#21352A] rounded-3xl max-w-md w-full p-6 space-y-5 shadow-2xl relative">
+            <div className="flex items-center justify-between border-b border-white/8 pb-4">
               <div>
-                <h2 className="font-display font-bold text-lg text-[#F2F7F4]">
+                <h2 className="font-display font-bold text-lg text-white">
                   Rate Your Experience
                 </h2>
-                <p className="text-xs text-[#8EAAA0]">{reviewModalBooking.artisanName}</p>
+                <p className="text-xs text-zinc-400">{reviewModalBooking.artisanName}</p>
               </div>
               <button
                 onClick={() => setReviewModalBooking(null)}
-                className="text-[#8EAAA0] hover:text-[#F2F7F4] font-code text-sm"
+                className="text-zinc-400 hover:text-white font-code text-sm"
               >
                 ✕
               </button>
@@ -321,7 +321,7 @@ export default function CustomerBookingsPage() {
 
             <form onSubmit={handleSaveReview} className="space-y-4">
               <div className="text-center py-2">
-                <label className="block text-xs font-code uppercase text-[#8EAAA0] mb-2">
+                <label className="block text-xs font-code uppercase text-zinc-400 mb-2">
                   Overall Rating
                 </label>
                 <div className="flex items-center justify-center gap-2">
@@ -343,7 +343,7 @@ export default function CustomerBookingsPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-code uppercase text-[#8EAAA0] mb-1.5">
+                <label className="block text-xs font-code uppercase text-zinc-400 mb-1.5">
                   Your Review / Feedback
                 </label>
                 <textarea
@@ -352,16 +352,16 @@ export default function CustomerBookingsPage() {
                   value={reviewText}
                   onChange={(e) => setReviewText(e.target.value)}
                   placeholder="Share details about punctuality, craftsmanship, and pricing transparency..."
-                  className="w-full bg-[#0C120F] border border-[#1C2C24] rounded-xl px-4 py-2.5 text-xs text-[#F2F7F4] focus:outline-none focus:border-[#34D399]"
+                  className="w-full bg-[#0C120F] border border-white/8 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-[#0054F9]"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-3 pt-3 border-t border-[#1C2C24]">
+              <div className="flex items-center justify-end gap-3 pt-3 border-t border-white/8">
                 <Button
                   type="button"
                   variant="outline"
                   onClick={() => setReviewModalBooking(null)}
-                  className="border-[#1C2C24] text-[#8EAAA0] hover:bg-white/5 text-xs"
+                  className="border-white/8 text-zinc-400 hover:bg-white/5 text-xs"
                 >
                   Cancel
                 </Button>

@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import gsap from "gsap";
-import { ArrowUpRight, Compass, Shield, Sparkles, Menu, X, UserCheck, LogIn, Wrench } from "lucide-react";
+import { ArrowUpRight, Sparkles, Menu, X, LogIn, Wrench, Shield, Zap } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
 
 export function LandingNav() {
@@ -20,7 +20,7 @@ export function LandingNav() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // GSAP magnetic hover physics on CTA button
+  // Magnetic hover on CTA button
   useEffect(() => {
     const el = ctaRef.current;
     if (!el) return;
@@ -47,59 +47,65 @@ export function LandingNav() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 px-4 sm:px-8 pt-4 transition-all duration-300">
       <nav
-        className={`max-w-6xl mx-auto flex items-center justify-between px-6 py-3.5 rounded-2xl transition-all duration-300 ${
+        className={`max-w-6xl mx-auto flex items-center justify-between px-6 py-3 rounded-full transition-all duration-300 ${
           scrolled
-            ? "bg-[#0D1612]/90 backdrop-blur-md border border-[#20332B] shadow-[0_12px_40px_rgba(0,0,0,0.6)]"
-            : "bg-[#0D1612]/70 backdrop-blur-sm border border-[#1A2C23]/80 shadow-[0_4px_24px_rgba(0,0,0,0.4)]"
+            ? "bg-[#0A0A10]/90 backdrop-blur-xl border border-white/12 shadow-[0_16px_40px_rgba(0,0,0,0.8)]"
+            : "bg-[#0D0D14]/75 backdrop-blur-md border border-white/8 shadow-[0_8px_30px_rgba(0,0,0,0.5)]"
         }`}
       >
         {/* Brand */}
         <Link href="/" className="flex items-center gap-3 group text-decoration-none">
-          <div className="w-8 h-8 rounded-lg bg-[#162D23] border border-[#2B493B] text-[#34D399] flex items-center justify-center font-display font-bold text-sm tracking-wider shadow-sm group-hover:scale-105 transition-transform duration-200">
+          <div className="w-8 h-8 rounded-full bg-[#0054F9] text-white flex items-center justify-center font-display font-black text-sm shadow-[0_0_15px_rgba(0,84,249,0.5)] group-hover:scale-105 transition-transform duration-200">
             A
           </div>
           <div>
-            <span className="font-display text-[17px] font-bold tracking-tight text-[#F2F7F4] block leading-none">
-              ATELIER AI
+            <span className="font-display text-[16px] font-extrabold tracking-tight text-white block leading-none">
+              ATELIER<span className="text-[#0054F9]">.AI</span>
             </span>
-            <span className="font-body text-[10px] uppercase font-semibold tracking-wider text-[#6B877B] block mt-0.5">
-              Service Concierge
+            <span className="font-code text-[9px] uppercase tracking-wider text-zinc-400 block mt-0.5 font-semibold">
+              Catalis Concierge
             </span>
           </div>
         </Link>
 
         {/* Center Links */}
-        <div className="hidden md:flex items-center gap-7">
+        <div className="hidden md:flex items-center gap-6">
           <a
-            href="#symphony"
-            className="font-body text-[13px] font-medium text-[#A3B8AF] hover:text-[#F2F7F4] transition-colors py-1 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1.5px] after:bg-[#34D399] hover:after:w-full after:transition-all after:duration-200"
+            href="#about"
+            className="font-body text-[13px] font-medium text-zinc-300 hover:text-white transition-colors py-1 relative hover:after:w-full after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1.5px] after:bg-[#0054F9] after:transition-all"
           >
-            5-Agent Pipeline
+            About
           </a>
           <a
-            href="#roster"
-            className="font-body text-[13px] font-medium text-[#A3B8AF] hover:text-[#F2F7F4] transition-colors py-1 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1.5px] after:bg-[#34D399] hover:after:w-full after:transition-all after:duration-200"
+            href="#benefits"
+            className="font-body text-[13px] font-medium text-zinc-300 hover:text-white transition-colors py-1 relative hover:after:w-full after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1.5px] after:bg-[#0054F9] after:transition-all"
           >
-            Verified Roster
+            Benefits
           </a>
           <a
-            href="#voice-engine"
-            className="font-body text-[13px] font-medium text-[#A3B8AF] hover:text-[#F2F7F4] transition-colors py-1 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1.5px] after:bg-[#34D399] hover:after:w-full after:transition-all after:duration-200"
+            href="#features"
+            className="font-body text-[13px] font-medium text-zinc-300 hover:text-white transition-colors py-1 relative hover:after:w-full after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1.5px] after:bg-[#0054F9] after:transition-all"
           >
-            Roman Urdu Voice
+            Features
           </a>
           <a
-            href="#audit-ledger"
-            className="font-body text-[13px] font-medium text-[#A3B8AF] hover:text-[#F2F7F4] transition-colors py-1 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1.5px] after:bg-[#34D399] hover:after:w-full after:transition-all after:duration-200"
+            href="#pricing"
+            className="font-body text-[13px] font-medium text-zinc-300 hover:text-white transition-colors py-1 relative hover:after:w-full after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1.5px] after:bg-[#0054F9] after:transition-all"
           >
-            Trace Ledger
+            Pricing
+          </a>
+          <a
+            href="#testimonials"
+            className="font-body text-[13px] font-medium text-zinc-300 hover:text-white transition-colors py-1 relative hover:after:w-full after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1.5px] after:bg-[#0054F9] after:transition-all"
+          >
+            Reviews
           </a>
         </div>
 
         {/* Right Action */}
         <div className="flex items-center gap-3">
-          <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#162D23] border border-[#2B493B] text-[#34D399] text-[11px] font-medium font-body">
-            <span className="w-2 h-2 rounded-full bg-[#34D399] animate-pulse" />
+          <div className="hidden xl:flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/8 text-zinc-300 text-[11px] font-code font-medium">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#0054F9] animate-pulse" />
             <span>Active: ISB · KHI · LHE</span>
           </div>
 
@@ -107,34 +113,33 @@ export function LandingNav() {
             <Link href="/dashboard">
               <button
                 ref={ctaRef}
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#162D23] hover:bg-[#1E3B2E] border border-[#34D399]/60 text-[#34D399] text-[13px] font-bold font-display tracking-tight shadow-[0_0_20px_rgba(52,211,153,0.2)] active:scale-[0.98] transition-all cursor-pointer"
+                className="catalis-btn catalis-btn-primary text-xs font-display font-bold py-2 px-4 shadow-[0_0_20px_rgba(0,84,249,0.4)]"
               >
                 <span>Dashboard ({user?.role?.toUpperCase()})</span>
-                <ArrowUpRight size={14} className="text-[#34D399]" />
+                <ArrowUpRight size={14} />
               </button>
             </Link>
           ) : (
             <div className="flex items-center gap-2">
               <Link
                 href="/provider/login"
-                className="hidden lg:inline-flex items-center gap-1.5 text-xs font-code font-bold text-[#D4A843] hover:text-[#F3CA68] px-3 py-1.5 rounded-xl border border-[#3D3017] bg-[#161209] transition-colors"
+                className="hidden lg:inline-flex items-center gap-1.5 text-xs font-code font-semibold text-[#D4A843] hover:text-[#F3CA68] px-3 py-1.5 rounded-full border border-[#D4A843]/30 bg-[#D4A843]/5 transition-colors"
               >
                 <Wrench size={12} />
                 <span>Artisan Portal</span>
               </Link>
               <Link
                 href="/login"
-                className="hidden sm:inline-flex items-center gap-1 text-[13px] font-semibold text-[#A3B8AF] hover:text-[#F2F7F4] px-3 py-2 rounded-xl hover:bg-[#16251F] transition-colors"
+                className="hidden sm:inline-flex items-center gap-1 text-[13px] font-semibold text-zinc-300 hover:text-white px-3 py-1.5 rounded-full hover:bg-white/5 transition-colors"
               >
-                <LogIn size={13} className="text-[#34D399]" />
                 <span>Sign In</span>
               </Link>
               <Link href="/signup">
                 <button
                   ref={ctaRef}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#34D399] hover:bg-[#2BB380] text-[#090E0C] text-[13px] font-bold font-display tracking-tight shadow-[0_0_20px_rgba(52,211,153,0.3)] active:scale-[0.98] transition-all cursor-pointer"
+                  className="catalis-btn catalis-btn-primary text-xs font-display font-bold py-2 px-4 shadow-[0_0_20px_rgba(0,84,249,0.4)]"
                 >
-                  <span>Sign Up</span>
+                  <span>Get Started</span>
                   <ArrowUpRight size={14} />
                 </button>
               </Link>
@@ -143,7 +148,7 @@ export function LandingNav() {
 
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="md:hidden p-1.5 text-[#F2F7F4] hover:bg-[#16251F] rounded-lg transition-colors cursor-pointer"
+            className="md:hidden p-1.5 text-white hover:bg-white/5 rounded-full transition-colors cursor-pointer"
             aria-label="Toggle Navigation"
           >
             {mobileOpen ? <X size={20} /> : <Menu size={20} />}
@@ -153,41 +158,49 @@ export function LandingNav() {
 
       {/* Mobile Drawer */}
       {mobileOpen && (
-        <div className="md:hidden mt-2 p-4 bg-[#0D1612] rounded-2xl border border-[#20332B] shadow-2xl flex flex-col gap-3">
+        <div className="md:hidden mt-2 p-5 bg-[#0D0D14]/95 backdrop-blur-2xl rounded-3xl border border-white/10 shadow-2xl flex flex-col gap-3">
           <a
-            href="#symphony"
+            href="#about"
             onClick={() => setMobileOpen(false)}
-            className="text-[14px] font-medium text-[#F2F7F4] py-1.5 px-2 rounded-lg hover:bg-[#14231D]"
+            className="text-[14px] font-medium text-zinc-200 py-2 px-3 rounded-xl hover:bg-white/5"
           >
-            5-Agent Pipeline
+            About
           </a>
           <a
-            href="#roster"
+            href="#benefits"
             onClick={() => setMobileOpen(false)}
-            className="text-[14px] font-medium text-[#F2F7F4] py-1.5 px-2 rounded-lg hover:bg-[#14231D]"
+            className="text-[14px] font-medium text-zinc-200 py-2 px-3 rounded-xl hover:bg-white/5"
           >
-            Verified Roster
+            Benefits
           </a>
           <a
-            href="#voice-engine"
+            href="#features"
             onClick={() => setMobileOpen(false)}
-            className="text-[14px] font-medium text-[#F2F7F4] py-1.5 px-2 rounded-lg hover:bg-[#14231D]"
+            className="text-[14px] font-medium text-zinc-200 py-2 px-3 rounded-xl hover:bg-white/5"
           >
-            Roman Urdu Voice
+            Features
           </a>
           <a
-            href="#audit-ledger"
+            href="#pricing"
             onClick={() => setMobileOpen(false)}
-            className="text-[14px] font-medium text-[#F2F7F4] py-1.5 px-2 rounded-lg hover:bg-[#14231D]"
+            className="text-[14px] font-medium text-zinc-200 py-2 px-3 rounded-xl hover:bg-white/5"
           >
-            Trace Ledger
+            Pricing
           </a>
-          <div className="pt-2 border-t border-[#1F3329] flex flex-col gap-2">
+          <a
+            href="#testimonials"
+            onClick={() => setMobileOpen(false)}
+            className="text-[14px] font-medium text-zinc-200 py-2 px-3 rounded-xl hover:bg-white/5"
+          >
+            Reviews
+          </a>
+
+          <div className="pt-3 border-t border-white/10 flex flex-col gap-2">
             {isAuthenticated ? (
               <Link
                 href="/dashboard"
                 onClick={() => setMobileOpen(false)}
-                className="text-center py-2.5 rounded-xl bg-[#162D23] border border-[#34D399] text-[#34D399] font-bold text-sm"
+                className="catalis-btn catalis-btn-primary w-full py-2.5 text-center text-sm"
               >
                 Go to Dashboard ({user?.role?.toUpperCase()})
               </Link>
@@ -196,14 +209,14 @@ export function LandingNav() {
                 <Link
                   href="/login"
                   onClick={() => setMobileOpen(false)}
-                  className="text-center py-2 rounded-xl bg-[#16251F] border border-[#2F5444] text-[#F2F7F4] font-semibold text-sm"
+                  className="w-full text-center py-2.5 rounded-full bg-white/5 border border-white/10 text-white font-medium text-xs"
                 >
                   Customer Sign In (/login)
                 </Link>
                 <Link
                   href="/provider/login"
                   onClick={() => setMobileOpen(false)}
-                  className="text-center py-2 rounded-xl bg-[#1D170D] border border-[#3D3017] text-[#D4A843] font-semibold text-sm flex items-center justify-center gap-1.5"
+                  className="w-full text-center py-2.5 rounded-full bg-[#D4A843]/10 border border-[#D4A843]/30 text-[#D4A843] font-medium text-xs flex items-center justify-center gap-1.5"
                 >
                   <Wrench size={13} />
                   <span>Artisan Supply Portal (/provider/login)</span>
@@ -211,9 +224,9 @@ export function LandingNav() {
                 <Link
                   href="/signup"
                   onClick={() => setMobileOpen(false)}
-                  className="text-center py-2.5 rounded-xl bg-[#34D399] text-[#090E0C] font-bold text-sm shadow-lg"
+                  className="catalis-btn catalis-btn-primary w-full py-2.5 text-center text-xs"
                 >
-                  Sign Up as Homeowner
+                  Get Started as Client
                 </Link>
               </>
             )}

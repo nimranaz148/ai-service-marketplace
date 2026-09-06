@@ -102,120 +102,129 @@ export default function CustomerConciergePage() {
   return (
     <div className="space-y-8 pb-16">
       {/* 1. WELCOME CONCIERGE BANNER */}
-      <div className="relative rounded-3xl p-6 sm:p-8 bg-gradient-to-r from-[#0C1A14] via-[#10241B] to-[#0A1610] border border-[#1E3B2C] shadow-[0_16px_40px_rgba(0,0,0,0.4)] overflow-hidden">
-        <div className="absolute -right-16 -top-16 w-64 h-64 rounded-full bg-[#34D399]/10 blur-3xl pointer-events-none" />
+      <div className="relative rounded-[2rem] p-6 sm:p-8 bg-[#111118] border border-white/10 shadow-[0_16px_40px_rgba(0,0,0,0.5)] overflow-hidden">
+        <div className="absolute -right-16 -top-16 w-64 h-64 rounded-full bg-[#0054F9]/15 blur-[120px] pointer-events-none" />
 
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="flex items-start sm:items-center gap-4">
-            <div className="w-16 h-16 rounded-2xl bg-[#162D23] border border-[#244C39] text-[#34D399] flex items-center justify-center font-display font-black text-2xl shrink-0 shadow-inner">
+            <div className="w-16 h-16 rounded-2xl bg-[#0054F9]/20 border border-[#0054F9]/30 text-[#0054F9] flex items-center justify-center font-display font-black text-2xl shrink-0 shadow-[0_0_20px_rgba(0,84,249,0.25)]">
               {user?.avatar || "ZK"}
             </div>
             <div>
               <div className="flex items-center gap-2 mb-1.5">
-                <span className="px-2.5 py-0.5 rounded-full bg-[#162D23] border border-[#244C39] text-[#34D399] text-xs font-code font-bold">
+                <span className="catalis-badge text-[10px]">
                   CLIENT CONCIERGE
                 </span>
-                <span className="inline-flex items-center gap-1 text-[10px] font-code text-[#D4A843] bg-[#241E11] px-2 py-0.5 rounded border border-[#42371E]">
+                <span className="inline-flex items-center gap-1 text-[10px] font-code text-[#D4A843] bg-[#D4A843]/10 px-2 py-0.5 rounded-full border border-[#D4A843]/30">
                   <Sparkles size={11} />
-                  <span>Emerald Member</span>
+                  <span>Titanium Member</span>
                 </span>
               </div>
 
-              <h1 className="font-display font-extrabold text-2xl sm:text-3xl text-[#F2F7F4] tracking-tight">
+              <h1 className="font-display font-extrabold text-2xl sm:text-3xl text-white tracking-tight">
                 Assalam-o-Alaikum, {user?.name || "Zubair Khan"}
               </h1>
-              <p className="font-body text-xs text-[#A3B8AF] mt-1 flex items-center gap-2">
-                <span>Verified Homeowner</span>
+              <p className="font-body text-xs text-zinc-400 mt-1 flex items-center gap-2">
+                <MapPin size={12} className="text-[#0054F9]" />
+                <span>{user?.area || "Sector F-10, Islamabad"}</span>
                 <span>·</span>
-                <span className="flex items-center gap-1">
-                  <MapPin size={12} className="text-[#34D399]" />
-                  {user?.area || "Gulshan-e-Iqbal, Karachi"}
-                </span>
+                <span className="text-[#0054F9] font-medium">Smart Concierge Active</span>
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
-            <Link href="/services">
-              <Button className="bg-[#34D399] hover:bg-[#2BB380] text-[#090E0C] font-display font-bold px-5 py-2.5 rounded-2xl shadow-lg flex items-center gap-2 cursor-pointer transition-all active:scale-95">
-                <Bot size={16} />
-                <span>AI Voice & Chat Sandbox</span>
-              </Button>
+          <div className="flex flex-wrap gap-2.5">
+            <Link
+              href="/services"
+              className="catalis-btn catalis-btn-primary h-10 px-4 text-xs font-display font-bold shadow-[0_0_20px_rgba(0,84,249,0.3)] flex items-center gap-2"
+            >
+              <Bot size={14} />
+              <span>Voice / Chat Dispatch</span>
+            </Link>
+            <Link
+              href="/dashboard/customer/providers"
+              className="h-10 px-4 rounded-full bg-[#141420] hover:bg-[#1A1A28] text-white border border-white/10 text-xs font-semibold flex items-center gap-2 transition-all"
+            >
+              <ShieldCheck size={14} className="text-[#0054F9]" />
+              <span>Browse Artisans</span>
             </Link>
           </div>
         </div>
       </div>
 
-      {/* 2. ACTIVE LIVE BOOKING TRACKER */}
+      {/* 2. ACTIVE DISPATCH REAL-TIME PROGRESS TRACKER */}
       {activeBooking && (
-        <div className="rounded-3xl p-6 sm:p-8 bg-[#111A15] border-2 border-[#34D399]/40 shadow-[0_12px_40px_rgba(0,0,0,0.5)] space-y-6 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-48 h-48 bg-[#34D399]/5 rounded-full blur-2xl pointer-events-none" />
-
-          {/* Header */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#1C2C24] pb-4">
-            <div className="flex items-center gap-3">
-              <span className="w-3 h-3 rounded-full bg-[#34D399] animate-ping" />
-              <div>
-                <span className="text-xs font-code uppercase text-[#34D399] font-bold">
-                  Active Dispatch in Progress
+        <div className="rounded-[2rem] bg-[#111118] border border-white/8 p-6 sm:p-8 shadow-[0_16px_40px_rgba(0,0,0,0.4)] space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-white/5">
+            <div>
+              <div className="flex items-center gap-2.5 mb-1">
+                <span className="w-2.5 h-2.5 rounded-full bg-[#0054F9] animate-ping" />
+                <span className="text-xs font-code uppercase font-bold text-[#0054F9] tracking-wider">
+                  Live Dispatch Status
                 </span>
-                <h2 className="font-display font-bold text-lg text-[#F2F7F4]">
-                  {activeBooking.serviceTitle}
-                </h2>
               </div>
+              <h3 className="font-display font-extrabold text-xl text-white">
+                {activeBooking.serviceTitle}
+              </h3>
             </div>
 
             <div className="flex items-center gap-3">
               <div className="text-right">
-                <span className="text-[10px] font-code text-[#8EAAA0] uppercase block">Security Token</span>
-                <span className="font-code font-bold text-sm text-[#D4A843] bg-[#241E11] px-2.5 py-1 rounded-lg border border-[#42371E]">
+                <span className="text-[10px] font-code uppercase text-zinc-400 block">
+                  Security OTP Token
+                </span>
+                <span className="font-code font-black text-base text-[#0054F9] tracking-widest bg-[#0054F9]/10 px-2.5 py-0.5 rounded-md border border-[#0054F9]/30">
                   {activeBooking.token}
                 </span>
               </div>
             </div>
           </div>
 
-          {/* Stepper */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          {/* Stepper Visual */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 relative">
             {steps.map((step, idx) => (
               <div
                 key={step.key}
-                className={`p-3.5 rounded-2xl border flex flex-col justify-between transition-all ${
+                className={`p-4 rounded-2xl border transition-all ${
                   step.done
-                    ? "bg-[#162D23] border-[#34D399]/50 text-[#F2F7F4]"
-                    : "bg-[#0C120F] border-[#1C2C24] text-[#8EAAA0]"
+                    ? "bg-[#141424] border-[#0054F9]/50 shadow-[0_0_15px_rgba(0,84,249,0.15)]"
+                    : "bg-[#141420] border-white/5 opacity-50"
                 }`}
               >
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-[10px] font-code text-[#8EAAA0]">0{idx + 1}</span>
+                  <span className="text-[10px] font-code uppercase text-zinc-400 font-bold">
+                    Phase 0{idx + 1}
+                  </span>
                   {step.done ? (
-                    <CheckCircle2 size={16} className="text-[#34D399]" />
+                    <CheckCircle2 size={15} className="text-[#0054F9]" />
                   ) : (
-                    <div className="w-3.5 h-3.5 rounded-full border border-[#2D3F35]" />
+                    <Clock size={15} className="text-zinc-600" />
                   )}
                 </div>
-                <span className="font-display font-bold text-xs">{step.label}</span>
+                <span className="font-display font-bold text-xs text-white block">
+                  {step.label}
+                </span>
               </div>
             ))}
           </div>
 
           {/* Artisan & ETA Details */}
-          <div className="p-4 rounded-2xl bg-[#0B120E] border border-[#1C2C24] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="p-4 rounded-2xl bg-[#141420] border border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl bg-[#292212] border border-[#473B1F] text-[#D4A843] flex items-center justify-center font-display font-black text-base shrink-0">
+              <div className="w-12 h-12 rounded-xl bg-[#D4A843]/15 border border-[#D4A843]/30 text-[#D4A843] flex items-center justify-center font-display font-black text-base shrink-0">
                 {activeBooking.artisanAvatar}
               </div>
               <div>
                 <div className="flex items-center gap-2">
-                  <h4 className="font-display font-bold text-sm text-[#F2F7F4]">
+                  <h4 className="font-display font-bold text-sm text-white">
                     {activeBooking.artisanName}
                   </h4>
-                  <span className="inline-flex items-center gap-1 text-[10px] font-code text-[#34D399] bg-[#12241B] px-1.5 py-0.5 rounded border border-[#1F3D2E]">
+                  <span className="inline-flex items-center gap-1 text-[10px] font-code text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded-full border border-emerald-500/30">
                     <ShieldCheck size={10} /> Verified
                   </span>
                 </div>
-                <p className="font-body text-xs text-[#8EAAA0] flex items-center gap-2 mt-0.5">
-                  <span className="text-[#34D399] font-semibold flex items-center gap-1">
+                <p className="font-body text-xs text-zinc-400 flex items-center gap-2 mt-0.5">
+                  <span className="text-[#0054F9] font-semibold flex items-center gap-1">
                     <Navigation size={11} /> {activeBooking.eta}
                   </span>
                   <span>·</span>
@@ -227,15 +236,15 @@ export default function CustomerConciergePage() {
             <div className="flex items-center gap-3">
               <a
                 href={`tel:${activeBooking.artisanPhone}`}
-                className="h-10 px-4 rounded-xl bg-[#182820] hover:bg-[#20362B] border border-[#284435] text-[#34D399] font-code text-xs font-bold flex items-center gap-2 transition-colors"
+                className="h-10 px-4 rounded-full bg-[#1A1A28] hover:bg-[#222234] border border-white/10 text-white font-code text-xs font-bold flex items-center gap-2 transition-colors"
               >
-                <Phone size={14} />
+                <Phone size={14} className="text-[#0054F9]" />
                 <span>Call Artisan</span>
               </a>
               <Link href="/dashboard/customer/bookings">
-                <Button variant="outline" className="h-10 border-[#1C2C24] text-[#F2F7F4] hover:bg-white/5 text-xs font-display">
+                <button className="catalis-btn catalis-btn-secondary h-10 px-4 text-xs font-display">
                   Details
-                </Button>
+                </button>
               </Link>
             </div>
           </div>
@@ -243,15 +252,15 @@ export default function CustomerConciergePage() {
       )}
 
       {/* 3. AI QUICK DISPATCH BAR */}
-      <div className="p-6 rounded-3xl bg-gradient-to-br from-[#121E18] to-[#0E1612] border border-[#1F382B] space-y-4">
+      <div className="p-6 rounded-[2rem] bg-[#111118] border border-white/8 space-y-4 shadow-[0_16px_40px_rgba(0,0,0,0.4)]">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Sparkles size={18} className="text-[#34D399]" />
-            <h3 className="font-display font-bold text-base text-[#F2F7F4]">
+            <Sparkles size={18} className="text-[#0054F9]" />
+            <h3 className="font-display font-bold text-base text-white">
               Instant AI Service Concierge
             </h3>
           </div>
-          <span className="text-xs font-code text-[#8EAAA0]">Multi-Agent Urdu & English</span>
+          <span className="text-xs font-code text-zinc-400">Multi-Agent Roman Urdu & English</span>
         </div>
 
         <div className="flex flex-col sm:flex-row items-center gap-3">
@@ -261,16 +270,16 @@ export default function CustomerConciergePage() {
               placeholder="e.g. Mere ghar ka AC pani leak kar raha hai aur cooling nahi kar raha..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-[#090E0C] border border-[#1C2C24] rounded-2xl px-4 py-3.5 pl-11 text-sm text-[#F2F7F4] placeholder-[#5A7367] focus:outline-none focus:border-[#34D399]"
+              className="w-full bg-[#0A0A0F] border border-white/10 rounded-2xl px-4 py-3.5 pl-11 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-[#0054F9]"
             />
-            <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#5A7367]" />
+            <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500" />
           </div>
 
           <Link href={`/services?query=${encodeURIComponent(searchQuery)}`} className="w-full sm:w-auto">
-            <Button className="w-full sm:w-auto bg-[#34D399] hover:bg-[#2BB380] text-[#090E0C] font-display font-bold px-6 py-3.5 rounded-2xl shadow-lg flex items-center justify-center gap-2">
+            <button className="catalis-btn catalis-btn-primary w-full sm:w-auto px-6 py-3.5 text-xs font-display font-bold shadow-[0_0_20px_rgba(0,84,249,0.3)] flex items-center justify-center gap-2">
               <Zap size={16} />
               <span>Dispatch via AI</span>
-            </Button>
+            </button>
           </Link>
         </div>
       </div>
@@ -279,17 +288,17 @@ export default function CustomerConciergePage() {
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="font-display font-bold text-lg text-[#F2F7F4] flex items-center gap-2">
-              <ShieldCheck size={18} className="text-[#34D399]" />
+            <h2 className="font-display font-bold text-lg text-white flex items-center gap-2">
+              <ShieldCheck size={18} className="text-[#0054F9]" />
               <span>Top Rated Master Artisans in Your Metro</span>
             </h2>
-            <p className="font-body text-xs text-[#8EAAA0] mt-0.5">
+            <p className="font-body text-xs text-zinc-400 mt-0.5">
               100% NADRA verified with guaranteed warranty and emergency dispatch availability.
             </p>
           </div>
           <Link
             href="/dashboard/customer/providers"
-            className="text-xs font-code text-[#34D399] hover:underline flex items-center gap-1"
+            className="text-xs font-code text-[#0054F9] hover:underline flex items-center gap-1"
           >
             <span>View All Directory</span>
             <ChevronRight size={14} />
@@ -300,45 +309,45 @@ export default function CustomerConciergePage() {
           {FEATURED_ARTISANS.map((artisan) => (
             <div
               key={artisan.id}
-              className="p-5 rounded-3xl bg-[#111A15] border border-[#1C2C24] hover:border-[#34D399]/40 transition-all space-y-4 shadow-lg group"
+              className="p-5 rounded-[2rem] bg-[#111118] border border-white/8 hover:border-[#0054F9]/40 transition-all space-y-4 shadow-lg group"
             >
               <div className="flex items-start gap-3">
-                <div className="w-12 h-12 rounded-2xl bg-[#1C2C24] border border-[#2D3F35] text-[#34D399] flex items-center justify-center font-display font-bold text-lg shrink-0">
+                <div className="w-12 h-12 rounded-2xl bg-[#0054F9]/10 border border-[#0054F9]/30 text-[#0054F9] flex items-center justify-center font-display font-bold text-lg shrink-0">
                   {artisan.avatar}
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-1.5">
-                    <h3 className="font-display font-bold text-sm text-[#F2F7F4] truncate">
+                    <h3 className="font-display font-bold text-sm text-white truncate">
                       {artisan.name}
                     </h3>
-                    <ShieldCheck size={14} className="text-[#34D399] shrink-0" />
+                    <ShieldCheck size={14} className="text-[#0054F9] shrink-0" />
                   </div>
                   <p className="font-body text-xs text-[#D4A843] font-semibold truncate">
                     {artisan.trade}
                   </p>
-                  <p className="font-body text-[11px] text-[#8EAAA0] flex items-center gap-1 mt-0.5">
-                    <MapPin size={10} className="text-[#34D399]" />
+                  <p className="font-body text-[11px] text-zinc-400 flex items-center gap-1 mt-0.5">
+                    <MapPin size={10} className="text-[#0054F9]" />
                     {artisan.area}
                   </p>
                 </div>
               </div>
 
-              <div className="flex items-center justify-between pt-3 border-t border-[#1C2C24] text-xs">
+              <div className="flex items-center justify-between pt-3 border-t border-white/5 text-xs">
                 <div className="flex items-center gap-1 text-[#D4A843] font-code font-bold">
                   <Star size={13} fill="#D4A843" />
                   <span>{artisan.rating}</span>
-                  <span className="text-[#8EAAA0] font-normal">({artisan.reviewsCount})</span>
+                  <span className="text-zinc-500 font-normal">({artisan.reviewsCount})</span>
                 </div>
 
-                <span className="font-code font-bold text-[#F2F7F4]">
+                <span className="font-code font-bold text-white">
                   from PKR {artisan.startingPrice.toLocaleString()}
                 </span>
               </div>
 
-              <Link href="/dashboard/customer/providers">
-                <Button className="w-full bg-[#182820] hover:bg-[#34D399] text-[#34D399] hover:text-[#090E0C] font-display font-bold text-xs py-2 rounded-xl transition-all">
+              <Link href="/dashboard/customer/providers" className="block">
+                <button className="catalis-btn catalis-btn-secondary w-full py-2.5 text-xs font-display font-bold">
                   Book Artisan
-                </Button>
+                </button>
               </Link>
             </div>
           ))}

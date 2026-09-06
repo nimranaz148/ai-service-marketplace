@@ -22,17 +22,17 @@ export default function AdminSettingsPage() {
   return (
     <div className="space-y-6 pb-12 max-w-4xl">
       {/* Top Header */}
-      <div className="flex items-center justify-between pb-4 border-b border-[#1C2C24]">
+      <div className="flex items-center justify-between pb-4 border-b border-white/8">
         <div className="flex items-center gap-3">
           <Link
             href="/dashboard/admin"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#111C17] border border-[#20332B] text-xs font-semibold text-[#A3B8AF] hover:text-[#34D399] transition-colors"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#111118] border border-white/8 text-xs font-semibold text-zinc-400 hover:text-[#0054F9] transition-colors"
           >
             <ChevronLeft size={14} />
             <span>Admin Deck</span>
           </Link>
-          <span className="text-[#3A5247]">/</span>
-          <span className="font-display font-bold text-base text-[#F2F7F4] flex items-center gap-2">
+          <span className="text-zinc-600">/</span>
+          <span className="font-display font-bold text-base text-white flex items-center gap-2">
             <Settings size={18} className="text-[#38BDF8]" />
             <span>Platform Governance & Cluster Controls</span>
           </span>
@@ -40,7 +40,7 @@ export default function AdminSettingsPage() {
 
         <Button
           onClick={handleSave}
-          className="h-10 px-4 rounded-xl bg-[#34D399] hover:bg-[#2EB885] text-[#090E0C] font-display font-bold text-xs flex items-center gap-2 shadow-[0_4px_16px_rgba(52,211,153,0.3)] transition-all cursor-pointer"
+          className="h-10 px-4 rounded-xl bg-[#0054F9] hover:bg-[#2D40EA] text-white shadow-[0_0_20px_rgba(0,84,249,0.3)] font-display font-bold text-xs flex items-center gap-2 shadow-[0_4px_16px_rgba(52,211,153,0.3)] transition-all cursor-pointer"
         >
           <Save size={14} />
           <span>Save Settings</span>
@@ -49,17 +49,17 @@ export default function AdminSettingsPage() {
 
       <form onSubmit={handleSave} className="space-y-6">
         {/* 1. Metro Coverage Clusters */}
-        <div className="p-6 rounded-3xl bg-[#111C17] border border-[#20332B] space-y-4">
-          <div className="flex items-center justify-between pb-3 border-b border-[#1C2C24]">
+        <div className="p-6 rounded-3xl bg-[#111118] border border-white/8 space-y-4">
+          <div className="flex items-center justify-between pb-3 border-b border-white/8">
             <div>
-              <h3 className="font-display font-bold text-sm text-[#F2F7F4]">
+              <h3 className="font-display font-bold text-sm text-white">
                 Active Pakistani Metro Clusters
               </h3>
-              <p className="text-xs text-[#8EAAA0] mt-0.5">
+              <p className="text-xs text-zinc-400 mt-0.5">
                 Toggle dispatch availability across hyper-local metropolitan hubs.
               </p>
             </div>
-            <span className="font-code text-[10px] text-[#34D399] bg-[#162D23] px-2.5 py-0.5 rounded-full border border-[#2B493B]">
+            <span className="font-code text-[10px] text-[#34D399] bg-[#141420] px-2.5 py-0.5 rounded-full border border-white/10">
               3 Metros Online
             </span>
           </div>
@@ -75,8 +75,8 @@ export default function AdminSettingsPage() {
                 onClick={() => metro.setter(!metro.state)}
                 className={`p-4 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between ${
                   metro.state
-                    ? "bg-[#162D23] border-[#34D399]/60 shadow-[0_0_20px_rgba(52,211,153,0.1)]"
-                    : "bg-[#090E0C] border-[#1C2C24] opacity-50"
+                    ? "bg-[#141420] border-[#34D399]/60 shadow-[0_0_20px_rgba(52,211,153,0.1)]"
+                    : "bg-[#0A0A0F] border-white/8 opacity-50"
                 }`}
               >
                 <div className="flex items-center justify-between mb-2">
@@ -84,8 +84,8 @@ export default function AdminSettingsPage() {
                   <span className={`w-2 h-2 rounded-full ${metro.state ? "bg-[#34D399]" : "bg-[#EF4444]"}`} />
                 </div>
                 <div>
-                  <span className="font-display font-bold text-xs text-[#F2F7F4] block">{metro.name}</span>
-                  <span className="text-[10px] text-[#8EAAA0] block mt-0.5">
+                  <span className="font-display font-bold text-xs text-white block">{metro.name}</span>
+                  <span className="text-[10px] text-zinc-400 block mt-0.5">
                     {metro.state ? "High-Density Dispatch Active" : "Cluster Suspended"}
                   </span>
                 </div>
@@ -95,12 +95,12 @@ export default function AdminSettingsPage() {
         </div>
 
         {/* 2. Marketplace Economics */}
-        <div className="p-6 rounded-3xl bg-[#111C17] border border-[#20332B] space-y-4">
-          <div className="pb-3 border-b border-[#1C2C24]">
-            <h3 className="font-display font-bold text-sm text-[#F2F7F4]">
+        <div className="p-6 rounded-3xl bg-[#111118] border border-white/8 space-y-4">
+          <div className="pb-3 border-b border-white/8">
+            <h3 className="font-display font-bold text-sm text-white">
               Marketplace Commission & Escrow Gate
             </h3>
-            <p className="text-xs text-[#8EAAA0] mt-0.5">
+            <p className="text-xs text-zinc-400 mt-0.5">
               Set the platform cut retained per completed master artisan booking.
             </p>
           </div>
@@ -108,7 +108,7 @@ export default function AdminSettingsPage() {
           <div className="space-y-4 max-w-md">
             <div>
               <div className="flex items-center justify-between text-xs mb-2">
-                <span className="text-[#8EAAA0]">Platform Commission Rate:</span>
+                <span className="text-zinc-400">Platform Commission Rate:</span>
                 <span className="font-code font-bold text-sm text-[#34D399]">{commissionRate}%</span>
               </div>
               <input
@@ -117,9 +117,9 @@ export default function AdminSettingsPage() {
                 max="25"
                 value={commissionRate}
                 onChange={(e) => setCommissionRate(Number(e.target.value))}
-                className="w-full h-2 bg-[#090E0C] rounded-lg appearance-none cursor-pointer accent-[#34D399]"
+                className="w-full h-2 bg-[#0A0A0F] rounded-lg appearance-none cursor-pointer accent-[#34D399]"
               />
-              <div className="flex items-center justify-between text-[10px] font-code text-[#6B877B] mt-1">
+              <div className="flex items-center justify-between text-[10px] font-code text-zinc-400 mt-1">
                 <span>5% (Subsidized)</span>
                 <span>10% (Standard)</span>
                 <span>25% (Premium)</span>
@@ -128,8 +128,8 @@ export default function AdminSettingsPage() {
 
             <div className="pt-2 flex items-center justify-between">
               <div>
-                <span className="text-xs font-semibold text-[#F2F7F4] block">Post-Service Escrow Auto-Release</span>
-                <span className="text-[11px] text-[#8EAAA0] block">Release artisan payout only after customer OTP confirmation.</span>
+                <span className="text-xs font-semibold text-white block">Post-Service Escrow Auto-Release</span>
+                <span className="text-[11px] text-zinc-400 block">Release artisan payout only after customer OTP confirmation.</span>
               </div>
               <input
                 type="checkbox"
@@ -142,22 +142,22 @@ export default function AdminSettingsPage() {
         </div>
 
         {/* 3. Vapi RTC Voice Engine Settings */}
-        <div className="p-6 rounded-3xl bg-[#111C17] border border-[#20332B] space-y-4">
-          <div className="pb-3 border-b border-[#1C2C24]">
-            <h3 className="font-display font-bold text-sm text-[#F2F7F4] flex items-center gap-2">
+        <div className="p-6 rounded-3xl bg-[#111118] border border-white/8 space-y-4">
+          <div className="pb-3 border-b border-white/8">
+            <h3 className="font-display font-bold text-sm text-white flex items-center gap-2">
               <Radio size={15} className="text-[#34D399]" />
               <span>Acoustic Voice Engine (Vapi 16kHz)</span>
             </h3>
-            <p className="text-xs text-[#8EAAA0] mt-0.5">
+            <p className="text-xs text-zinc-400 mt-0.5">
               Control Roman Urdu / English dialect translation and speech synthesis pipelines.
             </p>
           </div>
 
           <div className="space-y-3 max-w-md text-xs">
-            <div className="flex items-center justify-between p-3 rounded-2xl bg-[#090E0C] border border-[#1C2C24]">
+            <div className="flex items-center justify-between p-3 rounded-2xl bg-[#0A0A0F] border border-white/8">
               <div>
-                <span className="font-semibold text-[#F2F7F4] block">Devanagari $\to$ Roman Urdu Normalizer</span>
-                <span className="text-[10px] text-[#6B877B] block">Converts Hindi script to legible Roman Urdu in real time</span>
+                <span className="font-semibold text-white block">Devanagari $\to$ Roman Urdu Normalizer</span>
+                <span className="text-[10px] text-zinc-400 block">Converts Hindi script to legible Roman Urdu in real time</span>
               </div>
               <input
                 type="checkbox"
@@ -167,7 +167,7 @@ export default function AdminSettingsPage() {
               />
             </div>
 
-            <div className="p-3 rounded-2xl bg-[#090E0C] border border-[#1C2C24] space-y-1 text-[11px] font-code text-[#8EAAA0]">
+            <div className="p-3 rounded-2xl bg-[#0A0A0F] border border-white/8 space-y-1 text-[11px] font-code text-zinc-400">
               <div className="flex justify-between">
                 <span>Webhook Health:</span>
                 <span className="text-[#34D399]">200 OK (Reverse Proxy Active)</span>

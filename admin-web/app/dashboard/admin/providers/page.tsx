@@ -126,17 +126,17 @@ export default function AdminProvidersPage() {
   return (
     <div className="space-y-6 pb-12">
       {/* Top Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#1C2C24]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/8">
         <div className="flex items-center gap-3">
           <Link
             href="/dashboard/admin"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#111C17] border border-[#20332B] text-xs font-semibold text-[#A3B8AF] hover:text-[#34D399] transition-colors"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#111118] border border-white/8 text-xs font-semibold text-zinc-400 hover:text-[#0054F9] transition-colors"
           >
             <ChevronLeft size={14} />
             <span>Admin Deck</span>
           </Link>
-          <span className="text-[#3A5247]">/</span>
-          <span className="font-display font-bold text-base text-[#F2F7F4] flex items-center gap-2">
+          <span className="text-zinc-600">/</span>
+          <span className="font-display font-bold text-base text-white flex items-center gap-2">
             <Wrench size={18} className="text-[#D4A843]" />
             <span>Master Artisans Supply Roster</span>
           </span>
@@ -144,7 +144,7 @@ export default function AdminProvidersPage() {
 
         <Button
           onClick={() => setModalOpen(true)}
-          className="h-10 px-4 rounded-xl bg-[#34D399] hover:bg-[#2EB885] text-[#090E0C] font-display font-bold text-xs flex items-center gap-2 shadow-[0_4px_16px_rgba(52,211,153,0.3)] transition-all cursor-pointer active:scale-95"
+          className="h-10 px-4 rounded-xl bg-[#0054F9] hover:bg-[#2D40EA] text-white shadow-[0_0_20px_rgba(0,84,249,0.3)] font-display font-bold text-xs flex items-center gap-2 shadow-[0_4px_16px_rgba(52,211,153,0.3)] transition-all cursor-pointer active:scale-95"
         >
           <Plus size={15} />
           <span>Onboard New Artisan</span>
@@ -152,18 +152,18 @@ export default function AdminProvidersPage() {
       </div>
 
       {/* Filter Toolbar */}
-      <div className="rounded-2xl bg-[#111C17] border border-[#20332B] p-4 space-y-3 shadow-[0_8px_24px_rgba(0,0,0,0.3)]">
+      <div className="rounded-2xl bg-[#111118] border border-white/8 p-4 space-y-3 shadow-[0_8px_24px_rgba(0,0,0,0.3)]">
         <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
           {/* City Switcher */}
-          <div className="flex items-center gap-1.5 p-1 rounded-xl bg-[#0B1310] border border-[#1F3329] shrink-0">
+          <div className="flex items-center gap-1.5 p-1 rounded-xl bg-[#111118] border border-white/10 shrink-0">
             {["All", "Islamabad", "Karachi", "Lahore"].map((city) => (
               <button
                 key={city}
                 onClick={() => setSelectedCity(city)}
                 className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
                   selectedCity === city
-                    ? "bg-[#162D23] text-[#34D399] border border-[#2B493B] shadow-sm"
-                    : "text-[#8EAAA0] hover:text-[#F2F7F4]"
+                    ? "bg-[#141420] text-[#34D399] border border-white/10 shadow-sm"
+                    : "text-zinc-400 hover:text-white"
                 }`}
               >
                 {city}
@@ -173,13 +173,13 @@ export default function AdminProvidersPage() {
 
           {/* Search Box */}
           <div className="relative flex-1">
-            <Search className="h-4 w-4 text-[#5E796F] absolute left-3.5 top-3" />
+            <Search className="h-4 w-4 text-zinc-500 absolute left-3.5 top-3" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search by artisan name, trade specialty, or sector..."
-              className="w-full h-10 pl-10 pr-4 rounded-xl bg-[#0B1310] border border-[#1F3329] focus:outline-none focus:border-[#34D399] text-xs text-[#F2F7F4] placeholder-[#5E796F] font-medium transition-colors"
+              className="w-full h-10 pl-10 pr-4 rounded-xl bg-[#111118] border border-white/10 focus:outline-none focus:border-[#0054F9] text-xs text-white placeholder-[#5E796F] font-medium transition-colors"
             />
           </div>
 
@@ -191,8 +191,8 @@ export default function AdminProvidersPage() {
                 onClick={() => setCategoryFilter(cat)}
                 className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all border ${
                   categoryFilter === cat
-                    ? "bg-[#162D23] text-[#34D399] border-[#2B493B] shadow-xs"
-                    : "bg-[#0B1310] text-[#8EAAA0] border-[#1F3329] hover:bg-[#121E18] hover:text-[#F2F7F4]"
+                    ? "bg-[#141420] text-[#34D399] border-white/10 shadow-xs"
+                    : "bg-[#111118] text-zinc-400 border-white/10 hover:bg-[#141420] hover:text-white"
                 }`}
               >
                 {cat}
@@ -204,31 +204,31 @@ export default function AdminProvidersPage() {
 
       {/* Grid of Providers */}
       {loading ? (
-        <div className="p-12 text-center bg-[#111C17] border border-[#20332B] rounded-3xl">
+        <div className="p-12 text-center bg-[#111118] border border-white/8 rounded-3xl">
           <div className="h-6 w-6 border-2 border-[#34D399] border-t-transparent rounded-full animate-spin mx-auto" />
-          <p className="text-xs text-[#8EAAA0] mt-2">Loading vetted master artisans...</p>
+          <p className="text-xs text-zinc-400 mt-2">Loading vetted master artisans...</p>
         </div>
       ) : filteredProviders.length === 0 ? (
-        <div className="p-12 text-center bg-[#111C17] border border-dashed border-[#20332B] rounded-3xl">
-          <Users className="h-8 w-8 text-[#5E796F] mx-auto mb-2 opacity-60" />
-          <h4 className="text-sm font-bold text-[#F2F7F4]">No matching artisans found</h4>
-          <p className="text-xs text-[#8EAAA0] mt-1">Try selecting another metro or trade filter.</p>
+        <div className="p-12 text-center bg-[#111118] border border-dashed border-white/8 rounded-3xl">
+          <Users className="h-8 w-8 text-zinc-500 mx-auto mb-2 opacity-60" />
+          <h4 className="text-sm font-bold text-white">No matching artisans found</h4>
+          <p className="text-xs text-zinc-400 mt-1">Try selecting another metro or trade filter.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filteredProviders.map((p) => (
             <div
               key={p.id}
-              className="p-5 rounded-2xl bg-[#111C17] border border-[#20332B] hover:border-[#34D399]/40 transition-all flex flex-col justify-between shadow-[0_8px_24px_rgba(0,0,0,0.25)] group"
+              className="p-5 rounded-2xl bg-[#111118] border border-white/8 hover:border-[#34D399]/40 transition-all flex flex-col justify-between shadow-[0_8px_24px_rgba(0,0,0,0.25)] group"
             >
               <div>
                 <div className="flex items-start justify-between gap-3 mb-3">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-[#162D23] border border-[#2B493B] text-[#34D399] flex items-center justify-center font-display font-bold text-sm shrink-0">
+                    <div className="w-10 h-10 rounded-xl bg-[#141420] border border-white/10 text-[#34D399] flex items-center justify-center font-display font-bold text-sm shrink-0">
                       {p.name.substring(0, 2).toUpperCase()}
                     </div>
                     <div>
-                      <h3 className="font-display font-bold text-sm text-[#F2F7F4]">
+                      <h3 className="font-display font-bold text-sm text-white">
                         {p.name}
                       </h3>
                       <span className="font-code text-[11px] text-[#D4A843] block">
@@ -237,19 +237,19 @@ export default function AdminProvidersPage() {
                     </div>
                   </div>
 
-                  <span className="flex items-center gap-1 font-display font-bold text-xs text-[#34D399] bg-[#162D23] px-2 py-0.5 rounded-lg border border-[#2B493B]">
+                  <span className="flex items-center gap-1 font-display font-bold text-xs text-[#34D399] bg-[#141420] px-2 py-0.5 rounded-lg border border-white/10">
                     <Star size={11} fill="currentColor" />
                     <span>{p.rating.toFixed(2)}</span>
                   </span>
                 </div>
 
-                <div className="space-y-1.5 text-xs text-[#8EAAA0] pt-2 border-t border-[#1C2E25]">
+                <div className="space-y-1.5 text-xs text-zinc-400 pt-2 border-t border-[#1C2E25]">
                   <div className="flex items-center gap-2">
                     <MapPin size={13} className="text-[#34D399] shrink-0" />
-                    <span className="truncate text-[#F2F7F4]">{p.area}</span>
+                    <span className="truncate text-white">{p.area}</span>
                   </div>
                   <div className="flex items-center justify-between text-[11px] font-code pt-1">
-                    <span>Rate: <strong className="text-[#F2F7F4]">{p.price_range}</strong></span>
+                    <span>Rate: <strong className="text-white">{p.price_range}</strong></span>
                     <span>Jobs: <strong className="text-[#34D399]">{p.jobs_completed}</strong></span>
                   </div>
                 </div>
@@ -257,7 +257,7 @@ export default function AdminProvidersPage() {
 
               {/* Status & Verification Badges */}
               <div className="pt-3 mt-3 border-t border-[#1C2E25] flex items-center justify-between">
-                <span className="inline-flex items-center gap-1 text-[10px] font-code text-[#34D399] bg-[#132A1F] px-2 py-0.5 rounded border border-[#214735]">
+                <span className="inline-flex items-center gap-1 text-[10px] font-code text-[#34D399] bg-[#132A1F] px-2 py-0.5 rounded border border-white/10">
                   <ShieldCheck size={11} />
                   <span>NADRA Verified</span>
                 </span>
@@ -266,7 +266,7 @@ export default function AdminProvidersPage() {
                   onClick={() => handleToggleActive(p.id)}
                   className={`text-[10px] font-code px-2 py-0.5 rounded border font-semibold cursor-pointer transition-colors ${
                     p.is_active
-                      ? "bg-[#162D23] text-[#34D399] border-[#2B493B] hover:bg-[#1E3B2E]"
+                      ? "bg-[#141420] text-[#34D399] border-white/10 hover:bg-[#1E3B2E]"
                       : "bg-[#291316] text-[#EF4444] border-[#471E23] hover:bg-[#381B20]"
                   }`}
                 >
@@ -281,20 +281,20 @@ export default function AdminProvidersPage() {
       {/* Add Artisan Modal */}
       {modalOpen && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="w-full max-w-md bg-[#0D1612] border border-[#22382E] rounded-3xl p-6 shadow-2xl animate-in zoom-in-95 duration-200">
-            <div className="flex items-center justify-between pb-3 mb-4 border-b border-[#1C2C24]">
-              <h3 className="font-display font-bold text-base text-[#F2F7F4] flex items-center gap-2">
+          <div className="w-full max-w-md bg-[#0D0D14] border border-[#22382E] rounded-3xl p-6 shadow-2xl animate-in zoom-in-95 duration-200">
+            <div className="flex items-center justify-between pb-3 mb-4 border-b border-white/8">
+              <h3 className="font-display font-bold text-base text-white flex items-center gap-2">
                 <Wrench size={16} className="text-[#D4A843]" />
                 <span>Onboard New Master Artisan</span>
               </h3>
-              <button onClick={() => setModalOpen(false)} className="text-[#8EAAA0] hover:text-[#F2F7F4] p-1">
+              <button onClick={() => setModalOpen(false)} className="text-zinc-400 hover:text-white p-1">
                 <X size={16} />
               </button>
             </div>
 
             <form onSubmit={handleCreateProvider} className="space-y-3.5">
               <div>
-                <label className="block text-[11px] font-semibold text-[#8EAAA0] uppercase tracking-wider mb-1 font-body">
+                <label className="block text-[11px] font-semibold text-zinc-400 uppercase tracking-wider mb-1 font-body">
                   Artisan Name:
                 </label>
                 <input
@@ -303,18 +303,18 @@ export default function AdminProvidersPage() {
                   onChange={(e) => setNewProv({ ...newProv, name: e.target.value })}
                   required
                   placeholder="e.g. Master Rashid Khan"
-                  className="w-full h-10 px-3.5 rounded-xl bg-[#090E0C] border border-[#22362C] focus:border-[#34D399] text-xs text-[#F2F7F4] outline-none"
+                  className="w-full h-10 px-3.5 rounded-xl bg-[#0A0A0F] border border-white/10 focus:border-[#0054F9] text-xs text-white outline-none"
                 />
               </div>
 
               <div>
-                <label className="block text-[11px] font-semibold text-[#8EAAA0] uppercase tracking-wider mb-1 font-body">
+                <label className="block text-[11px] font-semibold text-zinc-400 uppercase tracking-wider mb-1 font-body">
                   Primary Trade Category:
                 </label>
                 <select
                   value={newProv.category}
                   onChange={(e) => setNewProv({ ...newProv, category: e.target.value })}
-                  className="w-full h-10 px-3.5 rounded-xl bg-[#090E0C] border border-[#22362C] focus:border-[#34D399] text-xs text-[#F2F7F4] outline-none cursor-pointer"
+                  className="w-full h-10 px-3.5 rounded-xl bg-[#0A0A0F] border border-white/10 focus:border-[#0054F9] text-xs text-white outline-none cursor-pointer"
                 >
                   <option value="AC Technician">AC Technician & HVAC</option>
                   <option value="Plumber">Hydro & Sanitary Engineering</option>
@@ -326,13 +326,13 @@ export default function AdminProvidersPage() {
               </div>
 
               <div>
-                <label className="block text-[11px] font-semibold text-[#8EAAA0] uppercase tracking-wider mb-1 font-body">
+                <label className="block text-[11px] font-semibold text-zinc-400 uppercase tracking-wider mb-1 font-body">
                   Metro Sector & Base Area:
                 </label>
                 <select
                   value={newProv.area}
                   onChange={(e) => setNewProv({ ...newProv, area: e.target.value })}
-                  className="w-full h-10 px-3.5 rounded-xl bg-[#090E0C] border border-[#22362C] focus:border-[#34D399] text-xs text-[#F2F7F4] outline-none cursor-pointer"
+                  className="w-full h-10 px-3.5 rounded-xl bg-[#0A0A0F] border border-white/10 focus:border-[#0054F9] text-xs text-white outline-none cursor-pointer"
                 >
                   <option value="Sector G-13, Islamabad">Sector G-13, Islamabad</option>
                   <option value="Sector F-10, Islamabad">Sector F-10, Islamabad</option>
@@ -344,7 +344,7 @@ export default function AdminProvidersPage() {
               </div>
 
               <div>
-                <label className="block text-[11px] font-semibold text-[#8EAAA0] uppercase tracking-wider mb-1 font-body">
+                <label className="block text-[11px] font-semibold text-zinc-400 uppercase tracking-wider mb-1 font-body">
                   Hourly / Base Rate:
                 </label>
                 <input
@@ -352,21 +352,21 @@ export default function AdminProvidersPage() {
                   value={newProv.price_range}
                   onChange={(e) => setNewProv({ ...newProv, price_range: e.target.value })}
                   placeholder="PKR 2,500+"
-                  className="w-full h-10 px-3.5 rounded-xl bg-[#090E0C] border border-[#22362C] focus:border-[#34D399] text-xs text-[#F2F7F4] outline-none"
+                  className="w-full h-10 px-3.5 rounded-xl bg-[#0A0A0F] border border-white/10 focus:border-[#0054F9] text-xs text-white outline-none"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-[#1C2C24]">
+              <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-white/8">
                 <button
                   type="button"
                   onClick={() => setModalOpen(false)}
-                  className="px-4 py-2 rounded-xl bg-[#14221B] text-[#8EAAA0] hover:text-[#F2F7F4] text-xs font-semibold"
+                  className="px-4 py-2 rounded-xl bg-[#141420] text-zinc-400 hover:text-white text-xs font-semibold"
                 >
                   Cancel
                 </button>
                 <Button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-[#34D399] hover:bg-[#2EB885] text-[#090E0C] font-display font-bold text-xs"
+                  className="px-5 py-2 rounded-xl bg-[#0054F9] hover:bg-[#2D40EA] text-white shadow-[0_0_20px_rgba(0,84,249,0.3)] font-display font-bold text-xs"
                 >
                   Save to Roster
                 </Button>

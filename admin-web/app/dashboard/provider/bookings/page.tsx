@@ -93,17 +93,17 @@ export default function ProviderBookingsPage() {
   return (
     <div className="space-y-6 pb-12">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#1C2C24]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/8">
         <div className="flex items-center gap-3">
           <Link
             href="/dashboard/provider"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#111C17] border border-[#20332B] text-xs font-semibold text-[#A3B8AF] hover:text-[#D4A843] transition-colors"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#111118] border border-white/8 text-xs font-semibold text-zinc-400 hover:text-[#D4A843] transition-colors"
           >
             <ChevronLeft size={14} />
             <span>Artisan Deck</span>
           </Link>
-          <span className="text-[#3A5247]">/</span>
-          <span className="font-display font-bold text-base text-[#F2F7F4] flex items-center gap-2">
+          <span className="text-zinc-600">/</span>
+          <span className="font-display font-bold text-base text-white flex items-center gap-2">
             <CalendarCheck size={18} className="text-[#D4A843]" />
             <span>Assigned Customer Bookings Queue</span>
           </span>
@@ -119,45 +119,45 @@ export default function ProviderBookingsPage() {
         {bookings.map((booking) => (
           <div
             key={booking.id}
-            className="p-6 rounded-3xl bg-[#111C17] border border-[#20332B] hover:border-[#D4A843]/40 transition-all shadow-[0_16px_40px_rgba(0,0,0,0.3)] space-y-4"
+            className="p-6 rounded-3xl bg-[#111118] border border-white/8 hover:border-[#D4A843]/40 transition-all shadow-[0_16px_40px_rgba(0,0,0,0.3)] space-y-4"
           >
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#1C2E25]">
               <div className="flex items-center gap-3">
-                <span className="px-3 py-1 rounded-xl bg-[#162D23] border border-[#2B493B] text-[#34D399] font-code font-bold text-xs">
+                <span className="px-3 py-1 rounded-xl bg-[#141420] border border-white/10 text-[#34D399] font-code font-bold text-xs">
                   {booking.token}
                 </span>
-                <span className="font-display font-bold text-base text-[#F2F7F4]">
+                <span className="font-display font-bold text-base text-white">
                   {booking.customerName}
                 </span>
-                <span className="text-xs text-[#8EAAA0]">({booking.serviceRequested})</span>
+                <span className="text-xs text-zinc-400">({booking.serviceRequested})</span>
               </div>
 
               <div className="flex items-center gap-2">
                 <span className="font-display font-bold text-sm text-[#34D399]">
                   {booking.estimatedEarnings}
                 </span>
-                <span className="text-[10px] text-[#6B877B] uppercase font-code">Escrow Lock</span>
+                <span className="text-[10px] text-zinc-400 uppercase font-code">Escrow Lock</span>
               </div>
             </div>
 
             {/* Middle Info Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
               <div className="space-y-2">
-                <div className="flex items-start gap-2 text-[#D1E0D9]">
+                <div className="flex items-start gap-2 text-zinc-300">
                   <MapPin size={14} className="text-[#34D399] shrink-0 mt-0.5" />
                   <span>{booking.address}</span>
                 </div>
-                <div className="flex items-center gap-2 text-[#8EAAA0] font-code">
+                <div className="flex items-center gap-2 text-zinc-400 font-code">
                   <Phone size={13} className="text-[#D4A843]" />
-                  <span>Customer Phone: <strong className="text-[#F2F7F4]">{booking.customerPhone}</strong></span>
+                  <span>Customer Phone: <strong className="text-white">{booking.customerPhone}</strong></span>
                 </div>
               </div>
 
-              <div className="space-y-2 p-3 rounded-2xl bg-[#0B1310] border border-[#1F3329]">
-                <span className="font-code text-[10px] uppercase font-bold text-[#6B877B] block">
+              <div className="space-y-2 p-3 rounded-2xl bg-[#111118] border border-white/10">
+                <span className="font-code text-[10px] uppercase font-bold text-zinc-400 block">
                   Reported Technical Issue:
                 </span>
-                <p className="text-xs text-[#F2F7F4] italic leading-relaxed">
+                <p className="text-xs text-white italic leading-relaxed">
                   &ldquo;{booking.reportedIssue}&rdquo;
                 </p>
               </div>
@@ -166,16 +166,16 @@ export default function ProviderBookingsPage() {
             {/* Lifecycle Status & Controls */}
             <div className="pt-3 border-t border-[#1C2E25] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div className="flex items-center gap-2">
-                <span className="font-code text-[11px] text-[#8EAAA0]">Job Status:</span>
+                <span className="font-code text-[11px] text-zinc-400">Job Status:</span>
                 <span
                   className={`px-2.5 py-0.5 rounded-full border text-[10px] font-code font-bold uppercase ${
                     booking.status === "completed"
-                      ? "bg-[#132A1F] text-[#34D399] border-[#214735]"
+                      ? "bg-[#132A1F] text-[#34D399] border-white/10"
                       : booking.status === "arrived"
                       ? "bg-[#292212] text-[#D4A843] border-[#473B1F]"
                       : booking.status === "en_route"
                       ? "bg-[#0E202B] text-[#38BDF8] border-[#18394D]"
-                      : "bg-[#111C17] text-[#8EAAA0] border-[#20332B]"
+                      : "bg-[#111118] text-zinc-400 border-white/8"
                   }`}
                 >
                   ● {booking.status.replace("_", " ")}
@@ -207,7 +207,7 @@ export default function ProviderBookingsPage() {
                 {booking.status === "arrived" && (
                   <Button
                     onClick={() => handleUpdateStatus(booking.id, "completed")}
-                    className="h-9 px-4 rounded-xl bg-[#34D399] hover:bg-[#2EB885] text-[#090E0C] font-display font-bold text-xs flex items-center gap-1.5 shadow-[0_4px_16px_rgba(52,211,153,0.3)] cursor-pointer"
+                    className="h-9 px-4 rounded-xl bg-[#0054F9] hover:bg-[#2D40EA] text-white shadow-[0_0_20px_rgba(0,84,249,0.3)] font-display font-bold text-xs flex items-center gap-1.5 shadow-[0_4px_16px_rgba(52,211,153,0.3)] cursor-pointer"
                   >
                     <CheckCircle2 size={14} />
                     <span>Verify Token & Complete Job</span>
@@ -215,7 +215,7 @@ export default function ProviderBookingsPage() {
                 )}
 
                 {booking.status === "completed" && (
-                  <span className="inline-flex items-center gap-1.5 text-xs text-[#34D399] font-code font-semibold px-3 py-1 rounded-xl bg-[#132A1F] border border-[#214735]">
+                  <span className="inline-flex items-center gap-1.5 text-xs text-[#34D399] font-code font-semibold px-3 py-1 rounded-xl bg-[#132A1F] border border-white/10">
                     <CheckCircle2 size={13} />
                     <span>Payout Released via Escrow</span>
                   </span>

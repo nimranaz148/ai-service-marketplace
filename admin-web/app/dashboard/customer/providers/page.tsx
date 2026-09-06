@@ -212,22 +212,22 @@ export default function CustomerProvidersDirectoryPage() {
   return (
     <div className="space-y-8 pb-16">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#1C2C24] pb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/8 pb-6">
         <div>
           <div className="flex items-center gap-2 mb-2">
             <Link
               href="/dashboard/customer"
-              className="inline-flex items-center gap-1 text-xs font-code text-[#8EAAA0] hover:text-[#34D399] transition-colors"
+              className="inline-flex items-center gap-1 text-xs font-code text-zinc-400 hover:text-[#0054F9] transition-colors"
             >
               <ChevronLeft size={14} /> Back to Concierge
             </Link>
             <span className="text-[#3D5245]">/</span>
             <span className="text-xs font-code text-[#34D399] uppercase tracking-wider">Directory</span>
           </div>
-          <h1 className="font-display font-extrabold text-2xl sm:text-3xl text-[#F2F7F4] tracking-tight">
+          <h1 className="font-display font-extrabold text-2xl sm:text-3xl text-white tracking-tight">
             Verified Master Artisans Directory
           </h1>
-          <p className="font-body text-xs sm:text-sm text-[#A3B8AF] mt-1">
+          <p className="font-body text-xs sm:text-sm text-zinc-400 mt-1">
             Browse NADRA-verified service professionals across Islamabad, Karachi, and Lahore. Book directly with transparent pricing.
           </p>
         </div>
@@ -242,7 +242,7 @@ export default function CustomerProvidersDirectoryPage() {
               placeholder="Search by artisan name, trade, or sector..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full bg-[#111A15] border border-[#1C2C24] rounded-2xl px-4 py-3 pl-11 text-sm text-[#F2F7F4] placeholder-[#5A7367] focus:outline-none focus:border-[#34D399]"
+              className="w-full bg-[#111118] border border-white/8 rounded-2xl px-4 py-3 pl-11 text-sm text-white placeholder-[#5A7367] focus:outline-none focus:border-[#0054F9]"
             />
             <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#5A7367]" />
           </div>
@@ -256,7 +256,7 @@ export default function CustomerProvidersDirectoryPage() {
                 className={`px-3.5 py-2 rounded-xl text-xs font-code font-bold uppercase transition-all whitespace-nowrap cursor-pointer ${
                   selectedCity === city
                     ? "bg-[#34D399] text-[#090E0C] shadow-[0_0_15px_rgba(52,211,153,0.3)]"
-                    : "bg-[#111A15] border border-[#1C2C24] text-[#8EAAA0] hover:text-[#F2F7F4]"
+                    : "bg-[#111118] border border-white/8 text-zinc-400 hover:text-white"
                 }`}
               >
                 {city === "all" ? "All Metros" : city}
@@ -280,8 +280,8 @@ export default function CustomerProvidersDirectoryPage() {
               onClick={() => setSelectedCategory(cat.key)}
               className={`px-3 py-1.5 rounded-lg text-xs font-body font-semibold transition-all whitespace-nowrap cursor-pointer ${
                 selectedCategory === cat.key
-                  ? "bg-[#162D23] border border-[#34D399] text-[#34D399]"
-                  : "bg-[#0B120E] border border-[#1C2C24] text-[#8EAAA0] hover:text-[#F2F7F4]"
+                  ? "bg-[#141420] border border-[#34D399] text-[#34D399]"
+                  : "bg-[#0A0A0F] border border-white/8 text-zinc-400 hover:text-white"
               }`}
             >
               {cat.label}
@@ -293,14 +293,14 @@ export default function CustomerProvidersDirectoryPage() {
       {/* Artisans Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredArtisans.length === 0 ? (
-          <div className="col-span-full p-12 text-center rounded-3xl bg-[#111A15] border border-[#1C2C24]">
-            <p className="text-sm text-[#8EAAA0]">No master artisans matched your current filter criteria.</p>
+          <div className="col-span-full p-12 text-center rounded-3xl bg-[#111118] border border-white/8">
+            <p className="text-sm text-zinc-400">No master artisans matched your current filter criteria.</p>
           </div>
         ) : (
           filteredArtisans.map((artisan) => (
             <div
               key={artisan.id}
-              className="rounded-3xl bg-[#111A15] border border-[#1C2C24] hover:border-[#34D399]/40 p-6 flex flex-col justify-between space-y-5 transition-all shadow-lg group relative overflow-hidden"
+              className="rounded-3xl bg-[#111118] border border-white/8 hover:border-[#34D399]/40 p-6 flex flex-col justify-between space-y-5 transition-all shadow-lg group relative overflow-hidden"
             >
               <div className="space-y-4">
                 {/* Header Profile */}
@@ -310,7 +310,7 @@ export default function CustomerProvidersDirectoryPage() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-1.5">
-                      <h3 className="font-display font-bold text-base text-[#F2F7F4] truncate">
+                      <h3 className="font-display font-bold text-base text-white truncate">
                         {artisan.name}
                       </h3>
                       <ShieldCheck size={16} className="text-[#34D399] shrink-0" />
@@ -318,7 +318,7 @@ export default function CustomerProvidersDirectoryPage() {
                     <p className="font-body text-xs text-[#D4A843] font-semibold truncate mt-0.5">
                       {artisan.trade}
                     </p>
-                    <p className="font-body text-[11px] text-[#8EAAA0] flex items-center gap-1 mt-1 truncate">
+                    <p className="font-body text-[11px] text-zinc-400 flex items-center gap-1 mt-1 truncate">
                       <MapPin size={11} className="text-[#34D399]" />
                       {artisan.area}
                     </p>
@@ -326,34 +326,34 @@ export default function CustomerProvidersDirectoryPage() {
                 </div>
 
                 {/* Rating & Stats Strip */}
-                <div className="grid grid-cols-3 gap-2 py-2.5 px-3 rounded-xl bg-[#0B120E] border border-[#1C2C24] text-center">
+                <div className="grid grid-cols-3 gap-2 py-2.5 px-3 rounded-xl bg-[#0A0A0F] border border-white/8 text-center">
                   <div>
                     <div className="flex items-center justify-center gap-1 text-[#D4A843] font-display font-bold text-xs">
                       <Star size={12} fill="#D4A843" />
                       <span>{artisan.rating}</span>
                     </div>
-                    <div className="text-[9px] font-code text-[#8EAAA0]">{artisan.reviewsCount} Reviews</div>
+                    <div className="text-[9px] font-code text-zinc-400">{artisan.reviewsCount} Reviews</div>
                   </div>
-                  <div className="border-x border-[#1C2C24]">
+                  <div className="border-x border-white/8">
                     <div className="font-display font-bold text-xs text-[#34D399]">{artisan.completedJobs}</div>
-                    <div className="text-[9px] font-code text-[#8EAAA0]">Jobs Done</div>
+                    <div className="text-[9px] font-code text-zinc-400">Jobs Done</div>
                   </div>
                   <div>
-                    <div className="font-display font-bold text-xs text-[#F2F7F4]">{artisan.responseTime}</div>
-                    <div className="text-[9px] font-code text-[#8EAAA0]">Arrival ETA</div>
+                    <div className="font-display font-bold text-xs text-white">{artisan.responseTime}</div>
+                    <div className="text-[9px] font-code text-zinc-400">Arrival ETA</div>
                   </div>
                 </div>
 
                 {/* Services List Preview */}
                 <div className="space-y-1.5">
-                  <div className="text-[10px] font-code uppercase text-[#8EAAA0] font-bold">
+                  <div className="text-[10px] font-code uppercase text-zinc-400 font-bold">
                     Featured Services
                   </div>
                   <div className="space-y-1">
                     {artisan.services.slice(0, 2).map((srv, sIdx) => (
                       <div
                         key={sIdx}
-                        className="flex items-center justify-between text-xs py-1 px-2.5 rounded-lg bg-[#16251E] text-[#A3B8AF]"
+                        className="flex items-center justify-between text-xs py-1 px-2.5 rounded-lg bg-[#16251E] text-zinc-400"
                       >
                         <span className="truncate pr-2">{srv.title}</span>
                         <span className="font-code font-bold text-[#D4A843] shrink-0">
@@ -366,9 +366,9 @@ export default function CustomerProvidersDirectoryPage() {
               </div>
 
               {/* Bottom CTA */}
-              <div className="pt-4 border-t border-[#1C2C24] flex items-center justify-between">
+              <div className="pt-4 border-t border-white/8 flex items-center justify-between">
                 <div>
-                  <span className="text-[10px] font-code text-[#8EAAA0] uppercase block">Starting</span>
+                  <span className="text-[10px] font-code text-zinc-400 uppercase block">Starting</span>
                   <span className="font-display font-bold text-sm text-[#34D399]">
                     PKR {artisan.startingPrice.toLocaleString()}
                   </span>
@@ -389,14 +389,14 @@ export default function CustomerProvidersDirectoryPage() {
       {/* BOOKING MODAL */}
       {selectedArtisan && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#111A15] border border-[#21352A] rounded-3xl max-w-lg w-full p-6 sm:p-8 space-y-6 shadow-2xl relative">
-            <div className="flex items-center justify-between border-b border-[#1C2C24] pb-4">
+          <div className="bg-[#111118] border border-[#21352A] rounded-3xl max-w-lg w-full p-6 sm:p-8 space-y-6 shadow-2xl relative">
+            <div className="flex items-center justify-between border-b border-white/8 pb-4">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-[#292212] border border-[#473B1F] text-[#D4A843] flex items-center justify-center font-display font-black text-sm">
                   {selectedArtisan.avatar}
                 </div>
                 <div>
-                  <h2 className="font-display font-bold text-lg text-[#F2F7F4]">
+                  <h2 className="font-display font-bold text-lg text-white">
                     Book {selectedArtisan.name}
                   </h2>
                   <p className="text-xs text-[#D4A843] font-semibold">{selectedArtisan.trade}</p>
@@ -405,7 +405,7 @@ export default function CustomerProvidersDirectoryPage() {
 
               <button
                 onClick={() => setSelectedArtisan(null)}
-                className="text-[#8EAAA0] hover:text-[#F2F7F4] font-code text-sm"
+                className="text-zinc-400 hover:text-white font-code text-sm"
               >
                 ✕
               </button>
@@ -416,19 +416,19 @@ export default function CustomerProvidersDirectoryPage() {
                 <div className="w-16 h-16 rounded-full bg-[#132A1F] border-2 border-[#34D399] text-[#34D399] flex items-center justify-center mx-auto shadow-[0_0_30px_rgba(52,211,153,0.3)]">
                   <CheckCircle2 size={32} />
                 </div>
-                <h3 className="font-display font-black text-xl text-[#F2F7F4]">
+                <h3 className="font-display font-black text-xl text-white">
                   Appointment Dispatched!
                 </h3>
-                <p className="font-body text-xs text-[#8EAAA0] max-w-xs mx-auto">
+                <p className="font-body text-xs text-zinc-400 max-w-xs mx-auto">
                   {selectedArtisan.name} has been notified and scheduled for your appointment.
                 </p>
 
-                <div className="p-4 rounded-2xl bg-[#0C120F] border border-[#1C2C24] max-w-xs mx-auto space-y-2">
-                  <span className="text-[10px] font-code uppercase text-[#8EAAA0] block">Your Security Token</span>
+                <div className="p-4 rounded-2xl bg-[#0C120F] border border-white/8 max-w-xs mx-auto space-y-2">
+                  <span className="text-[10px] font-code uppercase text-zinc-400 block">Your Security Token</span>
                   <div className="font-code font-black text-2xl text-[#34D399] tracking-widest">
                     {generatedToken}
                   </div>
-                  <p className="text-[10px] text-[#A3B8AF]">
+                  <p className="text-[10px] text-zinc-400">
                     Show this 4-digit code to the artisan when the service is completed.
                   </p>
                 </div>
@@ -444,7 +444,7 @@ export default function CustomerProvidersDirectoryPage() {
             ) : (
               <form onSubmit={handleConfirmBooking} className="space-y-4">
                 <div>
-                  <label className="block text-xs font-code uppercase text-[#8EAAA0] mb-2">
+                  <label className="block text-xs font-code uppercase text-zinc-400 mb-2">
                     Select Service Offering *
                   </label>
                   <div className="space-y-2 max-h-40 overflow-y-auto pr-1">
@@ -454,13 +454,13 @@ export default function CustomerProvidersDirectoryPage() {
                         onClick={() => setSelectedServiceIndex(idx)}
                         className={`p-3 rounded-xl border text-xs cursor-pointer flex items-center justify-between transition-all ${
                           selectedServiceIndex === idx
-                            ? "bg-[#162D23] border-[#34D399] text-[#F2F7F4]"
-                            : "bg-[#0C120F] border-[#1C2C24] text-[#8EAAA0] hover:border-[#2F4A3B]"
+                            ? "bg-[#141420] border-[#34D399] text-white"
+                            : "bg-[#0C120F] border-white/8 text-zinc-400 hover:border-[#2F4A3B]"
                         }`}
                       >
                         <div>
                           <div className="font-semibold">{srv.title}</div>
-                          <div className="text-[10px] text-[#8EAAA0] flex items-center gap-1">
+                          <div className="text-[10px] text-zinc-400 flex items-center gap-1">
                             <Clock size={10} /> ~{srv.duration}
                           </div>
                         </div>
@@ -474,13 +474,13 @@ export default function CustomerProvidersDirectoryPage() {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-code uppercase text-[#8EAAA0] mb-1.5">
+                    <label className="block text-xs font-code uppercase text-zinc-400 mb-1.5">
                       Preferred Date
                     </label>
                     <select
                       value={scheduledDate}
                       onChange={(e) => setScheduledDate(e.target.value)}
-                      className="w-full bg-[#0C120F] border border-[#1C2C24] rounded-xl px-3 py-2 text-xs text-[#F2F7F4] focus:outline-none focus:border-[#34D399]"
+                      className="w-full bg-[#0C120F] border border-white/8 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-[#0054F9]"
                     >
                       <option value="Today, Sep 5">Today, Sep 5</option>
                       <option value="Tomorrow, Sep 6">Tomorrow, Sep 6</option>
@@ -489,13 +489,13 @@ export default function CustomerProvidersDirectoryPage() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-code uppercase text-[#8EAAA0] mb-1.5">
+                    <label className="block text-xs font-code uppercase text-zinc-400 mb-1.5">
                       Available Slot
                     </label>
                     <select
                       value={scheduledSlot}
                       onChange={(e) => setScheduledSlot(e.target.value)}
-                      className="w-full bg-[#0C120F] border border-[#1C2C24] rounded-xl px-3 py-2 text-xs text-[#F2F7F4] focus:outline-none focus:border-[#34D399]"
+                      className="w-full bg-[#0C120F] border border-white/8 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-[#0054F9]"
                     >
                       <option value="09:00 AM – 10:30 AM">09:00 AM – 10:30 AM</option>
                       <option value="11:00 AM – 12:30 PM">11:00 AM – 12:30 PM</option>
@@ -506,7 +506,7 @@ export default function CustomerProvidersDirectoryPage() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-code uppercase text-[#8EAAA0] mb-1.5">
+                  <label className="block text-xs font-code uppercase text-zinc-400 mb-1.5">
                     Premises Address *
                   </label>
                   <input
@@ -514,12 +514,12 @@ export default function CustomerProvidersDirectoryPage() {
                     required
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
-                    className="w-full bg-[#0C120F] border border-[#1C2C24] rounded-xl px-3 py-2 text-xs text-[#F2F7F4] focus:outline-none focus:border-[#34D399]"
+                    className="w-full bg-[#0C120F] border border-white/8 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-[#0054F9]"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-code uppercase text-[#8EAAA0] mb-1.5">
+                  <label className="block text-xs font-code uppercase text-zinc-400 mb-1.5">
                     Problem Description / Special Instructions
                   </label>
                   <textarea
@@ -527,23 +527,23 @@ export default function CustomerProvidersDirectoryPage() {
                     value={notes}
                     onChange={(e) => setNotes(e.target.value)}
                     placeholder="e.g. Please bring extra ladder and manifold gauge..."
-                    className="w-full bg-[#0C120F] border border-[#1C2C24] rounded-xl px-3 py-2 text-xs text-[#F2F7F4] focus:outline-none focus:border-[#34D399]"
+                    className="w-full bg-[#0C120F] border border-white/8 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-[#0054F9]"
                   />
                 </div>
 
-                <div className="p-3 rounded-xl bg-[#0B120E] border border-[#1C2C24] flex items-center justify-between text-xs">
-                  <span className="text-[#8EAAA0]">Estimated Total:</span>
+                <div className="p-3 rounded-xl bg-[#0A0A0F] border border-white/8 flex items-center justify-between text-xs">
+                  <span className="text-zinc-400">Estimated Total:</span>
                   <span className="font-display font-black text-sm text-[#34D399]">
                     PKR {selectedArtisan.services[selectedServiceIndex]?.pricePKR.toLocaleString()}
                   </span>
                 </div>
 
-                <div className="flex items-center justify-end gap-3 pt-3 border-t border-[#1C2C24]">
+                <div className="flex items-center justify-end gap-3 pt-3 border-t border-white/8">
                   <Button
                     type="button"
                     variant="outline"
                     onClick={() => setSelectedArtisan(null)}
-                    className="border-[#1C2C24] text-[#8EAAA0] hover:bg-white/5 text-xs"
+                    className="border-white/8 text-zinc-400 hover:bg-white/5 text-xs"
                   >
                     Cancel
                   </Button>
