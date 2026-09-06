@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { AppShell } from "@/components/layout/AppShell";
+import { Toaster } from "@/components/ui/Toaster";
+import { AuthProvider } from "@/lib/auth-context";
 
 export const metadata: Metadata = {
   title: "Atelier AI — Autonomous Local Service Concierge",
@@ -15,7 +17,10 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark scroll-smooth">
       <body className="min-h-screen bg-[#090E0C] text-[#F2F7F4] font-body antialiased">
-        <AppShell>{children}</AppShell>
+        <AuthProvider>
+          <AppShell>{children}</AppShell>
+          <Toaster position="top-right" theme="dark" richColors />
+        </AuthProvider>
       </body>
     </html>
   );

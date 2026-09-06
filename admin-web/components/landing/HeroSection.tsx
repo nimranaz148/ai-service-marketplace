@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { api } from "@/lib/api";
 import gsap from "gsap";
 import {
   ArrowRight,
@@ -17,6 +18,7 @@ import {
   ShieldCheck,
   Radio,
   Clock,
+  Send,
 } from "lucide-react";
 
 const SAMPLE_PROMPTS = [
@@ -151,6 +153,8 @@ export function HeroSection() {
   const [simulating, setSimulating] = useState(false);
   const [step, setStep] = useState(0); // 0 = idle, 1 = parsing, 2 = searching, 3 = ranking, 4 = matched
   const [latency, setLatency] = useState(0);
+  const [customQuery, setCustomQuery] = useState("");
+  const [customMatch, setCustomMatch] = useState<any>(null);
 
   const heroRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -276,7 +280,83 @@ export function HeroSection() {
     });
   };
 
-  const current = SAMPLE_PROMPTS[selectedIdx];
+  
+  const handleCustomDispatch = async () => {
+    const q = customQuery.trim();
+    if (!q || simulating) return;
+    setSimulating(true);
+    setStep(1);
+    setLatency(120);
+
+    const qLower = q.toLowerCase();
+    let service = "AC Technician";
+    let artisan = "Tariq Mehmood";
+    let city = "Sector G-13, Islamabad";
+    let score = "98.4%";
+    let rating = "4.96";
+
+    if (qLower.includes("plumb") || qLower.includes("nal") || qLower.includes("leak") || qLower.includes("motor") || qLower.includes("pipe")) {
+      service = "Plumbing & Hydro Systems";
+      artisan = "Arshad Hussain";
+      city = "Gulshan Block 4, Karachi";
+      score = "97.2%";
+      rating = "4.94";
+    } else if (qLower.includes("solar") || qLower.includes("electric") || qLower.includes("bijli") || qLower.includes("inverter")) {
+      service = "Solar Electrical Systems";
+      artisan = "Bilal Ahmed";
+      city = "DHA Phase 5, Lahore";
+      score = "99.1%";
+      rating = "4.98";
+    } else if (qLower.includes("clean") || qLower.includes("sofa") || qLower.includes("safai") || qLower.includes("detailing")) {
+      service = "Deep Detailing & Sanitization";
+      artisan = "Salman Sheikh";
+      city = "PECHS Block 2, Karachi";
+      score = "98.9%";
+      rating = "4.97";
+    } else if (qLower.includes("car") || qLower.includes("ecu") || qLower.includes("auto")) {
+      service = "Automotive ECU & Diagnostics";
+      artisan = "Kamran Rafiq";
+      city = "Sector F-10, Islamabad";
+      score = "96.8%";
+      rating = "4.92";
+    }
+
+    if (qLower.includes("karachi") || qLower.includes("gulshan") || qLower.includes("clifton")) {
+      city = qLower.includes("clifton") ? "Clifton, Karachi" : "Gulshan Block 4, Karachi";
+    } else if (qLower.includes("lahore") || qLower.includes("dha")) {
+      city = "DHA Phase 5, Lahore";
+    }
+
+    setTimeout(() => { setStep(2); setLatency(340); }, 380);
+    setTimeout(() => { setStep(3); setLatency(680); }, 750);
+    setTimeout(() => {
+      setStep(4);
+      setLatency(920);
+      setCustomMatch({
+        query: q,
+        service,
+        city,
+        artisan,
+        rating,
+        eta: "15-25 min",
+        score,
+      });
+      setSimulating(false);
+      gsap.fromTo(
+        ".match-card-reveal",
+        { opacity: 0, y: 14, scale: 0.98 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "back.out(1.4)" }
+      );
+    }, 1150);
+
+    try {
+      await api.triggerDemoRequest(q);
+    } catch (e) {
+      // safe fallback
+    }
+  };
+
+  const current = customMatch || SAMPLE_PROMPTS[selectedIdx];
 
   return (
     <section
@@ -440,6 +520,34 @@ export function HeroSection() {
               </div>
             </div>
 
+                        {/* Live Message Input Box */}
+            <div className="mb-5">
+              <label className="font-body text-xs font-semibold text-[#8EAAA0] uppercase tracking-wider mb-2 flex items-center justify-between">
+                <span>Enter custom booking request:</span>
+                <span className="text-[#34D399] font-code text-[11px] normal-case">Roman Urdu, Urdu, or English</span>
+              </label>
+              <div className="flex flex-col sm:flex-row gap-2.5">
+                <div className="relative flex-1">
+                  <input
+                    type="text"
+                    value={customQuery}
+                    onChange={(e) => setCustomQuery(e.target.value)}
+                    onKeyDown={(e) => e.key === "Enter" && handleCustomDispatch()}
+                    placeholder="e.g. Mujhe kal subah Karachi mein plumber chahiye, Lahore solar electrician..."
+                    className="w-full h-11 pl-4 pr-10 rounded-xl bg-[#090E0C] border border-[#243B30] focus:border-[#34D399] text-xs text-[#F2F7F4] placeholder:text-[#526D60] outline-none shadow-inner transition-colors"
+                  />
+                </div>
+                <button
+                  onClick={handleCustomDispatch}
+                  disabled={simulating}
+                  className="h-11 px-5 rounded-xl bg-[#34D399] hover:bg-[#2EB885] text-[#090E0C] font-display font-bold text-xs flex items-center justify-center gap-2 shadow-[0_4px_16px_rgba(52,211,153,0.3)] active:scale-95 transition-all cursor-pointer shrink-0"
+                >
+                  <Send size={14} />
+                  <span>{simulating ? "Dispatching..." : "Dispatch Agent"}</span>
+                </button>
+              </div>
+            </div>
+
             {/* Prompt Selection Chips */}
             <div className="mb-5">
               <p className="font-body text-xs font-semibold text-[#8EAAA0] uppercase tracking-wider mb-2">
@@ -449,7 +557,7 @@ export function HeroSection() {
                 {SAMPLE_PROMPTS.map((item, idx) => (
                   <button
                     key={idx}
-                    onClick={() => runSimulation(idx)}
+                    onClick={() => { setCustomMatch(null); runSimulation(idx); }}
                     className={`text-left p-3 rounded-xl border transition-all text-xs font-body ${
                       selectedIdx === idx
                         ? "bg-[#162D23] border-[#34D399] text-[#F2F7F4] shadow-sm"
@@ -528,7 +636,7 @@ export function HeroSection() {
             <div className="match-card-reveal bg-[#0D1813] border border-[#1F3329] rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div className="flex items-center gap-3.5">
                 <div className="w-11 h-11 rounded-xl bg-[#162D23] border border-[#2B493B] text-[#34D399] flex items-center justify-center font-display font-bold text-base">
-                  {current.artisan.split(" ").map((n) => n[0]).join("")}
+                  {current.artisan.split(" ").map((n: string) => n[0]).join("")}
                 </div>
                 <div>
                   <div className="flex items-center gap-2">

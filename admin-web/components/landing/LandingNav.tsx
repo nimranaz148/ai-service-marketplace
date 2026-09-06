@@ -3,9 +3,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import gsap from "gsap";
-import { ArrowUpRight, Compass, Shield, Sparkles, Menu, X } from "lucide-react";
+import { ArrowUpRight, Compass, Shield, Sparkles, Menu, X, UserCheck, LogIn, Wrench } from "lucide-react";
+import { useAuth } from "@/lib/auth-context";
 
 export function LandingNav() {
+  const { user, isAuthenticated } = useAuth();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const ctaRef = useRef<HTMLButtonElement>(null);
@@ -101,19 +103,47 @@ export function LandingNav() {
             <span>Active: ISB · KHI · LHE</span>
           </div>
 
-          <Link href="/services">
-            <button
-              ref={ctaRef}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#162D23] hover:bg-[#1E3B2E] border border-[#2F5444] text-[#F2F7F4] text-[13px] font-semibold font-body tracking-tight shadow-[0_0_20px_rgba(52,211,153,0.15)] active:scale-[0.98] transition-all"
-            >
-              <span>Explore Services</span>
-              <ArrowUpRight size={14} className="text-[#34D399]" />
-            </button>
-          </Link>
+          {isAuthenticated ? (
+            <Link href="/dashboard">
+              <button
+                ref={ctaRef}
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#162D23] hover:bg-[#1E3B2E] border border-[#34D399]/60 text-[#34D399] text-[13px] font-bold font-display tracking-tight shadow-[0_0_20px_rgba(52,211,153,0.2)] active:scale-[0.98] transition-all cursor-pointer"
+              >
+                <span>Dashboard ({user?.role?.toUpperCase()})</span>
+                <ArrowUpRight size={14} className="text-[#34D399]" />
+              </button>
+            </Link>
+          ) : (
+            <div className="flex items-center gap-2">
+              <Link
+                href="/provider/login"
+                className="hidden lg:inline-flex items-center gap-1.5 text-xs font-code font-bold text-[#D4A843] hover:text-[#F3CA68] px-3 py-1.5 rounded-xl border border-[#3D3017] bg-[#161209] transition-colors"
+              >
+                <Wrench size={12} />
+                <span>Artisan Portal</span>
+              </Link>
+              <Link
+                href="/login"
+                className="hidden sm:inline-flex items-center gap-1 text-[13px] font-semibold text-[#A3B8AF] hover:text-[#F2F7F4] px-3 py-2 rounded-xl hover:bg-[#16251F] transition-colors"
+              >
+                <LogIn size={13} className="text-[#34D399]" />
+                <span>Sign In</span>
+              </Link>
+              <Link href="/signup">
+                <button
+                  ref={ctaRef}
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#34D399] hover:bg-[#2BB380] text-[#090E0C] text-[13px] font-bold font-display tracking-tight shadow-[0_0_20px_rgba(52,211,153,0.3)] active:scale-[0.98] transition-all cursor-pointer"
+                >
+                  <span>Sign Up</span>
+                  <ArrowUpRight size={14} />
+                </button>
+              </Link>
+            </div>
+          )}
 
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="md:hidden p-1.5 text-[#F2F7F4] hover:bg-[#16251F] rounded-lg transition-colors"
+            className="md:hidden p-1.5 text-[#F2F7F4] hover:bg-[#16251F] rounded-lg transition-colors cursor-pointer"
             aria-label="Toggle Navigation"
           >
             {mobileOpen ? <X size={20} /> : <Menu size={20} />}
@@ -152,13 +182,42 @@ export function LandingNav() {
           >
             Trace Ledger
           </a>
-          <Link
-            href="/services"
-            onClick={() => setMobileOpen(false)}
-            className="mt-2 text-center py-2.5 rounded-xl bg-[#162D23] border border-[#2F5444] text-[#F2F7F4] font-semibold text-sm"
-          >
-            Explore Services
-          </Link>
+          <div className="pt-2 border-t border-[#1F3329] flex flex-col gap-2">
+            {isAuthenticated ? (
+              <Link
+                href="/dashboard"
+                onClick={() => setMobileOpen(false)}
+                className="text-center py-2.5 rounded-xl bg-[#162D23] border border-[#34D399] text-[#34D399] font-bold text-sm"
+              >
+                Go to Dashboard ({user?.role?.toUpperCase()})
+              </Link>
+            ) : (
+              <>
+                <Link
+                  href="/login"
+                  onClick={() => setMobileOpen(false)}
+                  className="text-center py-2 rounded-xl bg-[#16251F] border border-[#2F5444] text-[#F2F7F4] font-semibold text-sm"
+                >
+                  Customer Sign In (/login)
+                </Link>
+                <Link
+                  href="/provider/login"
+                  onClick={() => setMobileOpen(false)}
+                  className="text-center py-2 rounded-xl bg-[#1D170D] border border-[#3D3017] text-[#D4A843] font-semibold text-sm flex items-center justify-center gap-1.5"
+                >
+                  <Wrench size={13} />
+                  <span>Artisan Supply Portal (/provider/login)</span>
+                </Link>
+                <Link
+                  href="/signup"
+                  onClick={() => setMobileOpen(false)}
+                  className="text-center py-2.5 rounded-xl bg-[#34D399] text-[#090E0C] font-bold text-sm shadow-lg"
+                >
+                  Sign Up as Homeowner
+                </Link>
+              </>
+            )}
+          </div>
         </div>
       )}
     </header>

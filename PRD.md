@@ -188,25 +188,114 @@ Each is a plain Python function registered with the OpenAI Agents SDK via `@func
 
 ---
 
-## 9. Admin Web Dashboard (Next.js + shadcn/ui)
+## 9. Multi-Role Web Architecture & Role-Specific Dashboards (Next.js 14 + shadcn/ui)
 
-A separate, lightweight web app for admins/internal use, talking to the same FastAPI backend's `/admin/*` routes over HTTP.
+The web application provides a role-gated architecture partitioned into three distinct user personas: **Admin**, **Service Provider (Master Artisan)**, and **Customer (Homeowner/Client)**. Each persona is presented with an authenticated, tailored command console styled in the Midnight Emerald Obsidian (`#090E0C`) design aesthetic.
 
-- `/dashboard`: stats overview
-- `/traces`: sessions table
-- `/traces/[sessionId]`: trace detail (agent timeline + tool I/O JSON)
-- `/bookings`: bookings list
-- `/providers`: providers list + add/edit
-
-**Admin Trace Dashboard**
 ```mermaid
-flowchart TD
-    A[Admin Dashboard] --> B[Stats Cards]
-    A --> C[Sessions Table]
-    C --> D[Trace Detail Page]
-    D --> E[Agent Timeline]
-    D --> F[Tool Input/Output JSON]
+graph TD
+    AuthGate["🔐 Auth Gatekeeper (/login, /signup)"] --> RoleCheck{"User Persona"}
+    RoleCheck -->|Role: admin| AdminPortal["👑 Super Admin Operations Console"]
+    RoleCheck -->|Role: provider| ProviderPortal["🛠️ Master Artisan Command Center"]
+    RoleCheck -->|Role: customer| CustomerPortal["👤 Customer Concierge Hub"]
+
+    subgraph "Admin Domain"
+      AdminPortal --> AdminHUD["Global Telemetry & Latency HUD"]
+      AdminPortal --> AdminLeaderboards["High-Active Customer & Provider Leaderboards"]
+      AdminPortal --> AdminCustCRUD["Customer CRUD & Account Status"]
+      AdminPortal --> AdminProvCRUD["Provider Roster CRUD & NADRA Vetting"]
+      AdminPortal --> AdminTraces["5-Agent Diagnostic Traces & Observability"]
+      AdminPortal --> AdminSettings["Platform Settings & Metro Controls"]
+    end
+
+    subgraph "Provider Domain"
+      ProviderPortal --> ProvHUD["Earnings, Jobs & Dispatch Readiness"]
+      ProviderPortal --> ProvBookings["Assigned Customers & Booking Management"]
+      ProviderPortal --> ProvServices["Services CRUD & Live Customer Preview Card"]
+      ProviderPortal --> ProvSlots["Calendar Slots & Availability Locks"]
+    end
+
+    subgraph "Customer Domain"
+      CustomerPortal --> CustConcierge["Live AI Chat & WebRTC Voice Concierge"]
+      CustomerPortal --> CustDirectory["Browse Verified Master Artisans Roster"]
+      CustomerPortal --> CustBookings["My Bookings Ledger & Token Verification"]
+      CustomerPortal --> CustProfile["Saved Addresses (ISB, KHI, LHE) & Profile"]
+    end
 ```
+
+---
+
+### 9.1 Authentication & Gatekeeper Architecture
+
+- **Login Requirement:** Unauthenticated visitors to any `/dashboard/*`, `/services`, `/traces`, `/bookings`, or `/providers` route are intercepted and redirected to `/login`. The public marketing landing page (`/`) remains accessible.
+- **Role-Based Signup (`/signup`):**
+  - **👑 System Administrator:** Operations oversight, agent trace telemetry, and marketplace governance.
+  - **🛠️ Master Artisan / Provider:** Field technicians and specialists managing incoming bookings and service offerings.
+  - **👤 Customer / Homeowner:** Clients booking vetted artisans via natural language Roman Urdu, Urdu, or English.
+- **Demo Quick-Switcher Bar:** A top-level testing console allowing one-click role switching (`Admin` $\leftrightarrow$ `Provider (Tariq Mehmood)` $\leftrightarrow$ `Customer (Zubair Khan)`) for seamless evaluation without manual session re-entry.
+
+---
+
+### 9.2 Role 1: Super Admin Portal (`/dashboard/admin`)
+
+The Admin console acts as the marketplace command deck and observability headquarters:
+
+1. **Global Telemetry HUD:**
+   - Real-time marketplace KPIs: Total Sessions, Confirmed Bookings, Gross Merchandise Value (GMV in PKR), Active Providers, and Median Agent Pipeline Latency (< 980ms).
+2. **High-Active Leaderboards (User Requested):**
+   - **Top Customers Leaderboard:** Ranked by total booking frequency, total lifetime spend (PKR), active service requests, and customer loyalty tier (Titanium, Platinum, Gold).
+   - **Top Providers Leaderboard:** Ranked by customer satisfaction rating (★), total completed jobs, on-time arrival rate, and net earnings.
+3. **Customer Management (Full CRUD):**
+   - Paginated customer list with full search (name, phone, metro/city).
+   - Create new customer records, update contact info and default address, view complete booking history, and toggle account status (Active / Suspended).
+4. **Provider Roster Management (Full CRUD):**
+   - Artisan management across all 5 trades (AC Technician, Plumber, Electrician, Detailing, STEM Tutor).
+   - Add new artisans, verify NADRA biometric credentials, adjust pricing tiers, update specialties, and toggle active dispatch state.
+5. **AI Agent Observability & Diagnostic Traces:**
+   - 5-Agent Pipeline execution history (`/traces`): Step-by-step telemetry for Intent Extraction, Geospatial Discovery, Tri-Factor Ranking, Atomic Slot Locking, and Followup Dispatch.
+   - Deep tool I/O JSON inspector and latency profiling per agent.
+6. **Platform Governance & Settings:**
+   - Platform commission configuration (e.g. 10%), active coverage clusters (Islamabad, Karachi, Lahore), and Vapi Voice RTC webhook diagnostics.
+
+---
+
+### 9.3 Role 2: Master Artisan / Provider Portal (`/dashboard/provider`)
+
+Dedicated operational workstation for vetted service professionals:
+
+1. **Artisan Command HUD:**
+   - Today's upcoming appointments, monthly revenue tracker (PKR), verified rating score (★), and an immediate dispatch availability toggle: *"Online (Ready for Immediate Dispatch)"* vs *"In Field (Busy)"*.
+2. **Assigned Customers & Booking Management (User Requested):**
+   - Live queue of bookings assigned by the autonomous orchestrator.
+   - Comprehensive customer profile card: Customer Name, Exact Address/Sector, Phone number, Reported Issue, and Booking Verification Code (`BK-XXXX`).
+   - Job Lifecycle Action Controls:
+     - `Mark En Route` (Notifies customer and updates ETA)
+     - `Arrived at Location` (Prompts customer for entry verification)
+     - `Complete Job & Verify Token` (Locks OTP token, closes booking, triggers escrow payout)
+     - `Reschedule Request`
+3. **Services Catalog CRUD & Live Customer Preview (User Requested):**
+   - **Services CRUD:** Artisan can add, edit, or archive specialized services offered (e.g., *"Inverter AC Compressor Repair"*, *"Acoustic Leak Detection"*, *"3-Phase Solar Inverter Tuning"*), setting base rate (PKR), estimated job duration (mins), and warranty period.
+   - **Live Client Preview Card:** Real-time visual mockup component showing the artisan exactly how their profile card, verified badges, rating, and service catalog appear to searching customers on the marketplace.
+4. **Calendar Slots & Availability Manager:**
+   - Interactive schedule grid to open or lock standard appointment slots (09:00 AM, 11:00 AM, 02:00 PM, 04:00 PM, 06:00 PM) across their operating metro cluster.
+
+---
+
+### 9.4 Role 3: Customer / Homeowner Concierge (`/dashboard/customer`)
+
+Frictionless concierge portal for discovering and managing home services:
+
+1. **Concierge Hub & Quick Booking:**
+   - Active booking live status card with visual progress timeline (e.g. *"Tariq Mehmood is en route to Sector G-13 — ETA 15 mins"*).
+   - 1-Click Re-book widget for frequently used artisans.
+   - Integrated Roman Urdu / English text dispatch sandbox and acoustic Vapi WebRTC voice concierge.
+2. **Browse Verified Artisans Directory (User Requested):**
+   - Searchable, filterable roster of all master artisans categorized by trade and metro (Islamabad, Karachi, Lahore).
+   - Rich artisan cards displaying NADRA vetting badge, average rating, distance estimation, pricing, verified customer reviews, and a direct *"Book Artisan"* button.
+3. **My Bookings Ledger:**
+   - Historical and active bookings table with confirmation tokens, artisan contact number, scheduled date/time, and post-service review & star rating submission.
+4. **Saved Addresses & Preferences:**
+   - Multi-address manager (e.g., *"Home — G-11/3 Islamabad"*, *"Office — Clifton Karachi"*) allowing AI agents to automatically match the customer's preferred geo-cluster without repeated prompting.
 
 ---
 

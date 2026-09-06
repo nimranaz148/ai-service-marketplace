@@ -98,11 +98,31 @@ class ModelFactory:
         elif "tutor" in msg_lower or "parha" in msg_lower or "teacher" in msg_lower:
             service = "Tutor"
 
-        # Area detection
-        area = "G-13"
-        for sector in ["g-13", "g-11", "f-10", "i-8", "f-11", "f-8", "blue area", "bahria"]:
-            if sector in msg_lower:
-                area = sector.upper()
+        # Area detection across Islamabad, Karachi, and Lahore
+        area = "G-13, Islamabad"
+        area_mappings = {
+            "gulshan": "Gulshan-e-Iqbal, Karachi",
+            "clifton": "Clifton, Karachi",
+            "pechs": "PECHS, Karachi",
+            "karachi": "Karachi",
+            "dha lahore": "DHA Phase 5, Lahore",
+            "gulberg": "Gulberg, Lahore",
+            "model town": "Model Town, Lahore",
+            "johar town": "Johar Town, Lahore",
+            "lahore": "Lahore",
+            "g-13": "Sector G-13, Islamabad",
+            "g-11": "Sector G-11, Islamabad",
+            "f-10": "Sector F-10, Islamabad",
+            "f-11": "Sector F-11, Islamabad",
+            "i-8": "Sector I-8, Islamabad",
+            "blue area": "Blue Area, Islamabad",
+            "bahria": "Bahria Town, Islamabad",
+            "islamabad": "Islamabad",
+            "dha": "DHA Phase 5",
+        }
+        for k, v in area_mappings.items():
+            if k in msg_lower:
+                area = v
                 break
 
         # Time detection
@@ -125,7 +145,7 @@ class ModelFactory:
                 service_type=service,
                 location_text=area,
                 time_preference=time_pref,
-                urgency="medium",
+                urgency="high" if any(u in msg_lower for u in ["emergency", "urgent", "jaldi", "fauran", "short circuit", "leak"]) else "medium",
                 detected_language=lang,
                 confidence_score=0.98,
             )

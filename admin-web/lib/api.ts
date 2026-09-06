@@ -1,4 +1,11 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+const getBaseUrl = (): string => {
+  if (typeof window !== "undefined") {
+    // In browser: relative URL delegates to Next.js rewrites proxying to port 8000.
+    // This eliminates Mixed Content errors on Cloudflare HTTPS tunnels!
+    return "";
+  }
+  return process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+};
 
 export interface AdminStats {
   total_sessions: number;
@@ -77,37 +84,37 @@ export interface ProviderItem {
 
 export const api = {
   getStats: async (): Promise<AdminStats> => {
-    const res = await fetch(`${API_BASE_URL}/admin/stats`, { cache: "no-store" });
+    const res = await fetch(`${getBaseUrl()}/admin/stats`, { cache: "no-store" });
     if (!res.ok) throw new Error("Failed to fetch admin stats");
     return res.json();
   },
 
   getSessions: async (): Promise<SessionItem[]> => {
-    const res = await fetch(`${API_BASE_URL}/admin/sessions`, { cache: "no-store" });
+    const res = await fetch(`${getBaseUrl()}/admin/sessions`, { cache: "no-store" });
     if (!res.ok) throw new Error("Failed to fetch sessions");
     return res.json();
   },
 
   getSessionTraces: async (sessionId: string): Promise<TraceLog[]> => {
-    const res = await fetch(`${API_BASE_URL}/requests/${sessionId}/trace`, { cache: "no-store" });
+    const res = await fetch(`${getBaseUrl()}/requests/${sessionId}/trace`, { cache: "no-store" });
     if (!res.ok) throw new Error("Failed to fetch session traces");
     return res.json();
   },
 
   getBookings: async (): Promise<BookingItem[]> => {
-    const res = await fetch(`${API_BASE_URL}/admin/bookings`, { cache: "no-store" });
+    const res = await fetch(`${getBaseUrl()}/admin/bookings`, { cache: "no-store" });
     if (!res.ok) throw new Error("Failed to fetch bookings");
     return res.json();
   },
 
   getProviders: async (): Promise<ProviderItem[]> => {
-    const res = await fetch(`${API_BASE_URL}/admin/providers`, { cache: "no-store" });
+    const res = await fetch(`${getBaseUrl()}/admin/providers`, { cache: "no-store" });
     if (!res.ok) throw new Error("Failed to fetch providers");
     return res.json();
   },
 
   createProvider: async (providerData: Partial<ProviderItem>): Promise<ProviderItem> => {
-    const res = await fetch(`${API_BASE_URL}/admin/providers`, {
+    const res = await fetch(`${getBaseUrl()}/admin/providers`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(providerData),
@@ -117,12 +124,21 @@ export const api = {
   },
 
   triggerDemoRequest: async (message: string): Promise<any> => {
-    const res = await fetch(`${API_BASE_URL}/requests`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message }),
-    });
-    if (!res.ok) throw new Error("Failed to execute agent workflow");
-    return res.json();
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 9000);
+    try {
+      const res = await fetch(`${getBaseUrl()}/requests`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message }),
+        signal: controller.signal,
+      });
+      clearTimeout(timeoutId);
+      if (!res.ok) throw new Error("Failed to execute agent workflow");
+      return await res.json();
+    } catch (e) {
+      clearTimeout(timeoutId);
+      throw e;
+    }
   },
 };

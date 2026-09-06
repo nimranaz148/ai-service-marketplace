@@ -1,13 +1,49 @@
-<!-- progress.md — the loop's memory between runs -->
+# Implementation Progress — Multi-Role Architecture (Admin, Provider, Customer)
 
-## Done
+## Status: IN PROGRESS 🚀
 
-- 2026-06-22: fixed flaky test in test/auth (retry on token refresh)
+### Current Sprint: Role-Gated Dashboards, Customer/Provider CRUD, Leaderboards & Auth Gate
 
-## In progress
+---
 
-- Dependency audit: 3 of 7 advisories patched; lodash bump blocked by an API change
+## 1. Roadmap & Phased Execution Plan
 
-## Open / needs a human
+- [x] **Phase 1: Authentication & Global Auth State Management**
+  - [x] Create `AuthContext` with role management (`admin`, `provider`, `customer`) & persistent state.
+  - [x] Build dedicated persona auth routes:
+    - `/login` & `/signup` (Customer Homeowner Portal)
+    - `/provider/login` & `/provider/signup` (Master Artisan Supply Portal)
+    - `/admin/login` (Restricted Operations Command Console)
+  - [x] Implement Auth Guard in `AppShell` and Quick Role Switcher in the top navigation.
+- [x] **Phase 2: Super Admin Operations Console (`/dashboard/admin`)**
+  - [x] Global Telemetry & KPI HUD (GMV, Bookings, Sessions, Latency).
+  - [x] High-Active Customer Leaderboard (Spending, Frequency, Loyalty Tiers).
+  - [x] Top Provider Leaderboard (Ratings, Completed Jobs, On-time Rates).
+  - [x] Full Customer Management CRUD (`/dashboard/admin/customers` - Search, Add, Edit, Suspend, Delete).
+  - [x] Enhanced Provider Roster Management (`/dashboard/admin/providers` - NADRA vetting controls).
+  - [x] Platform Settings & Metro Cluster Configuration (`/dashboard/admin/settings`).
+- [x] **Phase 3: Master Artisan / Provider Portal (`/dashboard/provider`)**
+  - [x] Artisan Command HUD with Live Dispatch Readiness Toggle (`ONLINE` vs `BUSY`).
+  - [x] Assigned Customers & Bookings Management (`/dashboard/provider/bookings` - En Route, Arrived, Complete lifecycle).
+  - [x] Services Catalog CRUD (`/dashboard/provider/services` - Add, Edit, Price in PKR, Duration).
+  - [x] **Live Customer Preview Card** (Real-time visual reflection of artisan's public profile).
+  - [x] Schedule & Availability Slot Manager (`/dashboard/provider/slots` - 7-day schedule, buffer setting, daily job caps).
+- [x] **Phase 4: Customer / Homeowner Concierge Hub (`/dashboard/customer`)**
+  - [x] Active Booking Live Progress Tracker & AI Quick Dispatch Bar (`/dashboard/customer`).
+  - [x] Verified Master Artisans Directory (`/dashboard/customer/providers` - Metro & Category filters, 1-click booking modal).
+  - [x] My Bookings Ledger (`/dashboard/customer/bookings` - Token Verification, status tabs & 5-star Review Modal).
+  - [x] Saved Addresses & Voice Preferences Manager (`/dashboard/customer/profile` - Default address, Vapi dialect toggle).
+- [x] **Phase 5: Backend API Enhancements & Verification**
+  - [x] Customer CRUD routes in backend (`/admin/customers` GET, POST, PATCH, DELETE).
+  - [x] Provider assigned bookings & stats endpoints verified.
+  - [x] TypeScript verification on frontend (`admin-web`).
 
-- CVE-2026-xxxx in image lib — the fix changes the output format, escalating to a maintainer
+---
+
+## 2. Completed Tasks
+- *2026-09-05:* Updated `PRD.md` with complete Section 9 multi-role architecture specification.
+- *2026-09-05:* Built Global Auth System (`AuthContext`, `/login`, `/signup`, `AppShell` gatekeeper & Quick Role Switcher).
+- *2026-09-05:* Implemented Super Admin Console with High-Active Customer and Top Provider Leaderboards, Customer CRUD, Provider Roster, and Platform Settings.
+- *2026-09-05:* Implemented Provider Portal with Artisan HUD, Assigned Bookings lifecycle, Services Catalog CRUD with Live Client Preview Card, and 7-day Slot Manager.
+- *2026-09-05:* Implemented Customer Concierge Hub with Live Dispatch Tracker, Verified Artisans Directory with booking modal, Bookings Ledger with review modal, and Saved Addresses manager.
+- *2026-09-05:* Added `/admin/customers` endpoints to FastAPI backend.

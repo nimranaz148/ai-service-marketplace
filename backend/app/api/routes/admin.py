@@ -14,6 +14,9 @@ from app.db.schemas import (
     BookingResponse,
     SessionDetailResponse,
     TraceLogResponse,
+    UserResponse,
+    UserCreate,
+    UserUpdate,
 )
 
 router = APIRouter(prefix="/admin", tags=["Admin Dashboard"])
@@ -160,3 +163,79 @@ async def update_admin_provider(
     await db.commit()
     await db.refresh(provider)
     return provider
+
+
+# ==========================================
+# Admin Customer Management
+# ==========================================
+@router.get("/customers", response_model=List[UserResponse])
+async def list_admin_customers(
+    limit: int = 100,
+    db: AsyncSession = Depends(get_db),
+):
+    """List all registered customers for admin management."""
+    stmt = (
+        select(User)
+        .where(User.role == "customer")
+        .order_by(desc(User.created_at))
+        .limit(limit)
+    )
+    result = await db.execute(stmt)
+    return result.scalars().all()
+
+
+@router.post("/customers", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
+async def create_admin_customer(
+    payload: UserCreate,
+    db: AsyncSession = Depends(get_db),
+):
+    """Add a new customer profile manually from admin console."""
+    customer = User(
+        name=payload.name,
+        phone=payload.phone,
+        role="customer",
+        preferred_language=payload.preferred_language or "roman_urdu",
+        area=payload.area,
+        lat=payload.lat,
+        lng=payload.lng,
+    )
+    db.add(customer)
+    await db.commit()
+    await db.refresh(customer)
+    return customer
+
+
+@router.patch("/customers/{customer_id}", response_model=UserResponse)
+async def update_admin_customer(
+    customer_id: uuid.UUID,
+    payload: UserUpdate,
+    db: AsyncSession = Depends(get_db),
+):
+    """Update customer details."""
+    customer = await db.get(User, customer_id)
+    if not customer:
+        raise HTTPException(status_code=404, detail="Customer not found")
+
+    update_data = payload.model_dump(exclude_unset=True)
+    for field, value in update_data.items():
+        setattr(customer, field, value)
+
+    await db.commit()
+    await db.refresh(customer)
+    return customer
+
+
+@router.delete("/customers/{customer_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_admin_customer(
+    customer_id: uuid.UUID,
+    db: AsyncSession = Depends(get_db),
+):
+    """Remove a customer record."""
+    customer = await db.get(User, customer_id)
+    if not customer:
+        raise HTTPException(status_code=404, detail="Customer not found")
+
+    await db.delete(customer)
+    await db.commit()
+    return None
+

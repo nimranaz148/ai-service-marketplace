@@ -21,6 +21,16 @@ class UserCreate(UserBase):
     clerk_user_id: Optional[str] = None
 
 
+class UserUpdate(BaseModel):
+    name: Optional[str] = None
+    phone: Optional[str] = None
+    role: Optional[str] = None
+    preferred_language: Optional[str] = None
+    area: Optional[str] = None
+    lat: Optional[float] = None
+    lng: Optional[float] = None
+
+
 class UserResponse(UserBase):
     id: UUID
     clerk_user_id: Optional[str] = None
