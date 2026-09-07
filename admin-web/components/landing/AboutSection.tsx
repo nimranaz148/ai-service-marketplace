@@ -1,9 +1,35 @@
 "use client";
 
 import React from "react";
+import { motion } from "framer-motion";
 import { Sparkles, Shield, Clock, Award, CheckCircle2 } from "lucide-react";
+import { SpotlightCard } from "@/components/ui/SpotlightCard";
 
 export function AboutSection() {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.14,
+        delayChildren: 0.1,
+      },
+    },
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 25 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 350,
+        damping: 25,
+      },
+    },
+  };
+
   return (
     <section id="about" className="py-20 px-4 sm:px-8 max-w-7xl mx-auto">
       <div className="rounded-[2.5rem] bg-[#0E0E16]/80 border border-white/8 p-8 sm:p-16 relative overflow-hidden">
@@ -28,44 +54,68 @@ export function AboutSection() {
           </p>
         </div>
 
-        {/* 3-Column Stats Grid (Catalis about_stats-grid) */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-8 border-t border-white/8">
-          <div className="p-6 rounded-3xl bg-[#13131D]/70 border border-white/5 text-center space-y-2">
-            <div className="font-display font-black text-4xl sm:text-5xl text-[#0054F9]">
-              80%
-            </div>
-            <div className="font-display font-bold text-base text-white">
-              Reduction in Dispatch Time
-            </div>
-            <p className="font-body text-xs text-zinc-400">
-              Autonomous agents match nearest available master artisans in under 300 milliseconds.
-            </p>
-          </div>
+        {/* 3-Column Stats Grid (Catalis about_stats-grid) with Physics Motion & Spotlight Transitions */}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-60px" }}
+          className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-8 border-t border-white/8"
+        >
+          <motion.div variants={cardVariants}>
+            <SpotlightCard className="p-6 text-center space-y-2 cursor-default h-full">
+              <motion.div 
+                whileHover={{ scale: 1.08 }}
+                transition={{ type: "spring", stiffness: 400, damping: 20 }}
+                className="font-display font-black text-4xl sm:text-5xl text-[#0054F9]"
+              >
+                80%
+              </motion.div>
+              <div className="font-display font-bold text-base text-white">
+                Reduction in Dispatch Time
+              </div>
+              <p className="font-body text-xs text-zinc-400">
+                Autonomous agents match nearest available master artisans in under 300 milliseconds.
+              </p>
+            </SpotlightCard>
+          </motion.div>
 
-          <div className="p-6 rounded-3xl bg-[#13131D]/70 border border-white/5 text-center space-y-2">
-            <div className="font-display font-black text-4xl sm:text-5xl text-white">
-              &lt; 20 min
-            </div>
-            <div className="font-display font-bold text-base text-white">
-              Average Arrival Turnaround
-            </div>
-            <p className="font-body text-xs text-zinc-400">
-              Hyper-local cluster dispatch across Islamabad, Karachi, and Lahore.
-            </p>
-          </div>
+          <motion.div variants={cardVariants}>
+            <SpotlightCard className="p-6 text-center space-y-2 cursor-default h-full">
+              <motion.div 
+                whileHover={{ scale: 1.08 }}
+                transition={{ type: "spring", stiffness: 400, damping: 20 }}
+                className="font-display font-black text-4xl sm:text-5xl text-white"
+              >
+                &lt; 20 min
+              </motion.div>
+              <div className="font-display font-bold text-base text-white">
+                Average Arrival Turnaround
+              </div>
+              <p className="font-body text-xs text-zinc-400">
+                Hyper-local cluster dispatch across Islamabad, Karachi, and Lahore.
+              </p>
+            </SpotlightCard>
+          </motion.div>
 
-          <div className="p-6 rounded-3xl bg-[#13131D]/70 border border-white/5 text-center space-y-2">
-            <div className="font-display font-black text-4xl sm:text-5xl text-[#0054F9]">
-              100%
-            </div>
-            <div className="font-display font-bold text-base text-white">
-              NADRA & Escrow Guaranteed
-            </div>
-            <p className="font-body text-xs text-zinc-400">
-              Every artisan is biometrically verified. Payments locked in escrow until OTP sign-off.
-            </p>
-          </div>
-        </div>
+          <motion.div variants={cardVariants}>
+            <SpotlightCard className="p-6 text-center space-y-2 cursor-default h-full">
+              <motion.div 
+                whileHover={{ scale: 1.08 }}
+                transition={{ type: "spring", stiffness: 400, damping: 20 }}
+                className="font-display font-black text-4xl sm:text-5xl text-[#0054F9]"
+              >
+                100%
+              </motion.div>
+              <div className="font-display font-bold text-base text-white">
+                NADRA & Escrow Guaranteed
+              </div>
+              <p className="font-body text-xs text-zinc-400">
+                Every artisan is biometrically verified. Payments locked in escrow until OTP sign-off.
+              </p>
+            </SpotlightCard>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );

@@ -1,7 +1,9 @@
 "use client";
 
 import React from "react";
+import { motion } from "framer-motion";
 import { Sparkles, Star, MapPin, ShieldCheck } from "lucide-react";
+import { SpotlightCard } from "@/components/ui/SpotlightCard";
 
 const TESTIMONIALS = [
   {
@@ -34,6 +36,30 @@ const TESTIMONIALS = [
 ];
 
 export function TestimonialsSection() {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.12,
+        delayChildren: 0.1,
+      },
+    },
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 350,
+        damping: 26,
+      },
+    },
+  };
+
   return (
     <section id="testimonials" className="py-24 px-4 sm:px-8 max-w-7xl mx-auto">
       <div className="space-y-16">
@@ -56,47 +82,56 @@ export function TestimonialsSection() {
           </p>
         </div>
 
-        {/* Catalis testimonial cards row */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-8 items-stretch">
+        {/* Catalis testimonial cards row with Staggered Motion & Mouse Spotlight */}
+        <motion.div 
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-60px" }}
+          className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-8 items-stretch"
+        >
           {TESTIMONIALS.map((t, idx) => (
-            <div
-              key={idx}
-              className="rounded-[2.5rem] bg-[#12121B] border border-white/8 p-8 pt-12 relative flex flex-col justify-between space-y-6 shadow-xl hover:border-[#0054F9]/40 transition-all"
-            >
-              {/* Floating Top Avatar (Catalis testimonial_img) */}
-              <div className="absolute -top-7 left-1/2 -translate-x-1/2 w-14 h-14 rounded-full bg-[#0054F9] border-4 border-[#0A0A0F] text-white flex items-center justify-center font-display font-black text-base shadow-lg">
-                {t.avatar}
-              </div>
+            <motion.div key={idx} variants={cardVariants} className="pt-6">
+              <SpotlightCard className="p-8 pt-12 relative flex flex-col justify-between space-y-6 h-full !overflow-visible">
+                {/* Floating Top Avatar with Bounce */}
+                <motion.div 
+                  whileHover={{ scale: 1.15, rotate: 6 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 20 }}
+                  className="absolute -top-7 left-1/2 -translate-x-1/2 w-14 h-14 rounded-full bg-[#0054F9] border-4 border-[#0A0A0F] text-white flex items-center justify-center font-display font-black text-base shadow-lg cursor-pointer z-20"
+                >
+                  {t.avatar}
+                </motion.div>
 
-              {/* Stars & Quote */}
-              <div className="space-y-4 text-center">
-                <div className="flex items-center justify-center gap-1 text-[#0054F9]">
-                  {[...Array(t.rating)].map((_, i) => (
-                    <Star key={i} size={15} fill="#0054F9" stroke="#0054F9" />
-                  ))}
+                {/* Stars & Quote */}
+                <div className="space-y-4 text-center">
+                  <div className="flex items-center justify-center gap-1 text-[#0054F9]">
+                    {[...Array(t.rating)].map((_, i) => (
+                      <Star key={i} size={15} fill="#0054F9" stroke="#0054F9" />
+                    ))}
+                  </div>
+                  <p className="font-body text-sm text-zinc-300 italic leading-relaxed">
+                    "{t.quote}"
+                  </p>
                 </div>
-                <p className="font-body text-sm text-zinc-300 italic leading-relaxed">
-                  "{t.quote}"
-                </p>
-              </div>
 
-              {/* Author & City Footer */}
-              <div className="pt-4 border-t border-white/5 text-center space-y-1">
-                <div className="font-display font-bold text-sm text-white flex items-center justify-center gap-1.5">
-                  <span>{t.author}</span>
-                  <ShieldCheck size={14} className="text-[#0054F9]" />
+                {/* Author & City Footer */}
+                <div className="pt-4 border-t border-white/5 text-center space-y-1">
+                  <div className="font-display font-bold text-sm text-white flex items-center justify-center gap-1.5">
+                    <span>{t.author}</span>
+                    <ShieldCheck size={14} className="text-[#0054F9]" />
+                  </div>
+                  <div className="text-[11px] text-zinc-400 font-code flex items-center justify-center gap-1">
+                    <MapPin size={10} className="text-[#0054F9]" />
+                    <span>{t.city}</span>
+                  </div>
+                  <div className="text-[10px] text-[#0054F9] font-code pt-1">
+                    {t.service}
+                  </div>
                 </div>
-                <div className="text-[11px] text-zinc-400 font-code flex items-center justify-center gap-1">
-                  <MapPin size={10} className="text-[#0054F9]" />
-                  <span>{t.city}</span>
-                </div>
-                <div className="text-[10px] text-[#0054F9] font-code pt-1">
-                  {t.service}
-                </div>
-              </div>
-            </div>
+              </SpotlightCard>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

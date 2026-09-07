@@ -1,15 +1,26 @@
 "use client";
 
 import React from "react";
+import { motion } from "framer-motion";
 import { Sparkles, ArrowRight, ShieldCheck, Wrench } from "lucide-react";
 import Link from "next/link";
 
 export function JoinCTASection() {
   return (
     <section className="py-20 px-4 sm:px-8 max-w-7xl mx-auto">
-      <div className="rounded-[2.5rem] bg-gradient-to-b from-[#10101C] to-[#0A0A10] border-2 border-[#0054F9]/30 p-8 sm:p-20 relative overflow-hidden shadow-[0_24px_80px_rgba(0,0,0,0.9)] text-center">
-        {/* Radial Spotlight Glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-[#0054F9]/20 rounded-full blur-[140px] pointer-events-none" />
+      <motion.div 
+        initial={{ opacity: 0, y: 30, scale: 0.96 }}
+        whileInView={{ opacity: 1, y: 0, scale: 1 }}
+        viewport={{ once: true, margin: "-60px" }}
+        transition={{ type: "spring", stiffness: 300, damping: 25 }}
+        className="rounded-[2.5rem] bg-gradient-to-b from-[#10101C] to-[#0A0A10] border-2 border-[#0054F9]/30 hover:border-[#0054F9]/60 p-8 sm:p-20 relative overflow-hidden shadow-[0_24px_80px_rgba(0,0,0,0.9)] hover:shadow-[0_30px_90px_rgba(0,84,249,0.25)] text-center transition-all duration-300"
+      >
+        {/* Dynamic Breathing Radial Spotlight Glow */}
+        <motion.div 
+          animate={{ scale: [1, 1.2, 1], opacity: [0.18, 0.32, 0.18] }}
+          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-[#0054F9]/25 rounded-full blur-[140px] pointer-events-none" 
+        />
 
         <div className="relative z-10 max-w-3xl mx-auto space-y-6">
           <div className="catalis-badge">
@@ -31,16 +42,26 @@ export function JoinCTASection() {
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
             <Link href="/signup">
-              <button className="catalis-btn catalis-btn-primary px-8 py-4 text-sm font-bold font-display shadow-[0_0_30px_rgba(0,84,249,0.5)]">
+              <motion.button 
+                whileHover={{ scale: 1.04, y: -2 }}
+                whileTap={{ scale: 0.96 }}
+                transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                className="catalis-btn catalis-btn-primary px-8 py-4 text-sm font-bold font-display shadow-[0_0_30px_rgba(0,84,249,0.5)]"
+              >
                 <span>Get Started as Client</span>
                 <ArrowRight size={16} />
-              </button>
+              </motion.button>
             </Link>
             <Link href="/provider/signup">
-              <button className="catalis-btn catalis-btn-secondary px-8 py-4 text-sm font-semibold flex items-center gap-2">
+              <motion.button 
+                whileHover={{ scale: 1.04, y: -2 }}
+                whileTap={{ scale: 0.96 }}
+                transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                className="catalis-btn catalis-btn-secondary px-8 py-4 text-sm font-semibold flex items-center gap-2"
+              >
                 <Wrench size={14} className="text-[#D4A843]" />
                 <span>Register as Master Artisan</span>
-              </button>
+              </motion.button>
             </Link>
           </div>
 
@@ -55,7 +76,7 @@ export function JoinCTASection() {
             </span>
           </div>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }

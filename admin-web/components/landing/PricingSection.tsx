@@ -1,10 +1,35 @@
 "use client";
 
 import React from "react";
+import { motion } from "framer-motion";
 import { Sparkles, Check, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 export function PricingSection() {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.12,
+        delayChildren: 0.1,
+      },
+    },
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 35 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 350,
+        damping: 26,
+      },
+    },
+  };
+
   return (
     <section id="pricing" className="py-20 px-4 sm:px-8 max-w-7xl mx-auto">
       <div className="space-y-12">
@@ -27,11 +52,22 @@ export function PricingSection() {
           </p>
         </div>
 
-        {/* Catalis pricing_grid (3-card layout) */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
+        {/* Catalis pricing_grid (3-card layout) with Staggered Motion */}
+        <motion.div 
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-60px" }}
+          className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch"
+        >
           
           {/* Card 1: Starter */}
-          <div className="p-8 rounded-[2.5rem] bg-[#11111A] border border-white/8 flex flex-col justify-between space-y-8">
+          <motion.div
+            variants={cardVariants}
+            whileHover={{ y: -8, scale: 1.02, transition: { type: "spring", stiffness: 400, damping: 25 } }}
+            whileTap={{ scale: 0.98 }}
+            className="p-8 rounded-[2.5rem] bg-[#11111A] border border-white/8 hover:border-[#0054F9]/50 hover:shadow-[0_20px_50px_rgba(0,84,249,0.15)] flex flex-col justify-between space-y-8 transition-colors duration-200"
+          >
             <div className="space-y-4">
               <div className="text-sm font-display font-bold text-zinc-300">
                 On-Demand Plan
@@ -65,16 +101,26 @@ export function PricingSection() {
             </div>
 
             <Link href="/services" className="w-full">
-              <button className="catalis-btn catalis-btn-secondary w-full py-3 text-xs font-bold font-display">
+              <motion.button 
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.96 }}
+                transition={{ type: "spring", stiffness: 500, damping: 25 }}
+                className="catalis-btn catalis-btn-secondary w-full py-3 text-xs font-bold font-display"
+              >
                 <span>Book On-Demand</span>
                 <ArrowRight size={14} />
-              </button>
+              </motion.button>
             </Link>
-          </div>
+          </motion.div>
 
           {/* Card 2: Growth (Featured Catalis Blue Plan) */}
-          <div className="p-8 rounded-[2.5rem] bg-[#141424] border-2 border-[#0054F9] flex flex-col justify-between space-y-8 shadow-[0_20px_60px_rgba(0,84,249,0.25)] relative overflow-hidden">
-            <div className="absolute top-0 right-0 px-4 py-1.5 bg-[#0054F9] text-white text-[10px] font-code font-bold rounded-bl-2xl uppercase tracking-wider">
+          <motion.div
+            variants={cardVariants}
+            whileHover={{ y: -12, scale: 1.035, transition: { type: "spring", stiffness: 400, damping: 25 } }}
+            whileTap={{ scale: 0.98 }}
+            className="p-8 rounded-[2.5rem] bg-[#141424] border-2 border-[#0054F9] flex flex-col justify-between space-y-8 shadow-[0_25px_70px_rgba(0,84,249,0.35)] hover:shadow-[0_35px_90px_rgba(0,84,249,0.5)] relative overflow-hidden transition-all duration-300"
+          >
+            <div className="absolute top-0 right-0 px-4 py-1.5 bg-[#0054F9] text-white text-[10px] font-code font-bold rounded-bl-2xl uppercase tracking-wider shadow-md">
               MOST POPULAR
             </div>
 
@@ -115,15 +161,25 @@ export function PricingSection() {
             </div>
 
             <Link href="/signup" className="w-full">
-              <button className="catalis-btn catalis-btn-primary w-full py-3 text-xs font-extrabold font-display shadow-lg">
+              <motion.button 
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: "spring", stiffness: 500, damping: 25 }}
+                className="catalis-btn catalis-btn-primary w-full py-3 text-xs font-extrabold font-display shadow-lg"
+              >
                 <span>Join Emerald Club</span>
                 <ArrowRight size={14} />
-              </button>
+              </motion.button>
             </Link>
-          </div>
+          </motion.div>
 
           {/* Card 3: Scale Corporate */}
-          <div className="p-8 rounded-[2.5rem] bg-[#11111A] border border-white/8 flex flex-col justify-between space-y-8">
+          <motion.div
+            variants={cardVariants}
+            whileHover={{ y: -8, scale: 1.02, transition: { type: "spring", stiffness: 400, damping: 25 } }}
+            whileTap={{ scale: 0.98 }}
+            className="p-8 rounded-[2.5rem] bg-[#11111A] border border-white/8 hover:border-[#0054F9]/50 hover:shadow-[0_20px_50px_rgba(0,84,249,0.15)] flex flex-col justify-between space-y-8 transition-colors duration-200"
+          >
             <div className="space-y-4">
               <div className="text-sm font-display font-bold text-zinc-300">
                 Commercial Facility Plan
@@ -157,14 +213,19 @@ export function PricingSection() {
             </div>
 
             <Link href="/dashboard/admin" className="w-full">
-              <button className="catalis-btn catalis-btn-secondary w-full py-3 text-xs font-bold font-display">
-                <span>Contact Enterprise Team</span>
+              <motion.button 
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.96 }}
+                transition={{ type: "spring", stiffness: 500, damping: 25 }}
+                className="catalis-btn catalis-btn-secondary w-full py-3 text-xs font-bold font-display"
+              >
+                <span>Scale Operations</span>
                 <ArrowRight size={14} />
-              </button>
+              </motion.button>
             </Link>
-          </div>
+          </motion.div>
 
-        </div>
+        </motion.div>
       </div>
     </section>
   );

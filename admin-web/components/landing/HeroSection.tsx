@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import gsap from "gsap";
 import {
   ArrowRight,
@@ -166,11 +167,19 @@ export function HeroSection() {
                 ref={leftCardRef}
                 className="hidden lg:block lg:col-span-3 transform -rotate-2 hover:rotate-0 transition-transform duration-300"
               >
-                <div className="p-5 rounded-3xl bg-[#12121A]/90 border border-white/10 shadow-2xl space-y-4 text-left backdrop-blur-xl">
+                <motion.div
+                  whileHover={{ y: -8, scale: 1.03, transition: { type: "spring", stiffness: 400, damping: 25 } }}
+                  whileTap={{ scale: 0.98 }}
+                  className="p-5 rounded-3xl bg-[#12121A]/90 border border-white/10 hover:border-[#0054F9]/50 shadow-2xl hover:shadow-[0_15px_40px_rgba(0,84,249,0.2)] space-y-4 text-left backdrop-blur-xl cursor-default transition-colors duration-200"
+                >
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-2xl bg-[#D4A843]/10 border border-[#D4A843]/30 text-[#D4A843] flex items-center justify-center font-bold text-base">
+                    <motion.div 
+                      whileHover={{ rotate: 10, scale: 1.1 }}
+                      transition={{ type: "spring", stiffness: 400, damping: 20 }}
+                      className="w-12 h-12 rounded-2xl bg-[#D4A843]/10 border border-[#D4A843]/30 text-[#D4A843] flex items-center justify-center font-bold text-base"
+                    >
                       TM
-                    </div>
+                    </motion.div>
                     <div>
                       <div className="flex items-center gap-1">
                         <span className="font-display font-bold text-sm text-white">Tariq Mehmood</span>
@@ -200,7 +209,7 @@ export function HeroSection() {
                   <div className="p-2.5 rounded-xl bg-white/5 border border-white/5 text-[10px] font-code text-zinc-400">
                     ⚡ Auto-Dispatched via Voice Agent in 220ms
                   </div>
-                </div>
+                </motion.div>
               </div>
 
               {/* CENTER MAIN CARD (Interactive Sandbox Terminal) */}
@@ -208,7 +217,10 @@ export function HeroSection() {
                 ref={centerCardRef}
                 className="lg:col-span-6 w-full"
               >
-                <div className="p-6 sm:p-8 rounded-[2rem] bg-[#12121C]/95 border-2 border-[#0054F9]/40 shadow-[0_24px_70px_rgba(0,0,0,0.9)] text-left backdrop-blur-2xl relative overflow-hidden">
+                <motion.div
+                  whileHover={{ y: -4, transition: { type: "spring", stiffness: 400, damping: 30 } }}
+                  className="p-6 sm:p-8 rounded-[2rem] bg-[#12121C]/95 border-2 border-[#0054F9]/40 hover:border-[#0054F9]/70 shadow-[0_24px_70px_rgba(0,0,0,0.9)] hover:shadow-[0_30px_90px_rgba(0,84,249,0.25)] text-left backdrop-blur-2xl relative overflow-hidden transition-all duration-300"
+                >
                   <div className="absolute top-0 right-0 w-40 h-40 bg-[#0054F9]/15 rounded-full blur-3xl pointer-events-none" />
 
                   {/* Header bar */}
@@ -229,10 +241,13 @@ export function HeroSection() {
                     <span className="text-[11px] font-code uppercase text-zinc-400 font-bold">
                       Select Sample Scenario:
                     </span>
-                    <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+                    <div className="flex items-center gap-2 overflow-x-auto pb-1.5 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
                       {SAMPLE_PROMPTS.map((p, idx) => (
-                        <button
+                        <motion.button
                           key={idx}
+                          whileHover={{ scale: 1.04 }}
+                          whileTap={{ scale: 0.95 }}
+                          transition={{ type: "spring", stiffness: 500, damping: 30 }}
                           onClick={() => {
                             setActivePromptIndex(idx);
                             setDispatchedToken(null);
@@ -244,38 +259,53 @@ export function HeroSection() {
                           }`}
                         >
                           {p.service}
-                        </button>
+                        </motion.button>
                       ))}
                     </div>
                   </div>
 
                   {/* Simulated Natural Language Prompt Box */}
-                  <div className="relative mb-5">
+                  <div className="relative mb-5 rounded-2xl bg-[#0A0A0F] border border-white/10 focus-within:border-[#0054F9] transition-all p-4 shadow-inner">
                     <textarea
                       rows={2}
                       value={promptInput}
                       onChange={(e) => setPromptInput(e.target.value)}
-                      className="w-full bg-[#0A0A0F] border border-white/10 rounded-2xl p-4 text-xs sm:text-sm text-white focus:outline-none focus:border-[#0054F9] transition-colors resize-none leading-relaxed"
+                      className="w-full bg-transparent text-xs sm:text-sm text-white focus:outline-none resize-none leading-relaxed pb-2 placeholder-zinc-500"
+                      placeholder="Enter natural language dispatch query..."
                     />
-                    <button
-                      onClick={handleSimulateDispatch}
-                      disabled={isSimulating}
-                      className="absolute right-3 bottom-3 catalis-btn catalis-btn-primary py-1.5 px-3.5 text-xs shadow-md"
-                    >
-                      {isSimulating ? (
-                        <span className="animate-spin">⟳</span>
-                      ) : (
-                        <>
-                          <span>Dispatch</span>
-                          <Send size={11} />
-                        </>
-                      )}
-                    </button>
+                    <div className="flex items-center justify-between pt-2 border-t border-white/5 mt-1">
+                      <span className="text-[10px] font-code text-zinc-500 flex items-center gap-1.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                        AI Neural Dispatch Ready
+                      </span>
+                      <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.94 }}
+                        transition={{ type: "spring", stiffness: 500, damping: 25 }}
+                        onClick={handleSimulateDispatch}
+                        disabled={isSimulating}
+                        className="catalis-btn catalis-btn-primary py-1.5 px-4 text-xs shadow-md flex items-center gap-1.5 shrink-0"
+                      >
+                        {isSimulating ? (
+                          <span className="animate-spin">⟳</span>
+                        ) : (
+                          <>
+                            <span>Dispatch</span>
+                            <Send size={11} />
+                          </>
+                        )}
+                      </motion.button>
+                    </div>
                   </div>
 
                   {/* Realtime Result Badge */}
                   {dispatchedToken ? (
-                    <div className="p-3.5 rounded-2xl bg-[#0054F9]/10 border border-[#0054F9]/40 flex items-center justify-between animate-fadeIn">
+                    <motion.div 
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                      className="p-3.5 rounded-2xl bg-[#0054F9]/10 border border-[#0054F9]/40 flex items-center justify-between"
+                    >
                       <div className="flex items-center gap-2.5">
                         <CheckCircle2 size={16} className="text-[#0054F9]" />
                         <div>
@@ -290,14 +320,14 @@ export function HeroSection() {
                       <Link href="/services" className="text-xs text-[#0054F9] font-bold hover:underline">
                         Open Trace →
                       </Link>
-                    </div>
+                    </motion.div>
                   ) : (
                     <div className="flex items-center justify-between text-[11px] font-code text-zinc-400 pt-1">
                       <span>Active Dialect: Roman Urdu / English</span>
                       <span className="text-[#0054F9]">Ready to Orchestrate</span>
                     </div>
                   )}
-                </div>
+                </motion.div>
               </div>
 
               {/* RIGHT FLOATING CARD (Escrow & Telemetry Proof) */}
@@ -305,7 +335,11 @@ export function HeroSection() {
                 ref={rightCardRef}
                 className="hidden lg:block lg:col-span-3 transform rotate-2 hover:rotate-0 transition-transform duration-300"
               >
-                <div className="p-5 rounded-3xl bg-[#12121A]/90 border border-white/10 shadow-2xl space-y-4 text-left backdrop-blur-xl">
+                <motion.div
+                  whileHover={{ y: -8, scale: 1.03, transition: { type: "spring", stiffness: 400, damping: 25 } }}
+                  whileTap={{ scale: 0.98 }}
+                  className="p-5 rounded-3xl bg-[#12121A]/90 border border-white/10 hover:border-[#0054F9]/50 shadow-2xl hover:shadow-[0_15px_40px_rgba(0,84,249,0.2)] space-y-4 text-left backdrop-blur-xl cursor-default transition-colors duration-200"
+                >
                   <div className="flex items-center justify-between">
                     <span className="text-[11px] font-code uppercase text-[#0054F9] font-bold">
                       Escrow Vault Lock
@@ -337,7 +371,7 @@ export function HeroSection() {
                     <CheckCircle2 size={12} />
                     <span>Bank / Raast Instant Settlement</span>
                   </div>
-                </div>
+                </motion.div>
               </div>
 
             </div>

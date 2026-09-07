@@ -1,10 +1,36 @@
 "use client";
 
 import React from "react";
+import { motion } from "framer-motion";
 import { Sparkles, ShieldCheck, Zap, Bot, Lock, ArrowUpRight, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
+import { SpotlightCard } from "@/components/ui/SpotlightCard";
 
 export function BenefitsSection() {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.1,
+      },
+    },
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 350,
+        damping: 25,
+      },
+    },
+  };
+
   return (
     <section id="benefits" className="py-20 px-4 sm:px-8 max-w-7xl mx-auto">
       <div className="rounded-[2.5rem] bg-[#0E0E16]/80 border border-white/8 p-8 sm:p-16 relative overflow-hidden">
@@ -29,86 +55,115 @@ export function BenefitsSection() {
           </p>
         </div>
 
-        {/* Catalis benefits_grid (Bento 4-card layout) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          
+        {/* Catalis benefits_grid (Bento 4-card layout) with Staggered Motion & Mouse Spotlight Transitions */}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-60px" }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+        >
           {/* Card 1 */}
-          <div className="p-6 sm:p-8 rounded-3xl bg-[#13131D]/80 border border-white/8 hover:border-[#0054F9]/40 transition-all flex flex-col justify-between space-y-6 group">
-            <div className="space-y-4">
-              <div className="w-12 h-12 rounded-2xl bg-[#0054F9]/10 border border-[#0054F9]/30 text-[#0054F9] flex items-center justify-center font-bold text-lg group-hover:scale-110 transition-transform">
-                <Bot size={22} />
+          <motion.div variants={cardVariants}>
+            <SpotlightCard className="p-6 sm:p-8 flex flex-col justify-between space-y-6 h-full backdrop-blur-md">
+              <div className="space-y-4">
+                <motion.div 
+                  whileHover={{ rotate: 10, scale: 1.15 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 20 }}
+                  className="w-12 h-12 rounded-2xl bg-[#0054F9]/10 border border-[#0054F9]/30 text-[#0054F9] flex items-center justify-center font-bold text-lg"
+                >
+                  <Bot size={22} />
+                </motion.div>
+                <h3 className="font-display font-bold text-lg text-white group-hover:text-[#0054F9] transition-colors">
+                  Intuitive User Interface
+                </h3>
+                <p className="font-body text-xs text-zinc-400 leading-relaxed">
+                  Describe problems naturally in Roman Urdu, Urdu, or English. Our LLM pipeline extracts trade, urgency, and location instantly.
+                </p>
               </div>
-              <h3 className="font-display font-bold text-lg text-white">
-                Intuitive User Interface
-              </h3>
-              <p className="font-body text-xs text-zinc-400 leading-relaxed">
-                Describe problems naturally in Roman Urdu, Urdu, or English. Our LLM pipeline extracts trade, urgency, and location instantly.
-              </p>
-            </div>
-            <div className="pt-4 border-t border-white/5 flex items-center justify-between text-xs font-code text-zinc-400">
-              <span>Natural Speech</span>
-              <span className="text-[#0054F9]">Vapi Engine →</span>
-            </div>
-          </div>
+              <div className="pt-4 border-t border-white/5 flex items-center justify-between text-xs font-code text-zinc-400">
+                <span>Natural Speech</span>
+                <span className="text-[#0054F9] group-hover:translate-x-1 transition-transform">Vapi Engine →</span>
+              </div>
+            </SpotlightCard>
+          </motion.div>
 
           {/* Card 2 */}
-          <div className="p-6 sm:p-8 rounded-3xl bg-[#13131D]/80 border border-white/8 hover:border-[#0054F9]/40 transition-all flex flex-col justify-between space-y-6 group">
-            <div className="space-y-4">
-              <div className="w-12 h-12 rounded-2xl bg-[#0054F9]/10 border border-[#0054F9]/30 text-[#0054F9] flex items-center justify-center font-bold text-lg group-hover:scale-110 transition-transform">
-                <Zap size={22} />
+          <motion.div variants={cardVariants}>
+            <SpotlightCard className="p-6 sm:p-8 flex flex-col justify-between space-y-6 h-full backdrop-blur-md">
+              <div className="space-y-4">
+                <motion.div 
+                  whileHover={{ rotate: 10, scale: 1.15 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 20 }}
+                  className="w-12 h-12 rounded-2xl bg-[#0054F9]/10 border border-[#0054F9]/30 text-[#0054F9] flex items-center justify-center font-bold text-lg"
+                >
+                  <Zap size={22} />
+                </motion.div>
+                <h3 className="font-display font-bold text-lg text-white group-hover:text-[#0054F9] transition-colors">
+                  Automated Processes
+                </h3>
+                <p className="font-body text-xs text-zinc-400 leading-relaxed">
+                  5 coordinated micro-agents automate discovery, score provider ratings, reserve calendar slots, and issue OTP verification tokens.
+                </p>
               </div>
-              <h3 className="font-display font-bold text-lg text-white">
-                Automated Processes
-              </h3>
-              <p className="font-body text-xs text-zinc-400 leading-relaxed">
-                5 coordinated micro-agents automate discovery, score provider ratings, reserve calendar slots, and issue OTP verification tokens.
-              </p>
-            </div>
-            <div className="pt-4 border-t border-white/5 flex items-center justify-between text-xs font-code text-zinc-400">
-              <span>Zero Delay</span>
-              <span className="text-[#0054F9]">&lt; 300ms Match →</span>
-            </div>
-          </div>
+              <div className="pt-4 border-t border-white/5 flex items-center justify-between text-xs font-code text-zinc-400">
+                <span>Zero Delay</span>
+                <span className="text-[#0054F9] group-hover:translate-x-1 transition-transform">&lt; 300ms Match →</span>
+              </div>
+            </SpotlightCard>
+          </motion.div>
 
           {/* Card 3 */}
-          <div className="p-6 sm:p-8 rounded-3xl bg-[#13131D]/80 border border-white/8 hover:border-[#0054F9]/40 transition-all flex flex-col justify-between space-y-6 group">
-            <div className="space-y-4">
-              <div className="w-12 h-12 rounded-2xl bg-[#0054F9]/10 border border-[#0054F9]/30 text-[#0054F9] flex items-center justify-center font-bold text-lg group-hover:scale-110 transition-transform">
-                <Lock size={22} />
+          <motion.div variants={cardVariants}>
+            <SpotlightCard className="p-6 sm:p-8 flex flex-col justify-between space-y-6 h-full backdrop-blur-md">
+              <div className="space-y-4">
+                <motion.div 
+                  whileHover={{ rotate: 10, scale: 1.15 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 20 }}
+                  className="w-12 h-12 rounded-2xl bg-[#0054F9]/10 border border-[#0054F9]/30 text-[#0054F9] flex items-center justify-center font-bold text-lg"
+                >
+                  <Lock size={22} />
+                </motion.div>
+                <h3 className="font-display font-bold text-lg text-white group-hover:text-[#0054F9] transition-colors">
+                  Secure Transactions
+                </h3>
+                <p className="font-body text-xs text-zinc-400 leading-relaxed">
+                  Eliminate cash haggling. Payment is held in secure escrow and released to the artisan only after your satisfactory OTP verification.
+                </p>
               </div>
-              <h3 className="font-display font-bold text-lg text-white">
-                Secure Transactions
-              </h3>
-              <p className="font-body text-xs text-zinc-400 leading-relaxed">
-                Eliminate cash haggling. Payment is held in secure escrow and released to the artisan only after your satisfactory OTP verification.
-              </p>
-            </div>
-            <div className="pt-4 border-t border-white/5 flex items-center justify-between text-xs font-code text-zinc-400">
-              <span>100% Escrow</span>
-              <span className="text-[#0054F9]">Guaranteed →</span>
-            </div>
-          </div>
+              <div className="pt-4 border-t border-white/5 flex items-center justify-between text-xs font-code text-zinc-400">
+                <span>100% Escrow</span>
+                <span className="text-[#0054F9] group-hover:translate-x-1 transition-transform">Guaranteed →</span>
+              </div>
+            </SpotlightCard>
+          </motion.div>
 
           {/* Card 4 */}
-          <div className="p-6 sm:p-8 rounded-3xl bg-[#13131D]/80 border border-white/8 hover:border-[#0054F9]/40 transition-all flex flex-col justify-between space-y-6 group">
-            <div className="space-y-4">
-              <div className="w-12 h-12 rounded-2xl bg-[#0054F9]/10 border border-[#0054F9]/30 text-[#0054F9] flex items-center justify-center font-bold text-lg group-hover:scale-110 transition-transform">
-                <ShieldCheck size={22} />
+          <motion.div variants={cardVariants}>
+            <SpotlightCard className="p-6 sm:p-8 flex flex-col justify-between space-y-6 h-full backdrop-blur-md">
+              <div className="space-y-4">
+                <motion.div 
+                  whileHover={{ rotate: 10, scale: 1.15 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 20 }}
+                  className="w-12 h-12 rounded-2xl bg-[#0054F9]/10 border border-[#0054F9]/30 text-[#0054F9] flex items-center justify-center font-bold text-lg"
+                >
+                  <ShieldCheck size={22} />
+                </motion.div>
+                <h3 className="font-display font-bold text-lg text-white group-hover:text-[#0054F9] transition-colors">
+                  Advanced Security
+                </h3>
+                <p className="font-body text-xs text-zinc-400 leading-relaxed">
+                  Every technician is screened against NADRA databases with criminal background clearance and 30-day workmanship warranties.
+                </p>
               </div>
-              <h3 className="font-display font-bold text-lg text-white">
-                Advanced Security
-              </h3>
-              <p className="font-body text-xs text-zinc-400 leading-relaxed">
-                Every technician is screened against NADRA databases with criminal background clearance and 30-day workmanship warranties.
-              </p>
-            </div>
-            <div className="pt-4 border-t border-white/5 flex items-center justify-between text-xs font-code text-zinc-400">
-              <span>NADRA Verified</span>
-              <span className="text-[#0054F9]">Biometric →</span>
-            </div>
-          </div>
+              <div className="pt-4 border-t border-white/5 flex items-center justify-between text-xs font-code text-zinc-400">
+                <span>NADRA Verified</span>
+                <span className="text-[#0054F9] group-hover:translate-x-1 transition-transform">Biometric →</span>
+              </div>
+            </SpotlightCard>
+          </motion.div>
 
-        </div>
+        </motion.div>
       </div>
     </section>
   );
