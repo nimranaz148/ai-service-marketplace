@@ -121,9 +121,9 @@ export default function ProviderBookingsPage() {
             key={booking.id}
             className="p-6 rounded-3xl bg-[#111118] border border-white/8 hover:border-[#D4A843]/40 transition-all shadow-[0_16px_40px_rgba(0,0,0,0.3)] space-y-4"
           >
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#1C2E25]">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-white/10">
               <div className="flex items-center gap-3">
-                <span className="px-3 py-1 rounded-xl bg-[#141420] border border-white/10 text-[#34D399] font-code font-bold text-xs">
+                <span className="px-3 py-1 rounded-xl bg-[#141420] border border-white/10 text-[#38BDF8] font-code font-bold text-xs">
                   {booking.token}
                 </span>
                 <span className="font-display font-bold text-base text-white">
@@ -133,7 +133,7 @@ export default function ProviderBookingsPage() {
               </div>
 
               <div className="flex items-center gap-2">
-                <span className="font-display font-bold text-sm text-[#34D399]">
+                <span className="font-display font-bold text-sm text-[#38BDF8]">
                   {booking.estimatedEarnings}
                 </span>
                 <span className="text-[10px] text-zinc-400 uppercase font-code">Escrow Lock</span>
@@ -144,7 +144,7 @@ export default function ProviderBookingsPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
               <div className="space-y-2">
                 <div className="flex items-start gap-2 text-zinc-300">
-                  <MapPin size={14} className="text-[#34D399] shrink-0 mt-0.5" />
+                  <MapPin size={14} className="text-[#38BDF8] shrink-0 mt-0.5" />
                   <span>{booking.address}</span>
                 </div>
                 <div className="flex items-center gap-2 text-zinc-400 font-code">
@@ -164,13 +164,13 @@ export default function ProviderBookingsPage() {
             </div>
 
             {/* Lifecycle Status & Controls */}
-            <div className="pt-3 border-t border-[#1C2E25] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="pt-3 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div className="flex items-center gap-2">
                 <span className="font-code text-[11px] text-zinc-400">Job Status:</span>
                 <span
                   className={`px-2.5 py-0.5 rounded-full border text-[10px] font-code font-bold uppercase ${
                     booking.status === "completed"
-                      ? "bg-[#132A1F] text-[#34D399] border-white/10"
+                      ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
                       : booking.status === "arrived"
                       ? "bg-[#292212] text-[#D4A843] border-[#473B1F]"
                       : booking.status === "en_route"
@@ -207,7 +207,7 @@ export default function ProviderBookingsPage() {
                 {booking.status === "arrived" && (
                   <Button
                     onClick={() => handleUpdateStatus(booking.id, "completed")}
-                    className="h-9 px-4 rounded-xl bg-[#0054F9] hover:bg-[#2D40EA] text-white shadow-[0_0_20px_rgba(0,84,249,0.3)] font-display font-bold text-xs flex items-center gap-1.5 shadow-[0_4px_16px_rgba(52,211,153,0.3)] cursor-pointer"
+                    className="h-9 px-4 rounded-xl bg-[#0054F9] hover:bg-[#0043C7] text-white shadow-[0_0_20px_rgba(0,84,249,0.3)] font-display font-bold text-xs flex items-center gap-1.5 cursor-pointer"
                   >
                     <CheckCircle2 size={14} />
                     <span>Verify Token & Complete Job</span>
@@ -215,7 +215,7 @@ export default function ProviderBookingsPage() {
                 )}
 
                 {booking.status === "completed" && (
-                  <span className="inline-flex items-center gap-1.5 text-xs text-[#34D399] font-code font-semibold px-3 py-1 rounded-xl bg-[#132A1F] border border-white/10">
+                  <span className="inline-flex items-center gap-1.5 text-xs text-emerald-400 font-code font-semibold px-3 py-1 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
                     <CheckCircle2 size={13} />
                     <span>Payout Released via Escrow</span>
                   </span>

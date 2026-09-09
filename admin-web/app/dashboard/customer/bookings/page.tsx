@@ -144,23 +144,23 @@ export default function CustomerBookingsPage() {
               href="/dashboard/customer"
               className="inline-flex items-center gap-1 text-xs font-code text-zinc-400 hover:text-[#0054F9] transition-colors"
             >
-              <ChevronLeft size={14} /> Back to Concierge
+              <ChevronLeft size={14} /> Back to Home
             </Link>
-            <span className="text-[#3D5245]">/</span>
-            <span className="text-xs font-code text-[#34D399] uppercase tracking-wider">Bookings Ledger</span>
+            <span className="text-zinc-600">/</span>
+            <span className="text-xs font-code text-[#38BDF8] uppercase tracking-wider">My Bookings</span>
           </div>
           <h1 className="font-display font-extrabold text-2xl sm:text-3xl text-white tracking-tight">
-            My Bookings & Service History
+            My Bookings & Orders
           </h1>
           <p className="font-body text-xs sm:text-sm text-zinc-400 mt-1">
-            Track active dispatches, view completion tokens, and rate your verified master artisans.
+            Track active technician dispatches, view security OTP codes, and rate your verified artisans.
           </p>
         </div>
 
         {/* Filter Tabs */}
         <div className="flex items-center gap-2">
           {[
-            { key: "all", label: "All Records" },
+            { key: "all", label: "All Orders" },
             { key: "active", label: "Active (1)" },
             { key: "completed", label: "Completed (3)" },
           ].map((tab) => (
@@ -169,7 +169,7 @@ export default function CustomerBookingsPage() {
               onClick={() => setFilter(tab.key as any)}
               className={`px-3.5 py-2 rounded-xl text-xs font-code font-bold transition-all cursor-pointer ${
                 filter === tab.key
-                  ? "bg-[#34D399] text-[#090E0C] shadow-[0_0_15px_rgba(52,211,153,0.3)]"
+                  ? "bg-[#0054F9] text-white shadow-[0_0_20px_rgba(0,84,249,0.3)]"
                   : "bg-[#111118] border border-white/8 text-zinc-400 hover:text-white"
               }`}
             >
@@ -188,7 +188,7 @@ export default function CustomerBookingsPage() {
               key={b.id}
               className={`p-6 rounded-3xl border transition-all ${
                 isActive
-                  ? "bg-gradient-to-r from-[#12221A] to-[#0E1B14] border-2 border-[#34D399]/40 shadow-[0_10px_30px_rgba(0,0,0,0.4)]"
+                  ? "bg-gradient-to-r from-[#141420] to-[#0A0A0F] border-2 border-[#0054F9]/40 shadow-[0_10px_30px_rgba(0,0,0,0.4)]"
                   : "bg-[#111118] border-white/8"
               }`}
             >
@@ -201,17 +201,17 @@ export default function CustomerBookingsPage() {
 
                   <div className="space-y-1.5 flex-1">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <span className="font-code font-black text-xs text-[#D4A843] bg-[#241E11] px-2.5 py-0.5 rounded-md border border-[#42371E]">
-                        TOKEN: {b.token}
+                      <span className="font-code font-black text-xs text-[#38BDF8] bg-[#0054F9]/15 px-2.5 py-0.5 rounded-md border border-[#0054F9]/30">
+                        OTP: {b.token}
                       </span>
                       <span
                         className={`px-2 py-0.5 rounded text-[10px] font-code font-bold uppercase border ${
                           isActive
-                            ? "bg-[#132A1F] text-[#34D399] border-white/10 animate-pulse"
-                            : "bg-[#16251E] text-zinc-400 border-[#233B2F]"
+                            ? "bg-[#0E202B] text-[#38BDF8] border-[#18394D] animate-pulse"
+                            : "bg-[#111118] text-zinc-400 border-white/8"
                         }`}
                       >
-                        {isActive ? "DISPATCH IN PROGRESS" : "COMPLETED"}
+                        {isActive ? "ON THE WAY" : "COMPLETED"}
                       </span>
                     </div>
 
@@ -225,7 +225,7 @@ export default function CustomerBookingsPage() {
                       </span>
                       <span>·</span>
                       <span className="flex items-center gap-1">
-                        <Clock size={12} className="text-[#34D399]" />
+                        <Clock size={12} className="text-[#38BDF8]" />
                         {b.scheduledTime}
                       </span>
                       <span>·</span>
@@ -257,7 +257,7 @@ export default function CustomerBookingsPage() {
                 {/* Right: Amount & Actions */}
                 <div className="flex flex-row lg:flex-col items-center lg:items-end justify-between gap-3 pt-4 lg:pt-0 border-t lg:border-t-0 border-white/8">
                   <div>
-                    <div className="font-display font-extrabold text-lg text-[#34D399] text-right">
+                    <div className="font-display font-extrabold text-lg text-[#38BDF8] text-right">
                       PKR {b.amountPKR.toLocaleString()}
                     </div>
                     <div className="text-[10px] font-code text-zinc-400 text-right">
@@ -269,7 +269,7 @@ export default function CustomerBookingsPage() {
                     {isActive ? (
                       <a
                         href={`tel:${b.artisanPhone}`}
-                        className="h-9 px-3.5 rounded-xl bg-[#141420] hover:bg-[#20362B] border border-[#284435] text-[#34D399] font-code text-xs font-bold flex items-center gap-1.5 transition-colors"
+                        className="h-9 px-3.5 rounded-xl bg-[#0054F9]/10 hover:bg-[#0054F9]/20 border border-[#0054F9]/40 text-[#38BDF8] font-code text-xs font-bold flex items-center gap-1.5 transition-colors"
                       >
                         <Phone size={13} />
                         <span>Call Artisan</span>
@@ -287,7 +287,7 @@ export default function CustomerBookingsPage() {
 
                     <button
                       onClick={() => toast.info(`Invoice ${b.token}.pdf downloaded.`)}
-                      className="p-2 rounded-xl text-zinc-400 hover:text-white hover:bg-[#1C2C24] border border-transparent hover:border-[#2F4A3B] transition-colors"
+                      className="p-2 rounded-xl text-zinc-400 hover:text-white hover:bg-white/10 border border-transparent hover:border-white/20 transition-colors"
                       title="Download Invoice"
                     >
                       <Download size={15} />
@@ -303,7 +303,7 @@ export default function CustomerBookingsPage() {
       {/* REVIEW MODAL */}
       {reviewModalBooking && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#111118] border border-[#21352A] rounded-3xl max-w-md w-full p-6 space-y-5 shadow-2xl relative">
+          <div className="bg-[#111118] border border-white/10 rounded-3xl max-w-md w-full p-6 space-y-5 shadow-2xl relative">
             <div className="flex items-center justify-between border-b border-white/8 pb-4">
               <div>
                 <h2 className="font-display font-bold text-lg text-white">
@@ -352,7 +352,7 @@ export default function CustomerBookingsPage() {
                   value={reviewText}
                   onChange={(e) => setReviewText(e.target.value)}
                   placeholder="Share details about punctuality, craftsmanship, and pricing transparency..."
-                  className="w-full bg-[#0C120F] border border-white/8 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-[#0054F9]"
+                  className="w-full bg-[#0A0A0F] border border-white/8 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-[#0054F9]"
                 />
               </div>
 

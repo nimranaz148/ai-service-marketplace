@@ -20,31 +20,42 @@ export default function AdminSettingsPage() {
   };
 
   return (
-    <div className="space-y-6 pb-12 max-w-4xl">
-      {/* Top Header */}
-      <div className="flex items-center justify-between pb-4 border-b border-white/8">
-        <div className="flex items-center gap-3">
-          <Link
-            href="/dashboard/admin"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#111118] border border-white/8 text-xs font-semibold text-zinc-400 hover:text-[#0054F9] transition-colors"
-          >
-            <ChevronLeft size={14} />
-            <span>Admin Deck</span>
-          </Link>
-          <span className="text-zinc-600">/</span>
-          <span className="font-display font-bold text-base text-white flex items-center gap-2">
-            <Settings size={18} className="text-[#38BDF8]" />
-            <span>Platform Governance & Cluster Controls</span>
-          </span>
-        </div>
+    <div className="space-y-6 pb-12">
+      {/* Top Banner */}
+      <div className="relative rounded-[2rem] p-6 sm:p-8 bg-[#111118] border border-white/10 shadow-[0_16px_40px_rgba(0,0,0,0.5)] overflow-hidden">
+        <div className="absolute -right-16 -top-16 w-64 h-64 rounded-full bg-[#0054F9]/15 blur-[120px] pointer-events-none" />
 
-        <Button
-          onClick={handleSave}
-          className="h-10 px-4 rounded-xl bg-[#0054F9] hover:bg-[#2D40EA] text-white shadow-[0_0_20px_rgba(0,84,249,0.3)] font-display font-bold text-xs flex items-center gap-2 shadow-[0_4px_16px_rgba(52,211,153,0.3)] transition-all cursor-pointer"
-        >
-          <Save size={14} />
-          <span>Save Settings</span>
-        </Button>
+        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div>
+            <div className="catalis-badge mb-3">
+              <Settings size={13} className="text-[#0054F9]" />
+              <span>SUPER ADMIN / PLATFORM GOVERNANCE</span>
+            </div>
+            <h1 className="font-display font-extrabold text-2xl sm:text-3xl text-white tracking-tight">
+              Platform Governance & Controls
+            </h1>
+            <p className="font-body text-xs sm:text-sm text-zinc-400 mt-2 max-w-2xl leading-relaxed">
+              Global marketplace economics, metro cluster activations, and acoustic voice engine parameters across Pakistani hubs.
+            </p>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2.5">
+            <Link
+              href="/dashboard/admin"
+              className="h-10 px-4 rounded-xl bg-[#141420] hover:bg-[#1A1A28] text-white border border-white/10 text-xs font-semibold flex items-center gap-2 transition-all shadow-sm"
+            >
+              <ChevronLeft size={14} className="text-[#38BDF8]" />
+              <span>Admin Deck</span>
+            </Link>
+            <Button
+              onClick={handleSave}
+              className="h-10 px-4 rounded-xl bg-[#0054F9] hover:bg-[#0043C7] text-white shadow-[0_0_20px_rgba(0,84,249,0.3)] font-display font-bold text-xs flex items-center gap-2 transition-all cursor-pointer active:scale-95"
+            >
+              <Save size={14} />
+              <span>Save Settings</span>
+            </Button>
+          </div>
+        </div>
       </div>
 
       <form onSubmit={handleSave} className="space-y-6">
@@ -59,7 +70,7 @@ export default function AdminSettingsPage() {
                 Toggle dispatch availability across hyper-local metropolitan hubs.
               </p>
             </div>
-            <span className="font-code text-[10px] text-[#34D399] bg-[#141420] px-2.5 py-0.5 rounded-full border border-white/10">
+            <span className="font-code text-[10px] text-[#38BDF8] bg-[#0054F9]/10 px-2.5 py-0.5 rounded-full border border-[#0054F9]/30">
               3 Metros Online
             </span>
           </div>
@@ -75,13 +86,13 @@ export default function AdminSettingsPage() {
                 onClick={() => metro.setter(!metro.state)}
                 className={`p-4 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between ${
                   metro.state
-                    ? "bg-[#141420] border-[#34D399]/60 shadow-[0_0_20px_rgba(52,211,153,0.1)]"
+                    ? "bg-[#141420] border-[#0054F9]/60 shadow-[0_0_20px_rgba(0,84,249,0.15)]"
                     : "bg-[#0A0A0F] border-white/8 opacity-50"
                 }`}
               >
                 <div className="flex items-center justify-between mb-2">
-                  <span className="font-code text-xs font-bold text-[#34D399]">{metro.code}</span>
-                  <span className={`w-2 h-2 rounded-full ${metro.state ? "bg-[#34D399]" : "bg-[#EF4444]"}`} />
+                  <span className="font-code text-xs font-bold text-[#38BDF8]">{metro.code}</span>
+                  <span className={`w-2 h-2 rounded-full ${metro.state ? "bg-[#0054F9]" : "bg-[#EF4444]"}`} />
                 </div>
                 <div>
                   <span className="font-display font-bold text-xs text-white block">{metro.name}</span>
@@ -109,7 +120,7 @@ export default function AdminSettingsPage() {
             <div>
               <div className="flex items-center justify-between text-xs mb-2">
                 <span className="text-zinc-400">Platform Commission Rate:</span>
-                <span className="font-code font-bold text-sm text-[#34D399]">{commissionRate}%</span>
+                <span className="font-code font-bold text-sm text-[#0054F9]">{commissionRate}%</span>
               </div>
               <input
                 type="range"
@@ -117,7 +128,7 @@ export default function AdminSettingsPage() {
                 max="25"
                 value={commissionRate}
                 onChange={(e) => setCommissionRate(Number(e.target.value))}
-                className="w-full h-2 bg-[#0A0A0F] rounded-lg appearance-none cursor-pointer accent-[#34D399]"
+                className="w-full h-2 bg-[#0A0A0F] rounded-lg appearance-none cursor-pointer accent-[#0054F9]"
               />
               <div className="flex items-center justify-between text-[10px] font-code text-zinc-400 mt-1">
                 <span>5% (Subsidized)</span>
@@ -135,7 +146,7 @@ export default function AdminSettingsPage() {
                 type="checkbox"
                 checked={autoEscrow}
                 onChange={(e) => setAutoEscrow(e.target.checked)}
-                className="w-4 h-4 accent-[#34D399] cursor-pointer"
+                className="w-4 h-4 accent-[#0054F9] cursor-pointer"
               />
             </div>
           </div>
@@ -145,7 +156,7 @@ export default function AdminSettingsPage() {
         <div className="p-6 rounded-3xl bg-[#111118] border border-white/8 space-y-4">
           <div className="pb-3 border-b border-white/8">
             <h3 className="font-display font-bold text-sm text-white flex items-center gap-2">
-              <Radio size={15} className="text-[#34D399]" />
+              <Radio size={15} className="text-[#0054F9]" />
               <span>Acoustic Voice Engine (Vapi 16kHz)</span>
             </h3>
             <p className="text-xs text-zinc-400 mt-0.5">
@@ -163,14 +174,14 @@ export default function AdminSettingsPage() {
                 type="checkbox"
                 checked={vapiUrduMode}
                 onChange={(e) => setVapiUrduMode(e.target.checked)}
-                className="w-4 h-4 accent-[#34D399] cursor-pointer"
+                className="w-4 h-4 accent-[#0054F9] cursor-pointer"
               />
             </div>
 
             <div className="p-3 rounded-2xl bg-[#0A0A0F] border border-white/8 space-y-1 text-[11px] font-code text-zinc-400">
               <div className="flex justify-between">
                 <span>Webhook Health:</span>
-                <span className="text-[#34D399]">200 OK (Reverse Proxy Active)</span>
+                <span className="text-emerald-400 font-semibold">200 OK (Reverse Proxy Active)</span>
               </div>
               <div className="flex justify-between">
                 <span>Assistant ID:</span>

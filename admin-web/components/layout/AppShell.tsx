@@ -54,18 +54,16 @@ const PROVIDER_NAV: NavItem[] = [
 ];
 
 const CUSTOMER_NAV: NavItem[] = [
-  { href: "/dashboard/customer", label: "Concierge Hub", icon: LayoutDashboard },
-  { href: "/dashboard/customer/providers", label: "Verified Artisans", icon: Users },
-  { href: "/dashboard/customer/bookings", label: "My Bookings Ledger", icon: CalendarCheck },
-  { href: "/services", label: "AI Voice & Chat Sandbox", icon: Cpu },
-  { href: "/dashboard/customer/profile", label: "Saved Addresses", icon: MapPin },
+  { href: "/dashboard/customer", label: "Home", icon: Home },
+  { href: "/dashboard/customer/providers", label: "Find Artisans", icon: Users },
+  { href: "/dashboard/customer/bookings", label: "My Bookings", icon: CalendarCheck },
+  { href: "/dashboard/customer/profile", label: "My Addresses", icon: MapPin },
 ];
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
-  const { user, isAuthenticated, isLoading, logout, switchRole, loginAsDemo } = useAuth();
-  const [roleMenuOpen, setRoleMenuOpen] = useState(false);
+  const { user, isAuthenticated, isLoading, logout, loginAsDemo } = useAuth();
 
   // Allow landing page and auth pages without sidebar
   if (
@@ -245,6 +243,27 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   const isActive = (href: string) => pathname === href || pathname?.startsWith(href + "/");
 
+  // Strict Role-Based Access Control (RBAC) Route Protection
+  const isAdminRoute =
+    pathname.startsWith("/dashboard/admin") ||
+    pathname.startsWith("/traces") ||
+    pathname.startsWith("/bookings") ||
+    pathname.startsWith("/services");
+  const isProviderRoute = pathname.startsWith("/dashboard/provider");
+  const isCustomerRoute = pathname.startsWith("/dashboard/customer");
+
+  const isUnauthorized =
+    (user.role === "customer" && (isAdminRoute || isProviderRoute)) ||
+    (user.role === "provider" && (isAdminRoute || isCustomerRoute)) ||
+    (user.role === "admin" && (isProviderRoute || isCustomerRoute));
+
+  const homeRoute =
+    user.role === "customer"
+      ? "/dashboard/customer"
+      : user.role === "provider"
+      ? "/dashboard/provider"
+      : "/dashboard/admin";
+
   return (
     <div className="flex min-h-screen bg-[#0A0A0F] font-body text-[#F4F4F6] selection:bg-[#0054F9] selection:text-white">
       {/* Sidebar */}
@@ -383,66 +402,59 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             </span>
           </div>
 
-          {/* Quick Role Switcher Interactive Dropdown */}
-          <div className="relative">
-            <button
-              onClick={() => setRoleMenuOpen(!roleMenuOpen)}
-              className="h-8 px-3 rounded-full bg-[#141420] hover:bg-[#1A1A28] border border-white/10 text-xs font-semibold text-white flex items-center gap-2 transition-all cursor-pointer shadow-sm"
-            >
-              <Sparkles size={13} className="text-[#0054F9]" />
-              <span className="hidden md:inline text-[11px] text-zinc-400">Switch Role:</span>
-              <span className="font-bold text-[11px] capitalize text-[#0054F9]">{user.role}</span>
-              <ChevronDown size={13} className="text-zinc-400" />
-            </button>
-
-            {roleMenuOpen && (
-              <div className="absolute right-0 mt-2 w-56 rounded-2xl bg-[#11111A] border border-white/10 shadow-2xl p-1.5 z-50 animate-in fade-in zoom-in-95 duration-150">
-                <span className="block px-3 py-1.5 text-[10px] font-code uppercase font-bold text-zinc-400">
-                  Change Active Persona:
-                </span>
-                {(["admin", "provider", "customer"] as UserRole[]).map((r) => (
-                  <button
-                    key={r}
-                    onClick={() => {
-                      switchRole(r);
-                      setRoleMenuOpen(false);
-                    }}
-                    className={`w-full text-left px-3 py-2 rounded-xl text-xs font-semibold capitalize flex items-center justify-between transition-colors cursor-pointer ${
-                      user.role === r
-                        ? "bg-[#0054F9]/15 text-[#0054F9] font-bold"
-                        : "text-zinc-400 hover:bg-white/5 hover:text-white"
-                    }`}
-                  >
-                    <div className="flex items-center gap-2">
-                      {r === "admin" && <ShieldCheck size={14} className="text-[#0054F9]" />}
-                      {r === "provider" && <Wrench size={14} className="text-[#D4A843]" />}
-                      {r === "customer" && <UserCheck size={14} className="text-[#38BDF8]" />}
-                      <span>{r === "admin" ? "Super Admin" : r === "provider" ? "Master Artisan" : "Customer"}</span>
-                    </div>
-                    {user.role === r && <CheckCircle2 size={13} className="text-[#0054F9]" />}
-                  </button>
-                ))}
-
-                <div className="border-t border-white/8 my-1 pt-1">
-                  <button
-                    onClick={() => {
-                      logout();
-                      setRoleMenuOpen(false);
-                    }}
-                    className="w-full text-left px-3 py-1.5 rounded-xl text-xs font-medium text-red-400 hover:bg-red-500/10 transition-colors flex items-center gap-2 cursor-pointer"
-                  >
-                    <LogOut size={13} />
-                    <span>Sign Out</span>
-                  </button>
-                </div>
+          {/* User Profile Info & Sign Out (No Switch Role dropdown) */}
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-[#141420] border border-white/10">
+              <div className="w-7 h-7 rounded-full bg-[#0054F9]/20 border border-[#0054F9]/40 text-[#38BDF8] flex items-center justify-center font-display font-bold text-xs">
+                {user.avatar || user.name.substring(0, 2).toUpperCase()}
               </div>
-            )}
+              <div className="hidden sm:flex flex-col text-left">
+                <span className="text-xs font-display font-bold text-white leading-tight">
+                  {user.name}
+                </span>
+                <span className="text-[10px] font-code text-zinc-400 leading-tight capitalize">
+                  {user.role === "admin" ? "Super Admin" : user.role === "provider" ? "Master Artisan" : "Verified Customer"}
+                </span>
+              </div>
+            </div>
+
+            <button
+              onClick={logout}
+              className="h-8 px-3 rounded-full bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 text-rose-400 text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer shadow-sm"
+              title="Sign Out of Account"
+            >
+              <LogOut size={13} />
+              <span className="hidden sm:inline">Sign Out</span>
+            </button>
           </div>
         </header>
 
-        {/* Child Views */}
+        {/* Child Views (Protected by Role Gatekeeper) */}
         <main className="flex-1 p-5 sm:p-8 overflow-y-auto max-w-7xl w-full mx-auto">
-          {children}
+          {isUnauthorized ? (
+            <div className="min-h-[60vh] flex items-center justify-center p-6 text-center">
+              <div className="max-w-md p-8 rounded-3xl bg-[#111118] border border-white/10 shadow-2xl space-y-4">
+                <div className="w-14 h-14 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-rose-400 flex items-center justify-center mx-auto shadow-[0_0_20px_rgba(244,63,94,0.2)]">
+                  <Lock size={26} />
+                </div>
+                <h2 className="font-display font-extrabold text-2xl text-white">
+                  403 — Access Restricted
+                </h2>
+                <p className="text-xs text-zinc-400 leading-relaxed">
+                  Aapka account role (<strong className="text-white capitalize">{user.role}</strong>) is area ko access karne ke liye authorized nahi hai.
+                </p>
+                <div className="pt-2">
+                  <Link href={homeRoute}>
+                    <Button className="bg-[#0054F9] hover:bg-[#0043C7] text-white font-display font-bold text-xs px-6 py-2.5 rounded-xl shadow-lg cursor-pointer">
+                      Go to My Dashboard →
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          ) : (
+            children
+          )}
         </main>
       </div>
     </div>

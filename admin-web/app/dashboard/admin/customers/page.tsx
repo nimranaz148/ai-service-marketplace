@@ -204,30 +204,41 @@ export default function CustomerManagementPage() {
 
   return (
     <div className="space-y-6 pb-12">
-      {/* Top Breadcrumb & Actions */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/8">
-        <div className="flex items-center gap-3">
-          <Link
-            href="/dashboard/admin"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#111118] border border-white/8 text-xs font-semibold text-zinc-400 hover:text-[#0054F9] transition-colors"
-          >
-            <ChevronLeft size={14} />
-            <span>Admin Deck</span>
-          </Link>
-          <span className="text-zinc-600">/</span>
-          <span className="font-display font-bold text-base text-white flex items-center gap-2">
-            <Users size={18} className="text-[#38BDF8]" />
-            <span>Customer Management Registry</span>
-          </span>
-        </div>
+      {/* Top Banner */}
+      <div className="relative rounded-[2rem] p-6 sm:p-8 bg-[#111118] border border-white/10 shadow-[0_16px_40px_rgba(0,0,0,0.5)] overflow-hidden">
+        <div className="absolute -right-16 -top-16 w-64 h-64 rounded-full bg-[#0054F9]/15 blur-[120px] pointer-events-none" />
 
-        <Button
-          onClick={handleOpenAdd}
-          className="h-10 px-4 rounded-xl bg-[#0054F9] hover:bg-[#2D40EA] text-white shadow-[0_0_20px_rgba(0,84,249,0.3)] font-display font-bold text-xs flex items-center gap-2 shadow-[0_4px_16px_rgba(52,211,153,0.3)] transition-all cursor-pointer active:scale-95"
-        >
-          <Plus size={15} />
-          <span>Add New Customer</span>
-        </Button>
+        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div>
+            <div className="catalis-badge mb-3">
+              <Users size={13} className="text-[#0054F9]" />
+              <span>SUPER ADMIN / CLIENT REGISTRY</span>
+            </div>
+            <h1 className="font-display font-extrabold text-2xl sm:text-3xl text-white tracking-tight">
+              Customer Management Directory
+            </h1>
+            <p className="font-body text-xs sm:text-sm text-zinc-400 mt-2 max-w-2xl leading-relaxed">
+              Complete directory of registered clients across Islamabad, Karachi, and Lahore. Monitor lifetime spend, booking history, and active status.
+            </p>
+          </div>
+
+          <div className="flex flex-wrap gap-2.5">
+            <Link
+              href="/dashboard/admin"
+              className="h-10 px-4 rounded-xl bg-[#141420] hover:bg-[#1A1A28] text-white border border-white/10 text-xs font-semibold flex items-center gap-2 transition-all shadow-sm"
+            >
+              <ChevronLeft size={14} className="text-[#38BDF8]" />
+              <span>Admin Deck</span>
+            </Link>
+            <Button
+              onClick={handleOpenAdd}
+              className="h-10 px-4 rounded-xl bg-[#0054F9] hover:bg-[#0043C7] text-white shadow-[0_0_20px_rgba(0,84,249,0.3)] font-display font-bold text-xs flex items-center gap-2 transition-all cursor-pointer active:scale-95"
+            >
+              <Plus size={15} />
+              <span>Add New Customer</span>
+            </Button>
+          </div>
+        </div>
       </div>
 
       {/* Filters & Search Bar */}
@@ -281,10 +292,10 @@ export default function CustomerManagementPage() {
                 <th className="py-3.5 px-4 font-bold text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#18261F]">
+            <tbody className="divide-y divide-white/5">
               {filtered.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="py-8 text-center text-xs text-[#6B877B]">
+                  <td colSpan={6} className="py-8 text-center text-xs text-zinc-500">
                     No customer accounts matched your search criteria.
                   </td>
                 </tr>
@@ -294,14 +305,14 @@ export default function CustomerManagementPage() {
                     {/* Customer */}
                     <td className="py-3.5 px-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-xl bg-[#141420] border border-[#2B493B] text-[#34D399] flex items-center justify-center font-display font-bold text-xs shrink-0">
+                        <div className="w-8 h-8 rounded-xl bg-[#0054F9]/10 border border-[#0054F9]/30 text-[#0054F9] flex items-center justify-center font-display font-bold text-xs shrink-0">
                           {c.name.substring(0, 2).toUpperCase()}
                         </div>
                         <div>
                           <span className="font-display font-bold text-xs text-white block">
                             {c.name}
                           </span>
-                          <span className="font-code text-[10px] text-[#6B877B]">
+                          <span className="font-code text-[10px] text-zinc-500">
                             ID: {c.id} · Joined {c.joinedDate}
                           </span>
                         </div>
@@ -312,10 +323,10 @@ export default function CustomerManagementPage() {
                     <td className="py-3.5 px-4 text-zinc-400">
                       <div className="space-y-0.5 font-code text-[11px]">
                         <div className="flex items-center gap-1.5">
-                          <Phone size={11} className="text-[#6B877B]" />
+                          <Phone size={11} className="text-zinc-500" />
                           <span>{c.phone}</span>
                         </div>
-                        <div className="flex items-center gap-1.5 text-[10px] text-[#6B877B]">
+                        <div className="flex items-center gap-1.5 text-[10px] text-zinc-500">
                           <Mail size={11} />
                           <span>{c.email}</span>
                         </div>
@@ -325,17 +336,17 @@ export default function CustomerManagementPage() {
                     {/* Metro */}
                     <td className="py-3.5 px-4">
                       <div className="flex items-center gap-1.5 text-xs text-white">
-                        <MapPin size={12} className="text-[#34D399] shrink-0" />
+                        <MapPin size={12} className="text-[#38BDF8] shrink-0" />
                         <span>{c.metro}</span>
                       </div>
                     </td>
 
                     {/* Bookings & Spend */}
                     <td className="py-3.5 px-4">
-                      <span className="font-display font-bold text-xs text-[#34D399] block">
+                      <span className="font-display font-bold text-xs text-[#38BDF8] block">
                         {c.totalSpent}
                       </span>
-                      <span className="font-code text-[10px] text-[#8BA499]">
+                      <span className="font-code text-[10px] text-zinc-400">
                         {c.bookingsCount} Completed Jobs
                       </span>
                     </td>
@@ -346,11 +357,11 @@ export default function CustomerManagementPage() {
                         onClick={() => handleToggleStatus(c.id)}
                         className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full border text-[10px] font-code font-bold cursor-pointer transition-colors ${
                           c.status === "active"
-                            ? "bg-[#132A1F] text-[#34D399] border-[#214735] hover:bg-[#1A382A]"
+                            ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/30 hover:bg-emerald-500/20"
                             : "bg-[#291316] text-[#EF4444] border-[#471E23] hover:bg-[#381B20]"
                         }`}
                       >
-                        <span className={`w-1.5 h-1.5 rounded-full ${c.status === "active" ? "bg-[#0054F9]" : "bg-[#EF4444]"}`} />
+                        <span className={`w-1.5 h-1.5 rounded-full ${c.status === "active" ? "bg-emerald-400" : "bg-[#EF4444]"}`} />
                         <span className="capitalize">{c.status}</span>
                       </button>
                     </td>
@@ -361,14 +372,14 @@ export default function CustomerManagementPage() {
                         <Link
                           href="/bookings"
                           title="View Bookings"
-                          className="p-1.5 rounded-lg bg-[#141420] hover:bg-[#1E332A] text-zinc-400 hover:text-[#38BDF8] border border-white/8 transition-colors"
+                          className="p-1.5 rounded-lg bg-[#141420] hover:bg-[#1A1A28] text-zinc-400 hover:text-[#38BDF8] border border-white/8 transition-colors"
                         >
                           <CalendarCheck size={13} />
                         </Link>
                         <button
                           onClick={() => handleOpenEdit(c)}
                           title="Edit Customer"
-                          className="p-1.5 rounded-lg bg-[#141420] hover:bg-[#1E332A] text-zinc-400 hover:text-[#0054F9] border border-white/8 transition-colors cursor-pointer"
+                          className="p-1.5 rounded-lg bg-[#141420] hover:bg-[#1A1A28] text-zinc-400 hover:text-[#0054F9] border border-white/8 transition-colors cursor-pointer"
                         >
                           <Edit2 size={13} />
                         </button>
@@ -392,7 +403,7 @@ export default function CustomerManagementPage() {
       {/* Add / Edit Customer Modal */}
       {modalOpen && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="w-full max-w-md bg-[#0D0D14] border border-[#22382E] rounded-3xl p-6 sm:p-7 shadow-2xl animate-in zoom-in-95 duration-200">
+          <div className="w-full max-w-md bg-[#111118] border border-white/10 rounded-3xl p-6 sm:p-7 shadow-2xl animate-in zoom-in-95 duration-200">
             <div className="flex items-center justify-between pb-3 mb-4 border-b border-white/8">
               <h3 className="font-display font-bold text-base text-white flex items-center gap-2">
                 <Users size={16} className="text-[#38BDF8]" />
@@ -479,7 +490,7 @@ export default function CustomerManagementPage() {
                     onClick={() => setFormData({ ...formData, status: "active" })}
                     className={`py-2 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${
                       formData.status === "active"
-                        ? "bg-[#132A1F] border-[#34D399] text-[#34D399]"
+                        ? "bg-emerald-500/15 border-emerald-500/40 text-emerald-400"
                         : "bg-[#0A0A0F] border-white/8 text-zinc-400"
                     }`}
                   >
@@ -503,13 +514,13 @@ export default function CustomerManagementPage() {
                 <button
                   type="button"
                   onClick={() => setModalOpen(false)}
-                  className="px-4 py-2 rounded-xl bg-[#141420] hover:bg-[#1A2E24] text-zinc-400 hover:text-white text-xs font-semibold cursor-pointer transition-colors"
+                  className="px-4 py-2 rounded-xl bg-[#141420] hover:bg-[#1A1A28] text-zinc-400 hover:text-white text-xs font-semibold cursor-pointer transition-colors"
                 >
                   Cancel
                 </button>
                 <Button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-[#0054F9] hover:bg-[#2D40EA] text-white shadow-[0_0_20px_rgba(0,84,249,0.3)] font-display font-bold text-xs cursor-pointer"
+                  className="px-5 py-2 rounded-xl bg-[#0054F9] hover:bg-[#0043C7] text-white shadow-[0_0_20px_rgba(0,84,249,0.3)] font-display font-bold text-xs cursor-pointer"
                 >
                   Save Record
                 </Button>

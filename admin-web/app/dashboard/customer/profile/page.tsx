@@ -132,22 +132,22 @@ export default function CustomerProfileAddressesPage() {
               href="/dashboard/customer"
               className="inline-flex items-center gap-1 text-xs font-code text-zinc-400 hover:text-[#0054F9] transition-colors"
             >
-              <ChevronLeft size={14} /> Back to Concierge
+              <ChevronLeft size={14} /> Back to Home
             </Link>
-            <span className="text-[#3D5245]">/</span>
-            <span className="text-xs font-code text-[#34D399] uppercase tracking-wider">Saved Addresses</span>
+            <span className="text-zinc-600">/</span>
+            <span className="text-xs font-code text-[#38BDF8] uppercase tracking-wider">My Addresses</span>
           </div>
           <h1 className="font-display font-extrabold text-2xl sm:text-3xl text-white tracking-tight">
-            Saved Locations & Voice Dispatch Preferences
+            My Saved Addresses
           </h1>
           <p className="font-body text-xs sm:text-sm text-zinc-400 mt-1">
-            Manage your residential and commercial premises. AI Concierge uses your default address for instant booking dispatch.
+            Manage your residential and work addresses for fast 1-click service dispatch.
           </p>
         </div>
 
         <Button
           onClick={() => setIsModalOpen(true)}
-          className="bg-[#34D399] hover:bg-[#2BB380] text-[#090E0C] font-display font-bold px-5 py-2.5 rounded-xl shadow-lg flex items-center gap-2 cursor-pointer transition-all active:scale-95"
+          className="bg-[#0054F9] hover:bg-[#0043C7] text-white shadow-[0_0_20px_rgba(0,84,249,0.3)] font-display font-bold px-5 py-2.5 rounded-xl flex items-center gap-2 cursor-pointer transition-all active:scale-95"
         >
           <Plus size={16} />
           <span>Add New Address</span>
@@ -161,7 +161,7 @@ export default function CustomerProfileAddressesPage() {
         <div className="lg:col-span-7 space-y-4">
           <div className="flex items-center justify-between">
             <h2 className="font-display font-bold text-lg text-white flex items-center gap-2">
-              <MapPin size={18} className="text-[#34D399]" />
+              <MapPin size={18} className="text-[#38BDF8]" />
               <span>Registered Locations ({addresses.length})</span>
             </h2>
             <span className="text-xs font-code text-zinc-400">1 Default Active</span>
@@ -173,13 +173,13 @@ export default function CustomerProfileAddressesPage() {
                 key={addr.id}
                 className={`p-5 rounded-2xl border transition-all ${
                   addr.isDefault
-                    ? "bg-[#13251D] border-[#34D399]/60 shadow-[0_4px_20px_rgba(52,211,153,0.1)]"
-                    : "bg-[#111118] border-white/8 hover:border-[#284435]"
+                    ? "bg-[#141420] border-[#0054F9]/60 shadow-[0_4px_20px_rgba(0,84,249,0.1)]"
+                    : "bg-[#111118] border-white/8 hover:border-white/20"
                 }`}
               >
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex items-start gap-3.5 flex-1">
-                    <div className="w-10 h-10 rounded-xl bg-[#141420] border border-[#274033] text-[#34D399] flex items-center justify-center shrink-0 mt-0.5">
+                    <div className="w-10 h-10 rounded-xl bg-[#141420] border border-white/10 text-[#38BDF8] flex items-center justify-center shrink-0 mt-0.5">
                       {addr.label === "Home" ? (
                         <Home size={18} />
                       ) : addr.label === "Office" ? (
@@ -195,11 +195,11 @@ export default function CustomerProfileAddressesPage() {
                           {addr.label}
                         </span>
                         {addr.isDefault && (
-                          <span className="px-2 py-0.5 rounded-full bg-[#141420] border border-[#34D399] text-[#34D399] text-[10px] font-code font-bold">
+                          <span className="px-2 py-0.5 rounded-full bg-[#141420] border border-[#0054F9] text-[#38BDF8] text-[10px] font-code font-bold">
                             DEFAULT DISPATCH
                           </span>
                         )}
-                        <span className="text-[10px] font-code text-zinc-400 bg-[#18201C] px-2 py-0.5 rounded border border-[#25332B]">
+                        <span className="text-[10px] font-code text-zinc-400 bg-[#111118] px-2 py-0.5 rounded border border-white/8">
                           {addr.city}
                         </span>
                       </div>
@@ -221,7 +221,7 @@ export default function CustomerProfileAddressesPage() {
                     {!addr.isDefault && (
                       <button
                         onClick={() => handleSetDefault(addr.id)}
-                        className="text-xs font-code px-3 py-1.5 rounded-lg border border-[#234734] text-[#34D399] hover:bg-[#34D399]/10 transition-colors"
+                        className="text-xs font-code px-3 py-1.5 rounded-lg border border-[#0054F9]/40 text-[#38BDF8] hover:bg-[#0054F9]/10 transition-colors"
                       >
                         Set Default
                       </button>
@@ -243,9 +243,9 @@ export default function CustomerProfileAddressesPage() {
 
         {/* VOICE & CONCIERGE PREFERENCES (5 Cols) */}
         <div className="lg:col-span-5 space-y-6">
-          <div className="p-6 rounded-3xl bg-[#111118] border border-[#21352A] space-y-5">
+          <div className="p-6 rounded-3xl bg-[#111118] border border-white/10 space-y-5">
             <h3 className="font-display font-bold text-base text-white flex items-center gap-2">
-              <Sparkles size={16} className="text-[#34D399]" />
+              <Sparkles size={16} className="text-[#38BDF8]" />
               <span>AI Concierge Voice Preferences</span>
             </h3>
 
@@ -268,8 +268,8 @@ export default function CustomerProfileAddressesPage() {
                       }}
                       className={`p-3 rounded-xl border text-xs cursor-pointer transition-all ${
                         voiceDialect === opt.key
-                          ? "bg-[#182D23] border-[#34D399] text-white"
-                          : "bg-[#0C120F] border-white/8 text-zinc-400 hover:border-[#2F4A3B]"
+                          ? "bg-[#141420] border-[#0054F9] text-[#38BDF8]"
+                          : "bg-[#0A0A0F] border-white/8 text-zinc-400 hover:border-white/20"
                       }`}
                     >
                       <div className="font-semibold text-xs">{opt.label}</div>
@@ -295,11 +295,11 @@ export default function CustomerProfileAddressesPage() {
                       toast.info(`WhatsApp updates: ${!whatsappNotifications ? "ENABLED" : "DISABLED"}`);
                     }}
                     className={`w-11 h-6 rounded-full transition-colors relative cursor-pointer ${
-                      whatsappNotifications ? "bg-[#34D399]" : "bg-[#1C2C24]"
+                      whatsappNotifications ? "bg-[#0054F9]" : "bg-white/10"
                     }`}
                   >
                     <span
-                      className={`block w-4 h-4 rounded-full bg-[#0A0A0F] absolute top-1 transition-transform ${
+                      className={`block w-4 h-4 rounded-full bg-white absolute top-1 transition-transform ${
                         whatsappNotifications ? "left-6" : "left-1"
                       }`}
                     />
@@ -321,11 +321,11 @@ export default function CustomerProfileAddressesPage() {
                       toast.info(`SMS Alerts: ${!smsAlerts ? "ENABLED" : "DISABLED"}`);
                     }}
                     className={`w-11 h-6 rounded-full transition-colors relative cursor-pointer ${
-                      smsAlerts ? "bg-[#34D399]" : "bg-[#1C2C24]"
+                      smsAlerts ? "bg-[#0054F9]" : "bg-white/10"
                     }`}
                   >
                     <span
-                      className={`block w-4 h-4 rounded-full bg-[#0A0A0F] absolute top-1 transition-transform ${
+                      className={`block w-4 h-4 rounded-full bg-white absolute top-1 transition-transform ${
                         smsAlerts ? "left-6" : "left-1"
                       }`}
                     />
@@ -340,7 +340,7 @@ export default function CustomerProfileAddressesPage() {
       {/* ADD ADDRESS MODAL */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#111118] border border-[#21352A] rounded-3xl max-w-md w-full p-6 sm:p-8 space-y-5 shadow-2xl relative">
+          <div className="bg-[#111118] border border-white/10 rounded-3xl max-w-md w-full p-6 sm:p-8 space-y-5 shadow-2xl relative">
             <div className="flex items-center justify-between border-b border-white/8 pb-4">
               <h2 className="font-display font-extrabold text-xl text-white">
                 Add Saved Location
@@ -366,8 +366,8 @@ export default function CustomerProfileAddressesPage() {
                       onClick={() => setLabel(t)}
                       className={`py-2 rounded-xl text-xs font-code font-bold transition-all border ${
                         label === t
-                          ? "bg-[#141420] border-[#34D399] text-[#34D399]"
-                          : "bg-[#0C120F] border-white/8 text-zinc-400"
+                          ? "bg-[#141420] border-[#0054F9] text-[#38BDF8]"
+                          : "bg-[#0A0A0F] border-white/8 text-zinc-400"
                       }`}
                     >
                       {t}
@@ -383,7 +383,7 @@ export default function CustomerProfileAddressesPage() {
                 <select
                   value={city}
                   onChange={(e) => setCity(e.target.value as any)}
-                  className="w-full bg-[#0C120F] border border-white/8 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#0054F9]"
+                  className="w-full bg-[#0A0A0F] border border-white/8 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#0054F9]"
                 >
                   <option value="Islamabad">Islamabad</option>
                   <option value="Karachi">Karachi</option>
@@ -401,7 +401,7 @@ export default function CustomerProfileAddressesPage() {
                   placeholder="e.g. Sector F-10/4 or DHA Phase 6"
                   value={area}
                   onChange={(e) => setArea(e.target.value)}
-                  className="w-full bg-[#0C120F] border border-white/8 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#0054F9]"
+                  className="w-full bg-[#0A0A0F] border border-white/8 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#0054F9]"
                 />
               </div>
 
@@ -415,7 +415,7 @@ export default function CustomerProfileAddressesPage() {
                   placeholder="e.g. House 42, Street 18"
                   value={street}
                   onChange={(e) => setStreet(e.target.value)}
-                  className="w-full bg-[#0C120F] border border-white/8 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#0054F9]"
+                  className="w-full bg-[#0A0A0F] border border-white/8 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#0054F9]"
                 />
               </div>
 
@@ -428,7 +428,7 @@ export default function CustomerProfileAddressesPage() {
                   placeholder="e.g. Near PSO Pump, Red Gate"
                   value={landmark}
                   onChange={(e) => setLandmark(e.target.value)}
-                  className="w-full bg-[#0C120F] border border-white/8 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#0054F9]"
+                  className="w-full bg-[#0A0A0F] border border-white/8 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#0054F9]"
                 />
               </div>
 
@@ -443,7 +443,7 @@ export default function CustomerProfileAddressesPage() {
                 </Button>
                 <Button
                   type="submit"
-                  className="bg-[#34D399] hover:bg-[#2BB380] text-[#090E0C] font-display font-bold px-5"
+                  className="bg-[#0054F9] hover:bg-[#0043C7] text-white shadow-[0_0_20px_rgba(0,84,249,0.3)] font-display font-bold px-5"
                 >
                   Save Location
                 </Button>

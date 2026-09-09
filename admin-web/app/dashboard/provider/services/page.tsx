@@ -189,7 +189,7 @@ export default function ProviderServicesPage() {
             >
               <ChevronLeft size={14} /> Back to HUD
             </Link>
-            <span className="text-[#3D5245]">/</span>
+            <span className="text-zinc-600">/</span>
             <span className="text-xs font-code text-[#D4A843] uppercase tracking-wider">Services & Live Preview</span>
           </div>
           <h1 className="font-display font-extrabold text-2xl sm:text-3xl text-white tracking-tight">
@@ -230,17 +230,17 @@ export default function ProviderServicesPage() {
                 key={service.id}
                 className={`p-5 rounded-2xl border transition-all ${
                   service.isActive
-                    ? "bg-[#111118] border-[#21352A] hover:border-[#34D399]/40"
-                    : "bg-[#0C120F] border-white/8 opacity-60"
+                    ? "bg-[#111118] border-white/10 hover:border-[#0054F9]/40"
+                    : "bg-[#0A0A0F] border-white/8 opacity-60"
                 }`}
               >
                 <div className="flex items-start justify-between gap-4">
                   <div className="space-y-1.5 flex-1">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <span className="px-2 py-0.5 rounded-md bg-[#141420] text-zinc-400 text-[10px] font-code font-bold uppercase border border-[#274033]">
+                      <span className="px-2 py-0.5 rounded-md bg-[#141420] text-zinc-400 text-[10px] font-code font-bold uppercase border border-white/10">
                         {service.category}
                       </span>
-                      <span className="inline-flex items-center gap-1 text-[10px] font-code text-[#34D399] bg-[#12241B] px-2 py-0.5 rounded border border-[#1F3D2E]">
+                      <span className="inline-flex items-center gap-1 text-[10px] font-code text-[#38BDF8] bg-[#0E202B] px-2 py-0.5 rounded border border-[#18394D]">
                         <Award size={10} />
                         {service.warranty}
                       </span>
@@ -276,8 +276,8 @@ export default function ProviderServicesPage() {
                       onClick={() => toggleServiceStatus(service.id)}
                       className={`text-[11px] font-code px-2.5 py-1 rounded-lg border transition-colors ${
                         service.isActive
-                          ? "border-[#34D399]/40 text-[#34D399] hover:bg-[#34D399]/10"
-                          : "border-[#A3B8AF]/30 text-zinc-400 hover:bg-white/5"
+                          ? "border-[#0054F9]/40 text-[#38BDF8] hover:bg-[#0054F9]/10"
+                          : "border-white/10 text-zinc-400 hover:bg-white/5"
                       }`}
                     >
                       {service.isActive ? "Active" : "Activate"}
@@ -286,7 +286,7 @@ export default function ProviderServicesPage() {
                     <div className="flex items-center gap-1">
                       <button
                         onClick={() => openEditModal(service)}
-                        className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-[#1C2C24] transition-colors"
+                        className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-white/10 transition-colors"
                         title="Edit Service"
                       >
                         <Edit2 size={14} />
@@ -310,11 +310,11 @@ export default function ProviderServicesPage() {
         <div className="lg:col-span-5 space-y-4">
           <div className="flex items-center justify-between">
             <h2 className="font-display font-bold text-lg text-white flex items-center gap-2">
-              <Eye size={18} className="text-[#34D399]" />
+              <Eye size={18} className="text-[#38BDF8]" />
               <span>Live Client Preview</span>
             </h2>
-            <span className="text-[11px] font-code text-[#34D399] bg-[#12241B] px-2 py-0.5 rounded border border-[#1F3D2E] flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#34D399] animate-ping" />
+            <span className="text-[11px] font-code text-[#38BDF8] bg-[#0E202B] px-2 py-0.5 rounded border border-[#18394D] flex items-center gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#38BDF8] animate-ping" />
               Customer Perspective
             </span>
           </div>
@@ -324,8 +324,8 @@ export default function ProviderServicesPage() {
           </p>
 
           {/* PREVIEW CARD */}
-          <div className="p-6 rounded-3xl bg-gradient-to-b from-[#131F19] to-[#0D1511] border-2 border-[#34D399]/30 shadow-[0_20px_50px_rgba(0,0,0,0.6)] relative overflow-hidden group">
-            <div className="absolute top-0 right-0 w-36 h-36 bg-[#D4A843]/10 rounded-full blur-2xl pointer-events-none" />
+          <div className="p-6 rounded-3xl bg-gradient-to-b from-[#141420] to-[#0A0A0F] border-2 border-[#0054F9]/40 shadow-[0_20px_50px_rgba(0,0,0,0.6)] relative overflow-hidden group">
+            <div className="absolute top-0 right-0 w-36 h-36 bg-[#0054F9]/10 rounded-full blur-2xl pointer-events-none" />
 
             {/* Header info */}
             <div className="flex items-start gap-4">
@@ -337,13 +337,13 @@ export default function ProviderServicesPage() {
                   <h3 className="font-display font-bold text-lg text-white truncate">
                     {user?.name || "Tariq Mehmood"}
                   </h3>
-                  <ShieldCheck size={16} className="text-[#34D399] shrink-0" />
+                  <ShieldCheck size={16} className="text-[#38BDF8] shrink-0" />
                 </div>
                 <p className="font-body text-xs text-[#D4A843] font-semibold mt-0.5">
                   {user?.category || "Master HVAC & AC Specialist"}
                 </p>
                 <p className="font-body text-[11px] text-zinc-400 flex items-center gap-1 mt-1">
-                  <MapPin size={11} className="text-[#34D399]" />
+                  <MapPin size={11} className="text-[#38BDF8]" />
                   {user?.area || "Sector G-13, Islamabad"}
                 </p>
               </div>
@@ -359,12 +359,12 @@ export default function ProviderServicesPage() {
                 <div className="text-[10px] font-code text-zinc-400">142 Reviews</div>
               </div>
               <div className="border-x border-white/8">
-                <div className="font-display font-bold text-sm text-[#34D399]">98%</div>
+                <div className="font-display font-bold text-sm text-[#38BDF8]">98%</div>
                 <div className="text-[10px] font-code text-zinc-400">On-Time</div>
               </div>
               <div>
                 <div className="font-display font-bold text-sm text-white">NADRA</div>
-                <div className="text-[10px] font-code text-[#34D399]">Verified</div>
+                <div className="text-[10px] font-code text-emerald-400">Verified</div>
               </div>
             </div>
 
@@ -382,7 +382,7 @@ export default function ProviderServicesPage() {
                   activeServices.map((s) => (
                     <div
                       key={s.id}
-                      className="flex items-center justify-between p-2.5 rounded-xl bg-[#16251E] border border-[#233B2F] text-xs font-body"
+                      className="flex items-center justify-between p-2.5 rounded-xl bg-[#111118] border border-white/8 text-xs font-body"
                     >
                       <div className="min-w-0 pr-2">
                         <div className="font-semibold text-white truncate">{s.title}</div>
@@ -403,14 +403,14 @@ export default function ProviderServicesPage() {
             <div className="mt-6 pt-4 border-t border-white/8 flex items-center justify-between">
               <div>
                 <span className="text-[10px] font-code text-zinc-400 uppercase">Starting From</span>
-                <div className="font-display font-bold text-lg text-[#34D399]">
+                <div className="font-display font-bold text-lg text-[#38BDF8]">
                   {minPrice > 0 ? `PKR ${minPrice.toLocaleString()}` : "N/A"}
                 </div>
               </div>
 
               <Button
                 disabled
-                className="bg-[#34D399] text-[#090E0C] font-display font-bold px-4 py-2 rounded-xl text-xs opacity-90 cursor-not-allowed shadow-lg"
+                className="bg-[#0054F9] text-white shadow-[0_0_20px_rgba(0,84,249,0.3)] font-display font-bold px-4 py-2 rounded-xl text-xs opacity-90 cursor-not-allowed"
               >
                 Book Artisan (Client View)
               </Button>
@@ -418,7 +418,7 @@ export default function ProviderServicesPage() {
           </div>
 
           {/* Quick Notice Card */}
-          <div className="p-4 rounded-2xl bg-[#121A15] border border-[#1E3025] flex items-start gap-3 text-xs text-zinc-400">
+          <div className="p-4 rounded-2xl bg-[#141420] border border-white/10 flex items-start gap-3 text-xs text-zinc-400">
             <Sparkles size={16} className="text-[#D4A843] shrink-0 mt-0.5" />
             <p>
               Changes made to service titles, rates, or guarantees are pushed instantly to the AI Dispatcher and Vapi Voice Agent knowledge graph.
@@ -430,7 +430,7 @@ export default function ProviderServicesPage() {
       {/* ADD / EDIT MODAL */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#111118] border border-[#21352A] rounded-3xl max-w-lg w-full p-6 sm:p-8 space-y-6 shadow-2xl relative">
+          <div className="bg-[#111118] border border-white/10 rounded-3xl max-w-lg w-full p-6 sm:p-8 space-y-6 shadow-2xl relative">
             <div className="flex items-center justify-between border-b border-white/8 pb-4">
               <h2 className="font-display font-extrabold text-xl text-white">
                 {editingService ? "Edit Service Offering" : "Create New Service"}
@@ -454,7 +454,7 @@ export default function ProviderServicesPage() {
                   placeholder="e.g. PCB Board Inspection & Overhaul"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className="w-full bg-[#0C120F] border border-white/8 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#0054F9]"
+                  className="w-full bg-[#0A0A0F] border border-white/8 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#0054F9]"
                 />
               </div>
 
@@ -466,7 +466,7 @@ export default function ProviderServicesPage() {
                   <select
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
-                    className="w-full bg-[#0C120F] border border-white/8 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#0054F9]"
+                    className="w-full bg-[#0A0A0F] border border-white/8 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#0054F9]"
                   >
                     <option value="HVAC Diagnostics">HVAC Diagnostics</option>
                     <option value="HVAC Servicing">HVAC Servicing</option>
@@ -488,7 +488,7 @@ export default function ProviderServicesPage() {
                     required
                     value={pricePKR}
                     onChange={(e) => setPricePKR(Number(e.target.value))}
-                    className="w-full bg-[#0C120F] border border-white/8 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#0054F9]"
+                    className="w-full bg-[#0A0A0F] border border-white/8 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#0054F9]"
                   />
                 </div>
               </div>
@@ -504,7 +504,7 @@ export default function ProviderServicesPage() {
                     step="15"
                     value={durationMinutes}
                     onChange={(e) => setDurationMinutes(Number(e.target.value))}
-                    className="w-full bg-[#0C120F] border border-white/8 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#0054F9]"
+                    className="w-full bg-[#0A0A0F] border border-white/8 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#0054F9]"
                   />
                 </div>
 
@@ -517,7 +517,7 @@ export default function ProviderServicesPage() {
                     value={warranty}
                     onChange={(e) => setWarranty(e.target.value)}
                     placeholder="e.g. 30-Day Guarantee"
-                    className="w-full bg-[#0C120F] border border-white/8 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#0054F9]"
+                    className="w-full bg-[#0A0A0F] border border-white/8 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#0054F9]"
                   />
                 </div>
               </div>
@@ -531,7 +531,7 @@ export default function ProviderServicesPage() {
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="Outline the exact diagnostic tests or steps included in this service..."
-                  className="w-full bg-[#0C120F] border border-white/8 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#0054F9]"
+                  className="w-full bg-[#0A0A0F] border border-white/8 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#0054F9]"
                 />
               </div>
 

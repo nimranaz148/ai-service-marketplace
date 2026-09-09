@@ -178,7 +178,7 @@ export default function ProviderSlotsPage() {
             >
               <ChevronLeft size={14} /> Back to HUD
             </Link>
-            <span className="text-[#3D5245]">/</span>
+            <span className="text-zinc-600">/</span>
             <span className="text-xs font-code text-[#D4A843] uppercase tracking-wider">Calendar & Availability</span>
           </div>
           <h1 className="font-display font-extrabold text-2xl sm:text-3xl text-white tracking-tight">
@@ -193,7 +193,7 @@ export default function ProviderSlotsPage() {
           <Button
             onClick={markAllOpen}
             variant="outline"
-            className="border-[#234734] text-[#34D399] hover:bg-[#34D399]/10 text-xs font-display font-bold"
+            className="border-[#0054F9]/40 text-[#38BDF8] hover:bg-[#0054F9]/10 text-xs font-display font-bold"
           >
             Open All Slots
           </Button>
@@ -218,16 +218,16 @@ export default function ProviderSlotsPage() {
               onClick={() => setSelectedDayIndex(idx)}
               className={`flex-1 min-w-[110px] p-3.5 rounded-2xl border text-center transition-all cursor-pointer ${
                 isSelected
-                  ? "bg-[#182B22] border-[#34D399] text-white shadow-[0_0_20px_rgba(52,211,153,0.15)]"
-                  : "bg-[#111118] border-white/8 text-zinc-400 hover:border-[#2F4A3B]"
+                  ? "bg-[#141420] border-[#0054F9] text-white shadow-[0_0_20px_rgba(0,84,249,0.25)]"
+                  : "bg-[#111118] border-white/8 text-zinc-400 hover:border-white/20"
               }`}
             >
               <div className="flex items-center justify-center gap-1.5 mb-1">
-                <span className={`text-xs font-display font-bold ${isSelected ? "text-[#34D399]" : "text-white"}`}>
+                <span className={`text-xs font-display font-bold ${isSelected ? "text-[#38BDF8]" : "text-white"}`}>
                   {day.dayName}
                 </span>
                 {day.isToday && (
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#34D399] animate-pulse" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#38BDF8] animate-pulse" />
                 )}
               </div>
               <div className="text-[11px] font-code text-zinc-400">{day.dateStr}</div>
@@ -256,8 +256,8 @@ export default function ProviderSlotsPage() {
               <span>Time Slots for {currentSchedule.dayName} ({currentSchedule.dateStr})</span>
             </h2>
             <div className="flex items-center gap-3 text-xs font-code">
-              <span className="flex items-center gap-1 text-[#34D399]">
-                <span className="w-2 h-2 rounded-full bg-[#34D399]" /> {openCount} Open
+              <span className="flex items-center gap-1 text-emerald-400">
+                <span className="w-2 h-2 rounded-full bg-emerald-400" /> {openCount} Open
               </span>
               <span className="flex items-center gap-1 text-[#D4A843]">
                 <span className="w-2 h-2 rounded-full bg-[#D4A843]" /> {bookedCount} Booked
@@ -296,7 +296,7 @@ export default function ProviderSlotsPage() {
                       <span>Confirmed by AI Engine</span>
                       <Link
                         href="/dashboard/provider/bookings"
-                        className="text-[#34D399] hover:underline"
+                        className="text-[#38BDF8] hover:underline"
                       >
                         View Job Details →
                       </Link>
@@ -312,14 +312,14 @@ export default function ProviderSlotsPage() {
                   onClick={() => toggleSlot(slot.id)}
                   className={`p-5 rounded-2xl border transition-all cursor-pointer select-none space-y-3 ${
                     isOpen
-                      ? "bg-[#111118] border-[#21352A] hover:border-[#34D399]/60 shadow-[0_4px_20px_rgba(0,0,0,0.3)]"
-                      : "bg-[#0B0F0D] border-[#16221B] opacity-50 hover:opacity-75"
+                      ? "bg-[#111118] border-white/10 hover:border-[#0054F9]/60 shadow-[0_4px_20px_rgba(0,0,0,0.3)]"
+                      : "bg-[#0A0A0F] border-white/8 opacity-50 hover:opacity-75"
                   }`}
                 >
                   <div className="flex items-center justify-between">
                     <span
                       className={`text-xs font-code font-bold flex items-center gap-1.5 ${
-                        isOpen ? "text-[#34D399]" : "text-zinc-400"
+                        isOpen ? "text-[#38BDF8]" : "text-zinc-400"
                       }`}
                     >
                       <Clock size={12} />
@@ -328,8 +328,8 @@ export default function ProviderSlotsPage() {
                     <span
                       className={`px-2 py-0.5 rounded text-[10px] font-code font-bold uppercase border ${
                         isOpen
-                          ? "bg-[#132A1F] text-[#34D399] border-white/10"
-                          : "bg-[#18201C] text-zinc-400 border-[#25332B]"
+                          ? "bg-[#0E202B] text-[#38BDF8] border-[#18394D]"
+                          : "bg-[#141420] text-zinc-400 border-white/10"
                       }`}
                     >
                       {isOpen ? "AVAILABLE" : "OFF-DUTY"}
@@ -342,7 +342,7 @@ export default function ProviderSlotsPage() {
                       : "Artisan marked as resting or in transit."}
                   </div>
 
-                  <div className="text-[11px] font-code text-[#34D399] pt-2 border-t border-white/8 flex items-center justify-between">
+                  <div className="text-[11px] font-code text-[#38BDF8] pt-2 border-t border-white/8 flex items-center justify-between">
                     <span className="text-[10px] text-zinc-400">Click to toggle state</span>
                     <span>{isOpen ? "Close Slot" : "Open Slot"} ⇄</span>
                   </div>
@@ -354,9 +354,9 @@ export default function ProviderSlotsPage() {
 
         {/* SCHEDULE RULES & DISPATCH SETTINGS (4 Cols) */}
         <div className="lg:col-span-4 space-y-6">
-          <div className="p-6 rounded-3xl bg-[#111118] border border-[#21352A] space-y-5">
+          <div className="p-6 rounded-3xl bg-[#111118] border border-white/10 space-y-5">
             <h3 className="font-display font-bold text-base text-white flex items-center gap-2">
-              <Zap size={16} className="text-[#34D399]" />
+              <Zap size={16} className="text-[#38BDF8]" />
               <span>Dispatch Automation Rules</span>
             </h3>
 
@@ -375,8 +375,8 @@ export default function ProviderSlotsPage() {
                       }}
                       className={`flex-1 py-2 rounded-xl text-xs font-code font-bold border transition-colors ${
                         bufferMinutes === mins
-                          ? "bg-[#1A3326] border-[#34D399] text-[#34D399]"
-                          : "bg-[#0C120F] border-white/8 text-zinc-400 hover:border-[#2F4A3B]"
+                          ? "bg-[#141420] border-[#0054F9] text-[#38BDF8]"
+                          : "bg-[#0A0A0F] border-white/8 text-zinc-400 hover:border-white/20"
                       }`}
                     >
                       {mins}m
@@ -399,7 +399,7 @@ export default function ProviderSlotsPage() {
                     max="8"
                     value={maxJobsPerDay}
                     onChange={(e) => setMaxJobsPerDay(Number(e.target.value))}
-                    className="w-full accent-[#34D399] cursor-pointer"
+                    className="w-full accent-[#0054F9] cursor-pointer"
                   />
                   <span className="font-display font-bold text-sm text-white w-12 text-right">
                     {maxJobsPerDay} jobs
@@ -423,11 +423,11 @@ export default function ProviderSlotsPage() {
                     toast.info(`Emergency Overtime: ${next ? "ENABLED" : "DISABLED"}`);
                   }}
                   className={`w-12 h-6 rounded-full transition-colors relative cursor-pointer ${
-                    emergencyOvertime ? "bg-[#34D399]" : "bg-[#1C2C24]"
+                    emergencyOvertime ? "bg-[#0054F9]" : "bg-white/10"
                   }`}
                 >
                   <span
-                    className={`block w-4 h-4 rounded-full bg-[#0A0A0F] absolute top-1 transition-transform ${
+                    className={`block w-4 h-4 rounded-full bg-white absolute top-1 transition-transform ${
                       emergencyOvertime ? "left-7" : "left-1"
                     }`}
                   />
@@ -437,8 +437,8 @@ export default function ProviderSlotsPage() {
           </div>
 
           {/* Sync status card */}
-          <div className="p-5 rounded-2xl bg-gradient-to-br from-[#121A15] to-[#0D1511] border border-[#1E3025] space-y-2">
-            <div className="flex items-center gap-2 text-xs font-code text-[#34D399]">
+          <div className="p-5 rounded-2xl bg-gradient-to-br from-[#141420] to-[#0A0A0F] border border-white/10 space-y-2">
+            <div className="flex items-center gap-2 text-xs font-code text-[#38BDF8]">
               <Sparkles size={14} />
               <span>Real-Time Sync Active</span>
             </div>
