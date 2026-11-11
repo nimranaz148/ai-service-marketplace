@@ -4,6 +4,7 @@
 
 @layer base {
   :root {
+    /* ---- PRIMITIVES (never referenced by components directly) ---- */
     --warm-950: #0B0B0B;
     --warm-900: #131211;
     --warm-850: #1A1917;

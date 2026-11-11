@@ -8,7 +8,7 @@ const css = readFileSync(resolve(__dirname, "../app/globals.css"), "utf8");
 /** Extract `--name: value;` pairs from the first :root { ... } block. */
 function rootVars(source: string): Record<string, string> {
   const block = source.slice(source.indexOf(":root"));
-  const body = block.slice(block.indexOf("{") + 1, block.indexOf("}"));
+  const body = block.slice(block.indexOf("{") + 1, block.indexOf("}")).replace(/\/\*[\s\S]*?\*\//g, "");
   const out: Record<string, string> = {};
   for (const line of body.split(";")) {
     const m = line.match(/^\s*(--[\w-]+)\s*:\s*(.+?)\s*$/);
