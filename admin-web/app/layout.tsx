@@ -1,26 +1,21 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { AppShell } from "@/components/layout/AppShell";
-import { Toaster } from "@/components/ui/Toaster";
-import { AuthProvider } from "@/lib/auth-context";
+import { fontVariables } from "@/lib/fonts";
+import { AppShell } from "@/components/layout/app-shell";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
-  title: "Atelier AI — Autonomous Local Service Concierge",
-  description: "Next-generation multi-agent service marketplace for Pakistan. Book verified artisans in Islamabad, Karachi & Lahore.",
+  title: "Atelier — Local Service Concierge",
+  description:
+    "Multi-agent local service marketplace for Pakistan. Book verified artisans in Islamabad, Karachi, and Lahore.",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className="dark scroll-smooth">
-      <body className="min-h-screen bg-[#090E0C] text-[#F2F7F4] font-body antialiased">
-        <AuthProvider>
-          <AppShell>{children}</AppShell>
-          <Toaster position="top-right" theme="dark" richColors />
-        </AuthProvider>
+    <html lang="en" className={`${fontVariables} scroll-smooth`} suppressHydrationWarning>
+      <body data-theme="light" className="min-h-screen bg-surface text-ink antialiased">
+        <AppShell>{children}</AppShell>
+        <Toaster />
       </body>
     </html>
   );
