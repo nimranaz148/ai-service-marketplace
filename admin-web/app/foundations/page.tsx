@@ -82,6 +82,8 @@ export default function FoundationsPage() {
             <AgentEventItem
               key={i}
               event={e}
+              // sessions[0] is status: "completed" — nothing here is executing, so no live dot.
+              live={false}
               onAnswer={e.kind === "question_required" ? () => {} : undefined}
               onApprove={e.kind === "approval_required" ? () => {} : undefined}
               onReject={e.kind === "approval_required" ? () => {} : undefined}

@@ -25,11 +25,22 @@ const config: Config = {
         },
         status: {
           go: "var(--status-go)",
+          "go-tint": "var(--status-go-tint)",
+          "go-line": "var(--status-go-line)",
           warn: "var(--status-warn)",
+          "warn-tint": "var(--status-warn-tint)",
+          "warn-line": "var(--status-warn-line)",
           stop: "var(--status-stop)",
+          "stop-tint": "var(--status-stop-tint)",
+          "stop-line": "var(--status-stop-line)",
           info: "var(--status-info)",
+          "info-tint": "var(--status-info-tint)",
+          "info-line": "var(--status-info-line)",
           live: "var(--status-live)",
+          "live-tint": "var(--status-live-tint)",
+          "live-line": "var(--status-live-line)",
         },
+        scrim: "var(--scrim)",
         viz: {
           1: "var(--viz-1)", 2: "var(--viz-2)", 3: "var(--viz-3)",
           4: "var(--viz-4)", 5: "var(--viz-5)", 6: "var(--viz-6)",
@@ -65,7 +76,9 @@ const config: Config = {
       transitionDuration: { fast: "var(--dur-fast)", DEFAULT: "var(--dur)", slow: "var(--dur-slow)" },
     },
   },
-  plugins: [],
+  // shadcn's overlay primitives use animate-in / animate-out / fade-in-0 / zoom-in-95 /
+  // slide-in-from-*; without this plugin those classes emit no CSS at all.
+  plugins: [require("tailwindcss-animate")],
 };
 
 export default config;

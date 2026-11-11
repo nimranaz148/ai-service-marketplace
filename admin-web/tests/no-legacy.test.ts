@@ -5,11 +5,17 @@ import { resolve } from "node:path";
 
 const root = resolve(__dirname, "..");
 
+// The legacy `juniper` / `gold-*` tokens lived in tailwind.config.ts, so the root
+// config files must be in scope too — not just the source trees.
+const ROOT_CONFIGS = ["tailwind.config.ts", "tsconfig.json", "postcss.config.js"];
+
 function grep(pattern: string): string {
+  const targets = ["app", "components", "lib", ...ROOT_CONFIGS.filter((f) => existsSync(resolve(root, f)))];
   try {
-    return execSync(`grep -rn --include=*.tsx --include=*.ts --include=*.css "${pattern}" app components lib`, {
-      cwd: root, encoding: "utf8",
-    });
+    return execSync(
+      `grep -rn --include=*.tsx --include=*.ts --include=*.css --include=*.json --include=*.js "${pattern}" ${targets.join(" ")}`,
+      { cwd: root, encoding: "utf8" },
+    );
   } catch {
     return ""; // grep exits 1 on no match
   }

@@ -26,10 +26,34 @@ describe("AgentEventItem", () => {
     expect(screen.getByRole("button", { name: /reject/i })).toBeInTheDocument();
   });
 
+  it("renders the tool chip in its error state for a failed tool_call_result", () => {
+    const e: AgentEvent = { kind: "tool_call_result", sessionId: "s", step: 2, agentName: "BookingAgent", toolName: "create_booking", ok: false, errorCode: "slot_taken", summary: "Slot was taken", payload: {}, timestamp: at };
+    const { container } = render(<AgentEventItem event={e} />);
+    expect(container.querySelector('[data-status="error"]')).toBeInTheDocument();
+    expect(container.querySelector('[data-status="ok"]')).not.toBeInTheDocument();
+  });
+
+  it("renders a successful tool_call_result chip as ok", () => {
+    const e: AgentEvent = { kind: "tool_call_result", sessionId: "s", step: 2, agentName: "BookingAgent", toolName: "create_booking", ok: true, summary: "Booked", payload: {}, timestamp: at };
+    const { container } = render(<AgentEventItem event={e} />);
+    expect(container.querySelector('[data-status="ok"]')).toBeInTheDocument();
+  });
+
+  it("shows the live signal only when the caller says the step is live", () => {
+    const e: AgentEvent = { kind: "agent_started", sessionId: "s", step: 1, agentName: "IntentAgent", summary: "Reading the request", payload: {}, timestamp: at };
+
+    // kind alone must NOT imply liveness — spec §7: --status-live means currently executing.
+    const still = render(<AgentEventItem event={e} live={false} />);
+    expect(still.container.querySelector('[data-live="true"]')).not.toBeInTheDocument();
+
+    const running = render(<AgentEventItem event={e} live />);
+    expect(running.container.querySelector('[data-live="true"]')).toBeInTheDocument();
+  });
+
   it("does not mutate its own DOM over time (no self-driving activity)", () => {
     vi.useFakeTimers();
     const e: AgentEvent = { kind: "agent_started", sessionId: "s", step: 1, agentName: "IntentAgent", summary: "Reading the request", payload: {}, timestamp: at };
-    const { container } = render(<AgentEventItem event={e} />);
+    const { container } = render(<AgentEventItem event={e} live />);
     const before = container.innerHTML;
     act(() => vi.advanceTimersByTime(10_000));
     expect(container.innerHTML).toBe(before);

@@ -6,7 +6,7 @@ import { Sidebar } from "./sidebar";
 import { Topbar } from "./topbar";
 import { PersonaSwitcher } from "@/components/dev/persona-switcher";
 
-const BARE = ["/", "/login", "/signup", "/provider/login", "/provider/signup", "/admin/login", "/foundations"];
+const BARE = ["/", "/login", "/signup", "/provider/login", "/provider/signup", "/admin/login"];
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname() ?? "/";

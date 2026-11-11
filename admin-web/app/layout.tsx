@@ -13,8 +13,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${fontVariables} scroll-smooth`} suppressHydrationWarning>
-      <body data-theme="light" className="min-h-screen bg-surface text-ink antialiased">
+    <html lang="en" data-theme="light" className={`${fontVariables} scroll-smooth`} suppressHydrationWarning>
+      <body className="min-h-screen bg-surface text-ink antialiased">
         <AuthProvider>
           <AppShell>{children}</AppShell>
         </AuthProvider>

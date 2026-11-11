@@ -3,9 +3,11 @@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { useActivePersona } from "./auth-gate";
+import { useAuth } from "@/lib/auth-context";
 
 export function Topbar() {
   const { persona } = useActivePersona();
+  const { logout } = useAuth();
   return (
     <header className="flex h-14 items-center justify-between border-b border-hairline bg-surface px-6">
       <span className="text-sm text-ink-muted">{persona.city.toUpperCase()} · {persona.area}</span>
@@ -15,7 +17,7 @@ export function Topbar() {
           <p className="text-xs capitalize text-ink-muted">{persona.role}</p>
         </div>
         <Avatar className="h-8 w-8"><AvatarFallback>{persona.avatarInitials}</AvatarFallback></Avatar>
-        <Button variant="outline" size="sm">Sign out</Button>
+        <Button variant="outline" size="sm" onClick={logout}>Sign out</Button>
       </div>
     </header>
   );

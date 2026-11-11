@@ -14,6 +14,9 @@ describe("isAgentEvent", () => {
       if (kind === "tool_call_started" || kind === "tool_call_result") {
         obj.toolName = "test";
       }
+      if (kind === "tool_call_result") {
+        obj.ok = true;
+      }
       expect(isAgentEvent(obj)).toBe(true);
     }
   });
@@ -28,5 +31,10 @@ describe("isAgentEvent", () => {
   it("requires toolName on tool_call_* kinds", () => {
     expect(isAgentEvent({ ...base, kind: "tool_call_started", summary: "x", payload: {}, toolName: "find_providers" })).toBe(true);
     expect(isAgentEvent({ ...base, kind: "tool_call_started", summary: "x", payload: {} })).toBe(false);
+  });
+
+  it("requires a boolean ok on tool_call_result", () => {
+    expect(isAgentEvent({ ...base, kind: "tool_call_result", summary: "x", payload: {}, toolName: "create_booking", ok: false, errorCode: "slot_taken" })).toBe(true);
+    expect(isAgentEvent({ ...base, kind: "tool_call_result", summary: "x", payload: {}, toolName: "create_booking" })).toBe(false);
   });
 });

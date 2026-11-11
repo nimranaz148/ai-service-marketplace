@@ -5,11 +5,12 @@
  * The RBAC shape (routeRole vs persona.role) is deliberately preserved so Phase 1
  * can swap the persona source for the Clerk session with no consumer changes.
  */
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import type { AppUser, UserRole } from "@/lib/contracts";
 import { personas } from "@/lib/fixtures";
 import { routeRole } from "@/lib/nav";
+import { useAuth } from "@/lib/auth-context";
 
 interface PersonaCtx {
   persona: AppUser;
@@ -17,8 +18,18 @@ interface PersonaCtx {
 }
 const Ctx = createContext<PersonaCtx | null>(null);
 
-export function PersonaProvider({ children, initialRole = "customer" }: { children: React.ReactNode; initialRole?: UserRole }) {
-  const [role, setRole] = useState<UserRole>(initialRole);
+export function PersonaProvider({ children, initialRole }: { children: React.ReactNode; initialRole?: UserRole }) {
+  // The real auth context is the source of truth for role. `initialRole` remains a
+  // seed (tests, storybook-style rendering); once a user exists, auth wins — without
+  // this the demo login redirected to /dashboard/admin only for AuthGate to remount
+  // the persona as "customer" and render "Not authorised".
+  const { user } = useAuth();
+  const [role, setRole] = useState<UserRole>(user?.role ?? initialRole ?? "customer");
+
+  useEffect(() => {
+    if (user?.role) setRole(user.role);
+  }, [user?.role]);
+
   return <Ctx.Provider value={{ persona: personas[role], setRole }}>{children}</Ctx.Provider>;
 }
 

@@ -8,28 +8,43 @@ import { cn } from "@/lib/utils";
 
 export interface AgentEventItemProps {
   event: AgentEvent;
+  /**
+   * Spec §7: `--status-live` means "currently executing", never a static badge.
+   * Liveness is therefore the caller's fact — an `agent_started` event on a session
+   * that finished yesterday is NOT live — so it is an explicit prop, not derived
+   * from `event.kind`.
+   */
+  live?: boolean;
   onAnswer?: (text: string) => void;
   onApprove?: () => void;
   onReject?: () => void;
 }
 
-const LIVE_KINDS = new Set<AgentEvent["kind"]>(["agent_started", "tool_call_started"]);
-
-export function AgentEventItem({ event, onAnswer, onApprove, onReject }: AgentEventItemProps) {
+export function AgentEventItem({ event, live = false, onAnswer, onApprove, onReject }: AgentEventItemProps) {
   const [answer, setAnswer] = useState("");
-  const live = LIVE_KINDS.has(event.kind);
 
   return (
     <div className="rounded-md border border-hairline bg-surface-raised p-3">
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-2">
           <span
-            className={cn("h-1.5 w-1.5 rounded-full", live ? "bg-[var(--status-live)]" : event.kind === "error" ? "bg-[var(--status-stop)]" : "bg-[var(--status-go)]")}
+            data-live={live ? "true" : undefined}
+            className={cn(
+              "h-1.5 w-1.5 rounded-full",
+              live
+                ? "bg-[var(--status-live)]"
+                : event.kind === "error" || (event.kind === "tool_call_result" && !event.ok)
+                  ? "bg-[var(--status-stop)]"
+                  : "bg-[var(--status-go)]",
+            )}
           />
           <span className="font-mono text-xs text-ink-muted">{event.agentName}</span>
         </div>
         {"toolName" in event && event.toolName ? (
-          <ToolCallChip name={event.toolName} status={event.kind === "tool_call_result" ? "ok" : "running"} />
+          <ToolCallChip
+            name={event.toolName}
+            status={event.kind === "tool_call_result" ? (event.ok ? "ok" : "error") : "running"}
+          />
         ) : null}
       </div>
 

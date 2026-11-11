@@ -7,7 +7,14 @@ const files = readdirSync(dir).filter((f) => f.endsWith(".tsx"));
 
 describe("ui primitives use tokens only", () => {
   it("has generated the expected component set", () => {
-    for (const name of ["button", "card", "badge", "dialog", "table", "sonner", "tooltip", "tabs", "select"]) {
+    // The full spec §9.1 primitive set (23).
+    const SPEC_PRIMITIVES = [
+      "button", "input", "textarea", "label", "select", "checkbox", "switch", "radio-group",
+      "dialog", "sheet", "dropdown-menu", "popover", "tooltip", "tabs", "table", "badge",
+      "card", "skeleton", "scroll-area", "avatar", "separator", "command", "sonner",
+    ];
+    expect(SPEC_PRIMITIVES).toHaveLength(23);
+    for (const name of SPEC_PRIMITIVES) {
       expect(files, `missing ${name}.tsx`).toContain(`${name}.tsx`);
     }
   });

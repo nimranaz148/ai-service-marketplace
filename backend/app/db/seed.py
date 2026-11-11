@@ -5,7 +5,20 @@ from app.db.models import User, Provider, ProviderSlot, Session, Booking, TraceL
 
 
 def seed_database():
-    """Seed comprehensive initial data for Karachi, Islamabad, Lahore, etc."""
+    """Align the database with the canonical demo fixture set.
+
+    Seeds the 3 personas / 10 providers that mirror ``admin-web/lib/fixtures``
+    (personas.ts, providers.ts) across Karachi, Islamabad and Lahore, plus their
+    slots, sessions, bookings and trace logs.
+
+    Behaviour and limits:
+      * Add-only and idempotent — rows are keyed by fixed UUIDs, so re-running
+        this does not duplicate the canonical rows.
+      * It ASSUMES A CLEAN DATABASE. It does NOT prune pre-existing legacy rows:
+        anything seeded by an earlier schema or inserted by hand survives, and
+        will sit alongside the canonical set. Drop/recreate the database if you
+        need the canonical set to be the *only* content.
+    """
     print("🚀 Initializing database schema...")
     Base.metadata.create_all(bind=sync_engine)
 
