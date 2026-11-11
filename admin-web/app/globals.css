@@ -1,179 +1,185 @@
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 240 20% 4%;
-    --foreground: 0 0% 98%;
-    --card: 240 16% 7%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 16% 7%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 220 100% 49%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 240 10% 12%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 240 10% 12%;
-    --muted-foreground: 240 5% 65%;
-    --accent: 220 100% 49%;
-    --accent-foreground: 0 0% 100%;
-    --border: 240 10% 14%;
-    --input: 240 10% 14%;
-    --ring: 220 100% 49%;
-    --radius: 1.5rem;
+    --warm-950: #0B0B0B;
+    --warm-900: #131211;
+    --warm-850: #1A1917;
+    --warm-800: #232120;
+    --warm-700: #2E2B29;
+    --warm-500: #8A8882;
+    --warm-300: #B8B5AD;
+    --warm-150: #DEDBD2;
+    --warm-100: #F5F2EA;
 
-    /* Catalis Design Tokens */
-    --catalis-blue: #0054F9;
-    --catalis-blue-hover: #2D40EA;
-    --catalis-bg: #0A0A0F;
-    --catalis-card: #111116;
-    --catalis-card-subtle: #16161D;
-    --catalis-border: rgba(255, 255, 255, 0.08);
-    --catalis-border-subtle: rgba(255, 255, 255, 0.14);
+    --paper-0: #FBFAF6;
+    --paper-50: #F4F2EC;
+    --paper-100: #ECEAE1;
+    --paper-200: #E4E1D7;
+
+    --ink-900: #1C1A17;
+    --ink-700: #3D3A34;
+    --ink-500: #6B665C;
+
+    --ember-600: #C24A1E;
+    --ember-500: #DE5527;
+    --ember-400: #F26B3A;
+    --ember-tint: rgba(222, 85, 39, 0.12);
+
+    --signal: #FF5A1F;
+
+    --go-500: #2E7D5B;
+    --warn-500: #C98A12;
+    --stop-500: #C0392B;
+    --info-500: #3E6C8A;
+
+    --tile: #1E3A5F;
+    --terracotta: #A8492B;
+    --brass: #B08D57;
+    --plaster: #EBE6D9;
+
+    --viz-1: #DE5527;
+    --viz-2: #3E6C8A;
+    --viz-3: #B08D57;
+    --viz-4: #2E7D5B;
+    --viz-5: #8A5A3C;
+    --viz-6: #6B665C;
+
+    /* ---- SCALES ---- */
+    --text-xs: 0.75rem;
+    --text-sm: 0.8125rem;
+    --text-base: 0.875rem;
+    --text-md: 1rem;
+    --text-lg: 1.125rem;
+    --text-xl: 1.3125rem;
+    --text-2xl: 1.625rem;
+    --text-3xl: 2.0625rem;
+    --text-4xl: 2.625rem;
+    --text-5xl: 3.375rem;
+    --text-6xl: 4.25rem;
+
+    --space-1: 0.125rem;
+    --space-2: 0.25rem;
+    --space-3: 0.5rem;
+    --space-4: 0.75rem;
+    --space-5: 1rem;
+    --space-6: 1.5rem;
+    --space-7: 2rem;
+    --space-8: 3rem;
+    --space-9: 4rem;
+    --space-10: 6rem;
+
+    --r-sm: 4px;
+    --r-md: 8px;
+    --r-lg: 12px;
+    --r-pill: 999px;
+
+    --e-raised: 0 1px 2px rgba(0, 0, 0, 0.06), 0 1px 1px rgba(0, 0, 0, 0.04);
+    --e-overlay: 0 8px 24px rgba(0, 0, 0, 0.16);
+
+    --dur-fast: 120ms;
+    --dur: 180ms;
+    --dur-slow: 260ms;
+    --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+    /* ---- SEMANTIC ROLES — light application surface (default) ---- */
+    --surface: var(--paper-0);
+    --surface-sunken: var(--paper-50);
+    --surface-raised: #FFFFFF;
+    --hairline: var(--paper-200);
+    --ink: var(--ink-900);
+    --ink-muted: var(--ink-500);
+    --accent: var(--ember-500);
+    --accent-hover: var(--ember-600);
+    --accent-ink: #FFFFFF;
+    --accent-tint: var(--ember-tint);
+    --focus-ring: var(--ember-500);
+    --status-go: var(--go-500);
+    --status-warn: var(--warn-500);
+    --status-stop: var(--stop-500);
+    --status-info: var(--info-500);
+    --status-live: var(--signal);
+    --elevation-raised: var(--e-raised);
+    --elevation-overlay: var(--e-overlay);
+
+    /* ---- shadcn-conventional aliases onto the semantic roles ---- */
+    --background: var(--surface);
+    --foreground: var(--ink);
+    --card: var(--surface-raised);
+    --card-foreground: var(--ink);
+    --popover: var(--surface-raised);
+    --popover-foreground: var(--ink);
+    --primary: var(--accent);
+    --primary-foreground: var(--accent-ink);
+    --secondary: var(--surface-sunken);
+    --secondary-foreground: var(--ink);
+    --muted: var(--surface-sunken);
+    --muted-foreground: var(--ink-muted);
+    --accent-foreground: var(--ink);
+    --destructive: var(--status-stop);
+    --destructive-foreground: #FFFFFF;
+    --border: var(--hairline);
+    --input: var(--hairline);
+    --ring: var(--focus-ring);
+    --radius: var(--r-md);
   }
-}
 
-@layer base {
+  [data-theme="marketing"],
+  .theme-marketing {
+    --surface: var(--warm-950);
+    --surface-sunken: #060606;
+    --surface-raised: var(--warm-900);
+    --hairline: rgba(245, 242, 234, 0.10);
+    --ink: var(--warm-100);
+    --ink-muted: var(--warm-500);
+    --accent: var(--ember-500);
+    --accent-hover: var(--ember-400);
+    --accent-ink: #FFFFFF;
+    --accent-tint: var(--ember-tint);
+    --focus-ring: var(--ember-400);
+    --elevation-raised: none;
+    --elevation-overlay: 0 16px 48px rgba(0, 0, 0, 0.5);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]):not([data-theme="marketing"]) {
+      /* Reserved for a future application dark theme. Intentionally empty in Phase 0. */
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
   * {
-    @apply border-border;
+    border-color: var(--hairline);
     box-sizing: border-box;
   }
+
   body {
-    background-color: #0A0A0F;
-    color: #F4F4F6;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: var(--surface);
+    color: var(--ink);
+    font-family: var(--font-switzer), ui-sans-serif, system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    overflow-x: hidden;
   }
+
   ::selection {
-    background-color: #0054F9;
-    color: #FFFFFF;
+    background-color: var(--accent);
+    color: var(--accent-ink);
   }
 }
 
-/* Custom Typography */
-.font-serif {
-  font-family: 'Instrument Serif', Georgia, serif;
-}
-
-.font-display {
-  font-family: 'Inter', sans-serif;
-  letter-spacing: -0.02em;
-}
-
-.font-body {
-  font-family: 'Inter', -apple-system, sans-serif;
-}
-
-.font-code {
-  font-family: 'JetBrains Mono', monospace;
-}
-
-/* Catalis Obsidian Card Surfaces */
-.catalis-card {
-  background: rgba(17, 17, 22, 0.85);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 2rem;
-  box-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.6);
-}
-
-.catalis-card-interactive {
-  background: rgba(17, 17, 22, 0.85);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 2rem;
-  box-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.6);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.catalis-card-interactive:hover {
-  transform: translateY(-4px);
-  border-color: rgba(0, 84, 249, 0.4);
-  box-shadow: 0 24px 60px -12px rgba(0, 0, 0, 0.7), 0 0 30px rgba(0, 84, 249, 0.15);
-}
-
-/* Catalis Radial Atmosphere Glows */
-.catalis-radial-glow {
-  background: radial-gradient(circle 600px at 50% 0%, rgba(0, 84, 249, 0.18) 0%, transparent 70%);
-}
-
-.catalis-radial-spotlight {
-  background: radial-gradient(circle 500px at 50% 50%, rgba(0, 84, 249, 0.22) 0%, transparent 65%);
-}
-
-/* Catalis Pill Button */
-.catalis-btn {
-  border-radius: 9999px;
-  padding: 0.75rem 1.4rem;
-  font-size: 0.875rem;
-  font-weight: 600;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  cursor: pointer;
-}
-
-.catalis-btn-primary {
-  background-color: #0054F9;
-  color: #FFFFFF;
-  box-shadow: 0 0 25px rgba(0, 84, 249, 0.35);
-}
-
-.catalis-btn-primary:hover {
-  background-color: #2D40EA;
-  box-shadow: 0 0 35px rgba(0, 84, 249, 0.55);
-  transform: scale(1.02);
-}
-
-.catalis-btn-secondary {
-  background-color: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: #F4F4F6;
-  backdrop-filter: blur(12px);
-}
-
-.catalis-btn-secondary:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.25);
-  color: #FFFFFF;
-}
-
-/* Catalis Pill Badge */
-.catalis-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.35rem 0.85rem;
-  border-radius: 9999px;
-  background-color: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: #E4E4E7;
-}
-
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-}
-::-webkit-scrollbar-track {
-  background: #0A0A0F;
-}
-::-webkit-scrollbar-thumb {
-  background: #1F1F28;
-  border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #0054F9;
-}
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--surface-sunken); }
+::-webkit-scrollbar-thumb { background: var(--hairline); border-radius: var(--r-pill); }
