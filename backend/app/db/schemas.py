@@ -185,9 +185,17 @@ class SessionResponse(SessionBase):
     model_config = ConfigDict(from_attributes=True)
 
 
+class TurnResponse(BaseModel):
+    role: str  # "user" | "agent"
+    content: str
+    created_at: Optional[str] = None
+
+
 class SessionDetailResponse(SessionResponse):
     intent_result: Optional[IntentResultResponse] = None
     trace_logs: List[TraceLogResponse] = []
+    turns: List[TurnResponse] = []
+    area: Optional[str] = None
 
 
 # ==========================================
@@ -208,6 +216,23 @@ class ServiceRequestOutput(BaseModel):
     selected_provider: Optional[ProviderResponse] = None
     booking: Optional[BookingResponse] = None
     spoken_summary: Optional[str] = None
+    trace_logs: List[TraceLogResponse] = []
+
+
+# ==========================================
+# Conversational Agent (Phase 2) — real multi-turn contract
+# ==========================================
+class ConversationTurnInput(BaseModel):
+    message: str = Field(..., description="The customer's next message in an already-started conversation")
+
+
+class ConversationResponse(BaseModel):
+    session_id: UUID
+    status: str  # in_progress, needs_input, completed, failed
+    awaiting_input: bool
+    area: Optional[str] = None
+    agent_message: Optional[str] = None
+    turns: List[TurnResponse] = []
     trace_logs: List[TraceLogResponse] = []
 
 

@@ -116,7 +116,12 @@ class Session(Base):
     user_id = Column(GUID, ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
     raw_input = Column(Text, nullable=False)
     detected_language = Column(String(50), default="roman_urdu")
-    status = Column(String(50), default="in_progress")  # in_progress, completed, failed
+    status = Column(String(50), default="in_progress")  # in_progress, needs_input, completed, failed
+    area = Column(String(255), nullable=True)
+    # SDK-format input item list (agents.Runner continuity) — opaque JSON, never read by the frontend.
+    conversation_history = Column(JSON, nullable=True)
+    # UI-facing transcript: [{role: "user"|"agent", content, created_at}, ...]
+    turns = Column(JSON, nullable=True)
     started_at = Column(DateTime(timezone=True), server_default=func.now())
     completed_at = Column(DateTime(timezone=True), nullable=True)
 

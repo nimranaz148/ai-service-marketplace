@@ -41,8 +41,16 @@ async def test_all_api_routes():
         assert res.status_code == 200, f"POST /requests failed: {res.text}"
         data = res.json()
         session_id = data["session_id"]
-        booking_code = data["booking"]["confirmation_code"] if data.get("booking") else None
-        print(f"✅ 2. POST /requests -> Session {session_id[:8]}... | Status: {data['status']} | Code: {booking_code}")
+        print(f"✅ 2. POST /requests -> Session {session_id[:8]}... | Status: {data['status']} | Agent: {data.get('agent_message')}")
+
+        # Conversational contract: the agent shows a provider and waits for confirmation
+        # before booking — it never books on the first turn without the customer agreeing.
+        if data["status"] == "needs_input":
+            res = await client.post(f"/requests/{session_id}/reply", json={"message": "haan theek hai, book kar do"})
+            assert res.status_code == 200, f"POST /requests/{{id}}/reply failed: {res.text}"
+            data = res.json()
+        booking_code = "BK-" in (data.get("agent_message") or "")
+        print(f"✅ 2b. Confirm turn -> Status: {data['status']} | Booked: {booking_code}")
 
         # -------------------------------------------------------------
         # 3. GET /requests/{session_id}
