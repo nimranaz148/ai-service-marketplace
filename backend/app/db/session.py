@@ -6,7 +6,17 @@ from sqlalchemy.orm import declarative_base, sessionmaker
 
 from app.core.config import settings
 
-# Async Engine for FastAPI Routes & Async Agents
+# Async Engine for FastAPI Routes & Async Agents.
+# `statement_cache_size` / `command_timeout` are asyncpg-only kwargs — passing
+# them to any other driver (e.g. aiosqlite, used for local dev/tests without a
+# Postgres instance) raises a TypeError at connect time, so they're scoped to
+# the postgres dialect only.
+_connect_args = (
+    {"statement_cache_size": 0, "command_timeout": 15}
+    if settings.DATABASE_URL.startswith("postgresql")
+    else {}
+)
+
 async_engine = create_async_engine(
     settings.DATABASE_URL,
     echo=settings.DEBUG,
@@ -14,10 +24,7 @@ async_engine = create_async_engine(
     pool_pre_ping=True,
     pool_recycle=300,
     pool_timeout=10,
-    connect_args={
-        "statement_cache_size": 0,
-        "command_timeout": 15,
-    },
+    connect_args=_connect_args,
 )
 
 AsyncSessionLocal = async_sessionmaker(

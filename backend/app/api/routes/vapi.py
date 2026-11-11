@@ -11,7 +11,7 @@ from app.db.models import Provider, ProviderSlot
 from app.agents.tools.provider_tools import find_providers
 from app.agents.tools.booking_tools import create_booking
 from app.agents.tools.notification_tools import schedule_followups
-from app.agents.orchestrator import orchestrator
+from app.services.user_resolver import resolve_user_id
 
 router = APIRouter(prefix="/vapi", tags=["Vapi Voice Webhook"])
 logger = logging.getLogger("vapi_webhook")
@@ -37,7 +37,7 @@ async def handle_vapi_webhook(
         return {"status": "received"}
 
     results = []
-    user_id = str(await orchestrator._resolve_user_id(db, None))
+    user_id = str(await resolve_user_id(db, None))
 
     for tool_call in tool_calls:
         call_id = tool_call.get("id")

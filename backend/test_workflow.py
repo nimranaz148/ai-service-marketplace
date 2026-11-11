@@ -1,16 +1,15 @@
 import asyncio
-import json
 import logging
-from app.db.session import async_engine, Base, get_db, AsyncSessionLocal
+from app.db.session import async_engine, Base, AsyncSessionLocal
 from app.db.seed import seed_database
-from app.agents.orchestrator import orchestrator
+from app.services.conversation import conversation_service
 
 logging.basicConfig(level=logging.INFO)
 
 
 async def main():
     print("=" * 60)
-    print("🧪 Running AI Service Marketplace Multi-Agent End-to-End Test")
+    print("Testing the real Concierge agent end-to-end (multi-turn)")
     print("=" * 60)
 
     # 1. Initialize schema & seed data
@@ -18,36 +17,31 @@ async def main():
         await conn.run_sync(Base.metadata.create_all)
     seed_database()
 
-    # 2. Test Main Demo Scenario
-    test_query = "Mujhe kal subah G-13 mein AC technician chahiye"
-    print(f"\n🗣️ Input Prompt: '{test_query}'")
-    print("-" * 60)
-
     async with AsyncSessionLocal() as db:
-        result = await orchestrator.execute_workflow(
-            raw_input=test_query,
-            db=db,
-        )
+        print("\nTurn 1: 'Mujhe kal subah G-13 mein AC technician chahiye'")
+        session = await conversation_service.start(db, "Mujhe kal subah G-13 mein AC technician chahiye")
+        print(f"  status: {session.status}")
+        print(f"  agent:  {session.turns[-1]['content']}")
 
-        print(f"\n🎉 Workflow Status: {result.status}")
-        print(f"Detected Language: {result.detected_language}")
-        print(f"Extracted Service: {result.intent.service_type if result.intent else 'N/A'}")
-        print(f"Extracted Location: {result.intent.location_text if result.intent else 'N/A'}")
-        print(f"Extracted Time: {result.intent.time_preference if result.intent else 'N/A'}")
-        print(f"\n🏆 Selected Provider: {result.selected_provider.name if result.selected_provider else 'None'}")
-        print(f"⭐ Provider Rating: {result.selected_provider.rating if result.selected_provider else 'N/A'}")
-        print(f"📍 Provider Area: {result.selected_provider.area if result.selected_provider else 'N/A'}")
-        print(f"\n🔖 Booking Code: {result.booking.confirmation_code if result.booking else 'None'}")
-        print(f"🔊 Spoken Concierge Summary: \"{result.spoken_summary}\"")
+        if session.status == "needs_input":
+            print("\nTurn 2 (confirm): 'haan theek hai, book kar do'")
+            session = await conversation_service.continue_turn(db, session.id, "haan theek hai, book kar do")
+            print(f"  status: {session.status}")
+            print(f"  agent:  {session.turns[-1]['content']}")
 
         print("\n" + "=" * 60)
-        print("📜 Agent Step-by-Step Trace Logs:")
+        print("Trace log (every real tool call the agent made):")
         print("=" * 60)
-        for t in result.trace_logs:
-            print(f"  Step {t.step} | [{t.agent_name}] -> tool: {t.tool_used}() ({t.duration_ms}ms)")
-            print(f"         Summary: {t.output_summary}")
-        print("=" * 60)
-        print("✅ End-to-End Agent Execution Test PASSED Successfully!\n")
+        from sqlalchemy import select
+        from app.db.models import TraceLog
+
+        res = await db.execute(select(TraceLog).where(TraceLog.session_id == session.id).order_by(TraceLog.step))
+        for t in res.scalars().all():
+            print(f"  step {t.step} | [{t.agent_name}] -> tool: {t.tool_used}() ({t.duration_ms}ms)")
+            print(f"         {t.output_summary}")
+
+        assert session.status == "completed", "expected the conversation to complete after confirming"
+        print("\n✅ End-to-end conversational agent test PASSED.\n")
 
 
 if __name__ == "__main__":

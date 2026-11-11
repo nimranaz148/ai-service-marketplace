@@ -6,7 +6,7 @@ import asyncio
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from app.db.session import AsyncSessionLocal
-from app.agents.orchestrator import orchestrator
+from app.services.conversation import conversation_service
 from app.agents.tools.provider_tools import find_providers
 from app.agents.tools.booking_tools import create_booking
 
@@ -25,12 +25,12 @@ async def test_multilingual():
     for label, query in test_cases:
         print(f"\n🔹 Testing: [{label}] -> '{query}'", flush=True)
         async with AsyncSessionLocal() as db:
-            result = await orchestrator.execute_workflow(raw_input=query, db=db)
-            print(f"   ✓ Detected Lang: {result.detected_language}", flush=True)
-            print(f"   ✓ Extracted: {result.intent.service_type} | Area: {result.intent.location_text} | Time: {result.intent.time_preference}", flush=True)
-            print(f"   ✓ Provider: {result.selected_provider.name} ({result.selected_provider.rating}★)", flush=True)
-            print(f"   ✓ Booking Code: {result.booking.confirmation_code}", flush=True)
-            print(f"   ✓ Spoken: \"{result.spoken_summary}\"", flush=True)
+            session = await conversation_service.start(db, query)
+            print(f"   ✓ Status: {session.status}", flush=True)
+            print(f"   ✓ Agent:  {session.turns[-1]['content']}", flush=True)
+            if session.status == "needs_input":
+                session = await conversation_service.continue_turn(db, session.id, "haan, book kar do")
+                print(f"   ✓ Confirmed -> {session.status}: {session.turns[-1]['content']}", flush=True)
 
 
 async def test_vapi_simulation():

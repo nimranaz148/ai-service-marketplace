@@ -20,6 +20,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
 from app.db.models import Session, User
+from app.services.user_resolver import resolve_user_id
 
 logger = logging.getLogger("conversation_service")
 
@@ -251,37 +252,7 @@ class ConversationService:
         return result.scalar() or 0
 
     async def _resolve_user_id(self, db: AsyncSession, user_id: Optional[str]) -> uuid.UUID:
-        from sqlalchemy import select
-
-        if user_id:
-            try:
-                parsed_uuid = uuid.UUID(user_id)
-                user = await db.get(User, parsed_uuid)
-                if user:
-                    return user.id
-            except ValueError:
-                stmt = select(User).where(User.clerk_user_id == user_id)
-                res = await db.execute(stmt)
-                user = res.scalar_one_or_none()
-                if user:
-                    return user.id
-
-        stmt = select(User).limit(1)
-        res = await db.execute(stmt)
-        user = res.scalar_one_or_none()
-        if user:
-            return user.id
-
-        new_user = User(
-            name="Demo Customer",
-            phone="+923001234567",
-            role="customer",
-            preferred_language="roman_urdu",
-            area="G-13",
-        )
-        db.add(new_user)
-        await db.flush()
-        return new_user.id
+        return await resolve_user_id(db, user_id)
 
 
 conversation_service = ConversationService()
