@@ -88,3 +88,14 @@
 **Status: COMPLETED**
 
 Rebuilt `admin-web` on a CSS-variable token system as single source of truth (mirrored to `tokens.ts`), self-hosted Clash Display / Zodiak / Switzer / JetBrains Mono via `next/font/local`, a shadcn/ui primitive layer restyled to tokens, props-driven agent-activity primitives, a `contracts` + `fixtures` single source of truth aligned with the backend seed, a rebuilt light-surface app shell with an RBAC-shaped auth stub, and a `/foundations` reference page. Removed ~1,450 LOC of dead code (5 orphaned landing components + hand-rolled primitives + old shell) and neutralized 3 legacy design-token generations, with a `no-legacy` guard test locking the cleanup in.
+
+## Phase 0.5 — Landing / Home Page Revamp
+**Date:** 2026-09-11
+**Status:** COMPLETED
+
+Rebuilt `/` as a narrative-led GSAP scroll experience (Lenis + ScrollTrigger, two pinned scrubbed
+story beats — AgentBeat and TradesCoverage — plus polished reveals elsewhere), with honest
+copy for the real product, a per-job "how pricing works" block replacing the old subscription
+tiers, and a visual-only marketing-chrome restyle of the four auth pages (logic guard-tested
+unchanged). `--accent-strong` was added to close the Phase 0 primary-button contrast residual.
+The 10 legacy Catalis-era landing components (~2,267 LOC) were removed.
