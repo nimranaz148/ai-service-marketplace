@@ -94,6 +94,7 @@
     --ink: var(--ink-900);
     --ink-muted: var(--ink-500);
     --accent: var(--ember-500);
+    --accent-strong: #C24A1E;
     --accent-hover: var(--ember-600);
     --accent-ink: #FFFFFF;
     --accent-tint: var(--ember-tint);
@@ -126,7 +127,7 @@
     --card-foreground: var(--ink);
     --popover: var(--surface-raised);
     --popover-foreground: var(--ink);
-    --primary: var(--accent);
+    --primary: var(--accent-strong);
     --primary-foreground: var(--accent-ink);
     --secondary: var(--surface-sunken);
     --secondary-foreground: var(--ink);

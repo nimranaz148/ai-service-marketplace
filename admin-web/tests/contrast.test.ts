@@ -42,6 +42,10 @@ describe("body text meets WCAG AA/AAA on application surfaces", () => {
   it("--ink on --surface is AAA (7:1)", () => {
     expect(ratio(ink, surface)).toBeGreaterThanOrEqual(7);
   });
+
+  it("--accent-ink on --accent-strong (primary button) clears AA", () => {
+    expect(ratio("#FFFFFF", tokens.color["accent-strong"])).toBeGreaterThanOrEqual(4.5);
+  });
 });
 
 describe("StatusBadge label (--ink on each status tint) meets AA", () => {
