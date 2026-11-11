@@ -17,6 +17,7 @@ from app.db.schemas import (
     UserResponse,
     UserCreate,
     UserUpdate,
+    AdminCustomerResponse,
 )
 
 router = APIRouter(prefix="/admin", tags=["Admin Dashboard"])
@@ -168,20 +169,28 @@ async def update_admin_provider(
 # ==========================================
 # Admin Customer Management
 # ==========================================
-@router.get("/customers", response_model=List[UserResponse])
+@router.get("/customers", response_model=List[AdminCustomerResponse])
 async def list_admin_customers(
     limit: int = 100,
     db: AsyncSession = Depends(get_db),
 ):
-    """List all registered customers for admin management."""
+    """List all registered customers for admin management, with each
+    customer's real booking count (not a fabricated spend/bookings figure)."""
     stmt = (
-        select(User)
+        select(User, func.count(Booking.id))
         .where(User.role == "customer")
+        .outerjoin(Booking, Booking.user_id == User.id)
+        .group_by(User.id)
         .order_by(desc(User.created_at))
         .limit(limit)
     )
     result = await db.execute(stmt)
-    return result.scalars().all()
+    out = []
+    for user, bookings_count in result.all():
+        item = AdminCustomerResponse.model_validate(user)
+        item.bookings_count = bookings_count
+        out.append(item)
+    return out
 
 
 @router.post("/customers", response_model=UserResponse, status_code=status.HTTP_201_CREATED)

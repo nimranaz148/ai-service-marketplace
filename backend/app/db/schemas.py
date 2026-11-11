@@ -15,6 +15,7 @@ class UserBase(BaseModel):
     area: Optional[str] = None
     lat: Optional[float] = None
     lng: Optional[float] = None
+    is_suspended: bool = False
 
 
 class UserCreate(UserBase):
@@ -29,6 +30,7 @@ class UserUpdate(BaseModel):
     area: Optional[str] = None
     lat: Optional[float] = None
     lng: Optional[float] = None
+    is_suspended: Optional[bool] = None
 
 
 class UserResponse(UserBase):
@@ -39,6 +41,10 @@ class UserResponse(UserBase):
     model_config = ConfigDict(from_attributes=True)
 
 
+class AdminCustomerResponse(UserResponse):
+    bookings_count: int = 0
+
+
 # ==========================================
 # Provider Slot Schemas
 # ==========================================
@@ -46,6 +52,11 @@ class ProviderSlotBase(BaseModel):
     slot_date: date
     slot_time: str
     is_booked: bool = False
+
+
+class ProviderSlotCreate(BaseModel):
+    slot_date: date
+    slot_time: str
 
 
 class ProviderSlotResponse(ProviderSlotBase):
@@ -160,6 +171,12 @@ class BookingResponse(BookingBase):
     slot: Optional[ProviderSlotResponse] = None
 
     model_config = ConfigDict(from_attributes=True)
+
+
+class ProviderBookingResponse(BookingResponse):
+    """A provider's own booking list — adds the customer's real contact
+    details, which a provider legitimately needs and a stranger does not."""
+    customer: Optional[UserResponse] = None
 
 
 # ==========================================

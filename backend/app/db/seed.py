@@ -76,6 +76,7 @@ def seed_database():
             # Roster mirrors admin-web/lib/fixtures/providers.ts (prov-01 .. prov-10)
             Provider(
                 id=uuid.UUID("a0000000-0000-0000-0000-000000000001"),
+                user_id=uuid.UUID("22222222-2222-2222-2222-222222222222"),  # provider persona owns this row
                 name="Tariq Mehmood",
                 category="AC Technician",
                 area="Sector G-13, Islamabad",
@@ -196,11 +197,15 @@ def seed_database():
             ),
         ]
 
-        # Add providers
+        # Add providers (and backfill user_id onto rows seeded before the
+        # provider-persona link existed, so re-running this against an
+        # older DB still ends up wired to the demo provider login).
         for prov in providers:
             existing = db.query(Provider).filter(Provider.id == prov.id).first()
             if not existing:
                 db.add(prov)
+            elif prov.user_id is not None and existing.user_id is None:
+                existing.user_id = prov.user_id
         db.flush()
 
         print("🌱 Seeding Provider Availability Slots for the next 7 days...")

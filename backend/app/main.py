@@ -14,6 +14,7 @@ from app.api.routes import (
     admin,
     vapi,
     me,
+    provider_me,
 )
 
 # Setup logging
@@ -70,6 +71,7 @@ app.include_router(bookings.router)
 app.include_router(admin.router)
 app.include_router(vapi.router)
 app.include_router(me.router)
+app.include_router(provider_me.router)
 
 
 if __name__ == "__main__":

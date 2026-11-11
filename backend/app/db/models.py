@@ -65,6 +65,7 @@ class User(Base):
     area = Column(String(255), nullable=True)
     lat = Column(Float, nullable=True)
     lng = Column(Float, nullable=True)
+    is_suspended = Column(Boolean, default=False, nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 
@@ -72,12 +73,14 @@ class User(Base):
     bookings = relationship("Booking", back_populates="user", cascade="all, delete-orphan")
     sessions = relationship("Session", back_populates="user")
     notifications = relationship("Notification", back_populates="user", cascade="all, delete-orphan")
+    provider_profile = relationship("Provider", back_populates="owner", uselist=False)
 
 
 class Provider(Base):
     __tablename__ = "providers"
 
     id = Column(GUID, primary_key=True, default=uuid.uuid4)
+    user_id = Column(GUID, ForeignKey("users.id", ondelete="SET NULL"), nullable=True, unique=True, index=True)
     name = Column(String(255), nullable=False)
     category = Column(String(100), nullable=False, index=True)  # AC Technician, Plumber, Electrician, etc.
     area = Column(String(255), nullable=False)
@@ -92,6 +95,7 @@ class Provider(Base):
     # Relationships
     slots = relationship("ProviderSlot", back_populates="provider", cascade="all, delete-orphan")
     bookings = relationship("Booking", back_populates="provider")
+    owner = relationship("User", back_populates="provider_profile")
 
 
 class ProviderSlot(Base):
