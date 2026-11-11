@@ -46,7 +46,7 @@ export function MarketingNav() {
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-colors duration-200 ease-out",
         solid
-          ? "border-b border-hairline bg-surface-raised/95 backdrop-blur-sm"
+          ? "border-b border-hairline bg-surface-raised"
           : "border-b border-transparent bg-transparent",
       )}
     >
