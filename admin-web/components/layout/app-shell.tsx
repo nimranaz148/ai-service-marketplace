@@ -4,7 +4,6 @@ import { usePathname } from "next/navigation";
 import { PersonaProvider, AuthGate } from "./auth-gate";
 import { Sidebar } from "./sidebar";
 import { Topbar } from "./topbar";
-import { PersonaSwitcher } from "@/components/dev/persona-switcher";
 
 const BARE = ["/", "/login", "/signup", "/provider/login", "/provider/signup", "/admin/login"];
 
@@ -25,7 +24,6 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           </main>
         </div>
       </div>
-      <PersonaSwitcher />
     </PersonaProvider>
   );
 }

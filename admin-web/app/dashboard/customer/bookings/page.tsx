@@ -137,22 +137,22 @@ export default function CustomerBookingsPage() {
   return (
     <div className="space-y-8 pb-16">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/8 pb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-hairline pb-6">
         <div>
           <div className="flex items-center gap-2 mb-2">
             <Link
               href="/dashboard/customer"
-              className="inline-flex items-center gap-1 text-xs font-code text-zinc-400 hover:text-[#0054F9] transition-colors"
+              className="inline-flex items-center gap-1 text-xs font-code text-ink-muted hover:text-accent transition-colors"
             >
               <ChevronLeft size={14} /> Back to Home
             </Link>
-            <span className="text-zinc-600">/</span>
-            <span className="text-xs font-code text-[#38BDF8] uppercase tracking-wider">My Bookings</span>
+            <span className="text-ink-muted">/</span>
+            <span className="text-xs font-code text-accent uppercase tracking-wider">My Bookings</span>
           </div>
-          <h1 className="font-display font-extrabold text-2xl sm:text-3xl text-white tracking-tight">
+          <h1 className="font-display font-extrabold text-2xl sm:text-3xl text-ink tracking-tight">
             My Bookings & Orders
           </h1>
-          <p className="font-body text-xs sm:text-sm text-zinc-400 mt-1">
+          <p className="font-body text-xs sm:text-sm text-ink-muted mt-1">
             Track active technician dispatches, view security OTP codes, and rate your verified artisans.
           </p>
         </div>
@@ -169,8 +169,8 @@ export default function CustomerBookingsPage() {
               onClick={() => setFilter(tab.key as any)}
               className={`px-3.5 py-2 rounded-xl text-xs font-code font-bold transition-all cursor-pointer ${
                 filter === tab.key
-                  ? "bg-[#0054F9] text-white shadow-[0_0_20px_rgba(0,84,249,0.3)]"
-                  : "bg-[#111118] border border-white/8 text-zinc-400 hover:text-white"
+                  ? "bg-primary text-accent-ink shadow-raised"
+                  : "bg-surface-raised border border-hairline text-ink-muted hover:text-ink"
               }`}
             >
               {tab.label}
@@ -188,49 +188,49 @@ export default function CustomerBookingsPage() {
               key={b.id}
               className={`p-6 rounded-3xl border transition-all ${
                 isActive
-                  ? "bg-gradient-to-r from-[#141420] to-[#0A0A0F] border-2 border-[#0054F9]/40 shadow-[0_10px_30px_rgba(0,0,0,0.4)]"
-                  : "bg-[#111118] border-white/8"
+                  ? "bg-surface-raised border-2 border-status-live-line shadow-raised"
+                  : "bg-surface-raised border-hairline"
               }`}
             >
               <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
                 {/* Left: Token, Service, Artisan info */}
                 <div className="flex items-start gap-4">
-                  <div className="w-14 h-14 rounded-2xl bg-[#292212] border border-[#473B1F] text-[#D4A843] flex items-center justify-center font-display font-black text-xl shrink-0 shadow-inner">
+                  <div className="w-14 h-14 rounded-2xl bg-status-warn-tint border border-status-warn-line text-status-warn flex items-center justify-center font-display font-black text-xl shrink-0 shadow-inner">
                     {b.artisanAvatar}
                   </div>
 
                   <div className="space-y-1.5 flex-1">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <span className="font-code font-black text-xs text-[#38BDF8] bg-[#0054F9]/15 px-2.5 py-0.5 rounded-md border border-[#0054F9]/30">
+                      <span className="font-code font-black text-xs text-accent bg-accent-tint px-2.5 py-0.5 rounded-md border border-status-live-line">
                         OTP: {b.token}
                       </span>
                       <span
                         className={`px-2 py-0.5 rounded text-[10px] font-code font-bold uppercase border ${
                           isActive
-                            ? "bg-[#0E202B] text-[#38BDF8] border-[#18394D] animate-pulse"
-                            : "bg-[#111118] text-zinc-400 border-white/8"
+                            ? "bg-status-info-tint text-accent border-status-info-line animate-pulse"
+                            : "bg-surface-raised text-ink-muted border-hairline"
                         }`}
                       >
                         {isActive ? "ON THE WAY" : "COMPLETED"}
                       </span>
                     </div>
 
-                    <h3 className="font-display font-bold text-base sm:text-lg text-white">
+                    <h3 className="font-display font-bold text-base sm:text-lg text-ink">
                       {b.serviceTitle}
                     </h3>
 
-                    <div className="flex flex-wrap items-center gap-4 text-xs font-body text-zinc-400">
-                      <span className="text-white font-semibold flex items-center gap-1">
+                    <div className="flex flex-wrap items-center gap-4 text-xs font-body text-ink-muted">
+                      <span className="text-ink font-semibold flex items-center gap-1">
                         Artisan: {b.artisanName}
                       </span>
                       <span>·</span>
                       <span className="flex items-center gap-1">
-                        <Clock size={12} className="text-[#38BDF8]" />
+                        <Clock size={12} className="text-accent" />
                         {b.scheduledTime}
                       </span>
                       <span>·</span>
                       <span className="flex items-center gap-1">
-                        <MapPin size={12} className="text-zinc-400" />
+                        <MapPin size={12} className="text-ink-muted" />
                         {b.address}
                       </span>
                     </div>
@@ -238,29 +238,29 @@ export default function CustomerBookingsPage() {
                     {/* Review Snippet if available */}
                     {b.rating && (
                       <div className="flex items-center gap-2 pt-1 text-xs">
-                        <div className="flex items-center text-[#D4A843]">
+                        <div className="flex items-center text-status-warn">
                           {[...Array(5)].map((_, i) => (
                             <Star
                               key={i}
                               size={12}
-                              fill={i < b.rating! ? "#D4A843" : "none"}
-                              stroke="#D4A843"
+                              fill={i < b.rating! ? "var(--status-warn)" : "none"}
+                              stroke="var(--status-warn)"
                             />
                           ))}
                         </div>
-                        <span className="text-zinc-400 italic text-[11px]">"{b.review}"</span>
+                        <span className="text-ink-muted italic text-[11px]">"{b.review}"</span>
                       </div>
                     )}
                   </div>
                 </div>
 
                 {/* Right: Amount & Actions */}
-                <div className="flex flex-row lg:flex-col items-center lg:items-end justify-between gap-3 pt-4 lg:pt-0 border-t lg:border-t-0 border-white/8">
+                <div className="flex flex-row lg:flex-col items-center lg:items-end justify-between gap-3 pt-4 lg:pt-0 border-t lg:border-t-0 border-hairline">
                   <div>
-                    <div className="font-display font-extrabold text-lg text-[#38BDF8] text-right">
+                    <div className="font-display font-extrabold text-lg text-accent text-right">
                       PKR {b.amountPKR.toLocaleString()}
                     </div>
-                    <div className="text-[10px] font-code text-zinc-400 text-right">
+                    <div className="text-[10px] font-code text-ink-muted text-right">
                       {b.paymentMethod}
                     </div>
                   </div>
@@ -269,7 +269,7 @@ export default function CustomerBookingsPage() {
                     {isActive ? (
                       <a
                         href={`tel:${b.artisanPhone}`}
-                        className="h-9 px-3.5 rounded-xl bg-[#0054F9]/10 hover:bg-[#0054F9]/20 border border-[#0054F9]/40 text-[#38BDF8] font-code text-xs font-bold flex items-center gap-1.5 transition-colors"
+                        className="h-9 px-3.5 rounded-xl bg-accent-tint hover:bg-accent-tint border border-status-live-line text-accent font-code text-xs font-bold flex items-center gap-1.5 transition-colors"
                       >
                         <Phone size={13} />
                         <span>Call Artisan</span>
@@ -278,7 +278,7 @@ export default function CustomerBookingsPage() {
                       <Button
                         onClick={() => openReviewModal(b)}
                         variant="outline"
-                        className="h-9 border-white/8 text-[#D4A843] hover:bg-[#D4A843]/10 text-xs font-display flex items-center gap-1.5"
+                        className="h-9 border-hairline text-status-warn hover:bg-status-warn-tint text-xs font-display flex items-center gap-1.5"
                       >
                         <Star size={13} />
                         <span>{b.rating ? "Edit Review" : "Leave Review"}</span>
@@ -287,7 +287,7 @@ export default function CustomerBookingsPage() {
 
                     <button
                       onClick={() => toast.info(`Invoice ${b.token}.pdf downloaded.`)}
-                      className="p-2 rounded-xl text-zinc-400 hover:text-white hover:bg-white/10 border border-transparent hover:border-white/20 transition-colors"
+                      className="p-2 rounded-xl text-ink-muted hover:text-ink hover:bg-surface-sunken border border-transparent hover:border-ink-muted transition-colors"
                       title="Download Invoice"
                     >
                       <Download size={15} />
@@ -302,18 +302,18 @@ export default function CustomerBookingsPage() {
 
       {/* REVIEW MODAL */}
       {reviewModalBooking && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#111118] border border-white/10 rounded-3xl max-w-md w-full p-6 space-y-5 shadow-2xl relative">
-            <div className="flex items-center justify-between border-b border-white/8 pb-4">
+        <div className="fixed inset-0 z-50 bg-scrim flex items-center justify-center p-4">
+          <div className="bg-surface-raised border border-hairline rounded-3xl max-w-md w-full p-6 space-y-5 shadow-2xl relative">
+            <div className="flex items-center justify-between border-b border-hairline pb-4">
               <div>
-                <h2 className="font-display font-bold text-lg text-white">
+                <h2 className="font-display font-bold text-lg text-ink">
                   Rate Your Experience
                 </h2>
-                <p className="text-xs text-zinc-400">{reviewModalBooking.artisanName}</p>
+                <p className="text-xs text-ink-muted">{reviewModalBooking.artisanName}</p>
               </div>
               <button
                 onClick={() => setReviewModalBooking(null)}
-                className="text-zinc-400 hover:text-white font-code text-sm"
+                className="text-ink-muted hover:text-ink font-code text-sm"
               >
                 ✕
               </button>
@@ -321,7 +321,7 @@ export default function CustomerBookingsPage() {
 
             <form onSubmit={handleSaveReview} className="space-y-4">
               <div className="text-center py-2">
-                <label className="block text-xs font-code uppercase text-zinc-400 mb-2">
+                <label className="block text-xs font-code uppercase text-ink-muted mb-2">
                   Overall Rating
                 </label>
                 <div className="flex items-center justify-center gap-2">
@@ -334,8 +334,8 @@ export default function CustomerBookingsPage() {
                     >
                       <Star
                         size={28}
-                        fill={st <= stars ? "#D4A843" : "none"}
-                        stroke="#D4A843"
+                        fill={st <= stars ? "var(--status-warn)" : "none"}
+                        stroke="var(--status-warn)"
                       />
                     </button>
                   ))}
@@ -343,7 +343,7 @@ export default function CustomerBookingsPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-code uppercase text-zinc-400 mb-1.5">
+                <label className="block text-xs font-code uppercase text-ink-muted mb-1.5">
                   Your Review / Feedback
                 </label>
                 <textarea
@@ -352,22 +352,22 @@ export default function CustomerBookingsPage() {
                   value={reviewText}
                   onChange={(e) => setReviewText(e.target.value)}
                   placeholder="Share details about punctuality, craftsmanship, and pricing transparency..."
-                  className="w-full bg-[#0A0A0F] border border-white/8 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-[#0054F9]"
+                  className="w-full bg-surface border border-hairline rounded-xl px-4 py-2.5 text-xs text-ink focus:outline-none focus:border-accent"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-3 pt-3 border-t border-white/8">
+              <div className="flex items-center justify-end gap-3 pt-3 border-t border-hairline">
                 <Button
                   type="button"
                   variant="outline"
                   onClick={() => setReviewModalBooking(null)}
-                  className="border-white/8 text-zinc-400 hover:bg-white/5 text-xs"
+                  className="border-hairline text-ink-muted hover:bg-surface-sunken text-xs"
                 >
                   Cancel
                 </Button>
                 <Button
                   type="submit"
-                  className="bg-[#D4A843] hover:bg-[#C29633] text-[#090E0C] font-display font-bold text-xs px-5"
+                  className="bg-status-warn hover:opacity-90 text-white font-display font-bold text-xs px-5"
                 >
                   Submit Review
                 </Button>

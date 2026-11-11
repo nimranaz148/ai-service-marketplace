@@ -1,484 +1,231 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { api, AdminStats } from "@/lib/api";
 import {
-  ShieldCheck,
-  Users,
-  Wrench,
   CalendarCheck,
-  Bot,
-  Activity,
-  Award,
-  TrendingUp,
-  Sparkles,
+  ChatCircleDots,
+  Wrench,
+  Pulse,
+  Users,
+  Trophy,
+  Star,
   ArrowUpRight,
-  Clock,
-  CheckCircle2,
-  AlertCircle,
-  ChevronRight,
-  Filter,
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
+  Gear,
+  ClockCounterClockwise,
+} from "@phosphor-icons/react";
+import { api, type AdminStats, type AdminCustomer, type ProviderItem } from "@/lib/api";
 
-// Seeded Pakistani High-Active Customers Leaderboard
-const CUSTOMER_LEADERBOARD = [
-  {
-    id: "c-01",
-    name: "Dr. Ayesha Siddiqui",
-    email: "ayesha.siddiqui@aku.edu.pk",
-    metro: "Clifton, Karachi",
-    totalBookings: 24,
-    lifetimeSpend: "PKR 98,500",
-    tier: "Titanium",
-    tierColor: "bg-[#0054F9]/15 text-[#0054F9] border-[#0054F9]/40",
-    favoriteTrade: "AC Technician & Detailing",
-    lastActive: "Today at 02:30 PM",
-  },
-  {
-    id: "c-02",
-    name: "Hamza Tariq",
-    email: "hamza.tariq@systems.ltd",
-    metro: "Sector F-10, Islamabad",
-    totalBookings: 19,
-    lifetimeSpend: "PKR 76,200",
-    tier: "Platinum",
-    tierColor: "bg-[#38BDF8]/15 text-[#38BDF8] border-[#38BDF8]/40",
-    favoriteTrade: "Solar & Inverter Engineer",
-    lastActive: "Yesterday",
-  },
-  {
-    id: "c-03",
-    name: "Bilal Cheema",
-    email: "b.cheema@descon.pk",
-    metro: "DHA Phase 5, Lahore",
-    totalBookings: 16,
-    lifetimeSpend: "PKR 64,800",
-    tier: "Platinum",
-    tierColor: "bg-[#38BDF8]/15 text-[#38BDF8] border-[#38BDF8]/40",
-    favoriteTrade: "Hydro Plumbing & Sanitary",
-    lastActive: "3 days ago",
-  },
-  {
-    id: "c-04",
-    name: "Zainab Bokhari",
-    email: "zainab.b@lums.edu.pk",
-    metro: "Gulberg, Lahore",
-    totalBookings: 12,
-    lifetimeSpend: "PKR 49,000",
-    tier: "Gold",
-    tierColor: "bg-[#D4A843]/15 text-[#D4A843] border-[#D4A843]/40",
-    favoriteTrade: "STEM Mentorship & Tutoring",
-    lastActive: "1 week ago",
-  },
-  {
-    id: "c-05",
-    name: "Saad Farooqi",
-    email: "saad.f@engro.com",
-    metro: "PECHS Block 2, Karachi",
-    totalBookings: 11,
-    lifetimeSpend: "PKR 42,500",
-    tier: "Gold",
-    tierColor: "bg-[#D4A843]/15 text-[#D4A843] border-[#D4A843]/40",
-    favoriteTrade: "Deep Sanitization & Steam",
-    lastActive: "2 weeks ago",
-  },
-];
+const STATUS_STYLE: Record<string, string> = {
+  completed: "border-status-go-line bg-status-go-tint text-status-go",
+  needs_input: "border-status-warn-line bg-status-warn-tint text-status-warn",
+  in_progress: "border-status-info-line bg-status-info-tint text-status-info",
+  failed: "border-status-stop-line bg-status-stop-tint text-status-stop",
+};
 
-// Seeded Top Provider Master Artisans Leaderboard
-const PROVIDER_LEADERBOARD = [
-  {
-    id: "p-01",
-    name: "Tariq Mehmood",
-    category: "AC Technician & HVAC",
-    metro: "Sector G-13, Islamabad",
-    rating: 4.96,
-    completedJobs: 142,
-    onTimeRate: "99.4%",
-    grossRevenue: "PKR 355,000",
-    rankBadge: "🥇 Rank #1",
-    badgeColor: "bg-[#D4A843]/20 text-[#D4A843] border-[#D4A843]/40",
-  },
-  {
-    id: "p-02",
-    name: "Arshad Hussain",
-    category: "Hydro Plumbing & Sanitary",
-    metro: "Gulshan-e-Iqbal, Karachi",
-    rating: 4.94,
-    completedJobs: 128,
-    onTimeRate: "98.8%",
-    grossRevenue: "PKR 288,000",
-    rankBadge: "🥈 Rank #2",
-    badgeColor: "bg-slate-300/20 text-slate-200 border-slate-300/40",
-  },
-  {
-    id: "p-03",
-    name: "Bilal Ahmed",
-    category: "Solar & Inverter Engineer",
-    metro: "DHA Phase 5, Lahore",
-    rating: 4.98,
-    completedJobs: 119,
-    onTimeRate: "97.5%",
-    grossRevenue: "PKR 438,000",
-    rankBadge: "🥉 Rank #3",
-    badgeColor: "bg-[#B45309]/20 text-[#F59E0B] border-[#B45309]/40",
-  },
-  {
-    id: "p-04",
-    name: "Dr. Usman Farooq",
-    category: "Academic STEM Mentorship",
-    metro: "Johar Town, Lahore",
-    rating: 4.99,
-    completedJobs: 89,
-    onTimeRate: "100%",
-    grossRevenue: "PKR 445,000",
-    rankBadge: "Top STEM",
-    badgeColor: "bg-[#0054F9]/20 text-[#0054F9] border-[#0054F9]/40",
-  },
-  {
-    id: "p-05",
-    name: "Kamran Rafiq",
-    category: "Automotive ECU & OBD2",
-    metro: "Sector F-10, Islamabad",
-    rating: 4.92,
-    completedJobs: 116,
-    onTimeRate: "96.9%",
-    grossRevenue: "PKR 324,800",
-    rankBadge: "Top Auto",
-    badgeColor: "bg-emerald-500/20 text-emerald-400 border-emerald-500/40",
-  },
-];
-
+/**
+ * Admin overview — every figure here is read from the backend
+ * (/admin/stats, /admin/providers, /admin/customers). Nothing is hardcoded,
+ * so an empty marketplace shows empty states, not invented revenue.
+ */
 export default function AdminDashboardPage() {
   const [stats, setStats] = useState<AdminStats | null>(null);
+  const [providers, setProviders] = useState<ProviderItem[]>([]);
+  const [customers, setCustomers] = useState<AdminCustomer[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    async function load() {
-      try {
-        const data = await api.getStats();
-        setStats(data);
-      } catch (e) {
-        console.error("Failed to load stats", e);
-      } finally {
-        setLoading(false);
-      }
-    }
-    load();
+    let alive = true;
+    Promise.all([api.getStats(), api.getProviders(), api.getCustomers()])
+      .then(([s, p, c]) => {
+        if (!alive) return;
+        setStats(s);
+        setProviders(p);
+        setCustomers(c);
+      })
+      .catch(() => alive && setError("Couldn't load live data. Is the backend running?"))
+      .finally(() => alive && setLoading(false));
+    return () => {
+      alive = false;
+    };
   }, []);
+
+  const topProviders = useMemo(
+    () => [...providers].sort((a, b) => b.rating - a.rating || b.jobs_completed - a.jobs_completed).slice(0, 5),
+    [providers],
+  );
+  const topCustomers = useMemo(
+    () => [...customers].sort((a, b) => b.bookings_count - a.bookings_count).slice(0, 5),
+    [customers],
+  );
+
+  const kpis = [
+    { title: "Bookings", value: stats?.total_bookings, sub: "confirmed in the system", Icon: CalendarCheck },
+    { title: "Agent conversations", value: stats?.total_sessions, sub: "chat + voice sessions", Icon: ChatCircleDots },
+    { title: "Active providers", value: stats?.active_providers, sub: "listed and bookable", Icon: Wrench },
+    { title: "Agent steps logged", value: stats?.total_trace_logs, sub: "tool calls, all traced", Icon: Pulse },
+  ];
 
   return (
     <div className="space-y-8 pb-12">
-      {/* 1. TOP HEADER BANNER */}
-      <div className="relative rounded-[2rem] p-6 sm:p-8 bg-[#111118] border border-white/10 shadow-[0_16px_40px_rgba(0,0,0,0.5)] overflow-hidden">
-        <div className="absolute -right-16 -top-16 w-64 h-64 rounded-full bg-[#0054F9]/15 blur-[120px] pointer-events-none" />
+      <header className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent">Admin · Overview</p>
+          <h1 className="font-display mt-2 text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
+            What's happening on the marketplace
+          </h1>
+          <p className="mt-2 max-w-xl text-sm text-ink-muted">
+            Live numbers from the database — bookings, agent conversations, providers and customers across
+            Islamabad, Karachi and Lahore.
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <Link
+            href="/traces"
+            className="inline-flex h-10 items-center gap-2 rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground transition-colors hover:bg-[var(--accent-strong-hover)]"
+          >
+            <Pulse size={16} weight="bold" /> Agent traces
+          </Link>
+          <Link
+            href="/dashboard/admin/settings"
+            className="inline-flex h-10 items-center gap-2 rounded-md border border-hairline px-4 text-sm font-medium text-ink transition-colors hover:bg-surface-raised"
+          >
+            <Gear size={16} weight="duotone" /> Settings
+          </Link>
+        </div>
+      </header>
 
-        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div>
-            <div className="inline-flex items-center gap-2 rounded-pill border border-hairline bg-surface-sunken px-3 py-1 text-xs font-medium text-ink-muted mb-3">
-              <ShieldCheck size={13} className="text-[#0054F9]" />
-              <span>SUPER ADMIN COMMAND DECK</span>
+      {error ? (
+        <p role="alert" className="rounded-md border border-status-stop-line bg-status-stop-tint px-4 py-3 text-sm text-ink">
+          {error}
+        </p>
+      ) : null}
+
+      <section aria-label="Key figures" className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+        {kpis.map(({ title, value, sub, Icon }) => (
+          <div key={title} className="rounded-lg border border-hairline bg-surface-raised p-5 transition-colors hover:border-accent">
+            <div className="flex items-center justify-between">
+              <span className="font-mono text-[11px] uppercase tracking-wider text-ink-muted">{title}</span>
+              <span className="flex h-9 w-9 items-center justify-center rounded-md bg-accent-tint text-accent">
+                <Icon size={20} weight="duotone" aria-hidden />
+              </span>
             </div>
-            <h1 className="font-display font-extrabold text-2xl sm:text-4xl text-white tracking-tight">
-              Executive Telemetry & Observability
-            </h1>
-            <p className="font-body text-xs sm:text-sm text-zinc-400 mt-2 max-w-2xl leading-relaxed">
-              Global governance view across Islamabad, Karachi, and Lahore clusters. Monitor active customer spend, provider performance rankings, and 5-agent orchestrator traces.
+            <p className="font-display mt-4 text-4xl font-semibold tabular-nums text-ink">
+              {loading ? <span className="inline-block h-9 w-12 animate-pulse rounded-sm bg-surface-sunken" /> : (value ?? "—")}
             </p>
+            <p className="mt-1 text-xs text-ink-muted">{sub}</p>
           </div>
+        ))}
+      </section>
 
-          <div className="flex flex-wrap gap-2.5">
-            <Link
-              href="/dashboard/admin/customers"
-              className="h-10 px-4 rounded-xl bg-[#141420] hover:bg-[#1A1A28] text-white border border-white/10 text-xs font-semibold flex items-center gap-2 transition-all shadow-sm"
-            >
-              <Users size={14} className="text-[#38BDF8]" />
-              <span>Customer CRUD</span>
-            </Link>
-            <Link
-              href="/dashboard/admin/providers"
-              className="h-10 px-4 rounded-xl bg-[#141420] hover:bg-[#1A1A28] text-white border border-white/10 text-xs font-semibold flex items-center gap-2 transition-all shadow-sm"
-            >
-              <Wrench size={14} className="text-[#D4A843]" />
-              <span>Provider Roster</span>
-            </Link>
-            <Link
-              href="/traces"
-              className="inline-flex items-center justify-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-accent-ink transition-colors hover:bg-accent-hover h-10 px-4 text-xs font-display font-bold"
-            >
-              <Activity size={14} />
-              <span>Live Traces</span>
+      <div className="grid gap-6 lg:grid-cols-2">
+        <section className="rounded-lg border border-hairline bg-surface-raised p-6" aria-labelledby="top-providers">
+          <div className="flex items-center justify-between border-b border-hairline pb-4">
+            <h2 id="top-providers" className="font-display flex items-center gap-2 text-lg font-semibold text-ink">
+              <Trophy size={20} weight="duotone" className="text-status-warn" aria-hidden /> Top providers
+            </h2>
+            <Link href="/dashboard/admin/providers" className="inline-flex items-center gap-1 text-sm font-medium text-accent hover:underline">
+              Roster <ArrowUpRight size={14} aria-hidden />
             </Link>
           </div>
-        </div>
-      </div>
-
-      {/* 2. FIVE TELEMETRY KPI METRIC CARDS */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5">
-        {[
-          {
-            title: "Total GMV Volume",
-            value: "PKR 1,482,000",
-            sub: "Cumulative verified jobs",
-            badge: "+18.4% WoW",
-            icon: TrendingUp,
-            badgeColor: "text-emerald-400 bg-emerald-500/10",
-          },
-          {
-            title: "Active Bookings",
-            value: stats?.total_bookings ?? 34,
-            sub: "Atomic PostgreSQL slots",
-            badge: "0 Lock Conflicts",
-            icon: CalendarCheck,
-            badgeColor: "text-[#38BDF8] bg-[#38BDF8]/10",
-          },
-          {
-            title: "Agent Sessions",
-            value: stats?.total_sessions ?? 48,
-            sub: "Multi-lingual Vapi/Chat",
-            badge: "99.4% Accuracy",
-            icon: Bot,
-            badgeColor: "text-[#0054F9] bg-[#0054F9]/10",
-          },
-          {
-            title: "Vetted Master Artisans",
-            value: stats?.active_providers ?? 24,
-            sub: "NADRA Biometric verified",
-            badge: "3 Metros Online",
-            icon: Wrench,
-            badgeColor: "text-[#D4A843] bg-[#D4A843]/10",
-          },
-          {
-            title: "Median Agent Latency",
-            value: "840ms",
-            sub: "Sub-second 5-agent hop",
-            badge: "< 1.2s SLA",
-            icon: Clock,
-            badgeColor: "text-emerald-400 bg-emerald-500/10",
-          },
-        ].map((kpi, idx) => {
-          const Icon = kpi.icon;
-          return (
-            <div
-              key={idx}
-              className="p-4 rounded-2xl bg-[#111118] border border-white/8 hover:border-[#0054F9]/40 transition-all shadow-[0_8px_24px_rgba(0,0,0,0.3)] flex flex-col justify-between group"
-            >
-              <div className="flex items-center justify-between mb-2">
-                <span className="font-display font-bold text-[11px] uppercase tracking-wider text-zinc-400">
-                  {kpi.title}
-                </span>
-                <div className="w-7 h-7 rounded-lg bg-[#141420] border border-white/10 flex items-center justify-center text-[#0054F9]">
-                  <Icon size={14} />
-                </div>
-              </div>
-
-              <div className="my-1.5">
-                <span className="font-display font-extrabold text-xl sm:text-2xl text-white tracking-tight group-hover:text-[#0054F9] transition-colors">
-                  {kpi.value}
-                </span>
-              </div>
-
-              <div className="flex items-center justify-between pt-2 border-t border-white/5 text-[10px]">
-                <span className="font-body text-zinc-400 truncate">{kpi.sub}</span>
-                <span className={`font-code px-1.5 py-0.5 rounded font-semibold shrink-0 ml-1 ${kpi.badgeColor}`}>
-                  {kpi.badge}
-                </span>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* 3. TWO LEADERBOARDS SIDE-BY-SIDE */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Left: Top Customers Leaderboard */}
-        <div className="rounded-[2rem] bg-[#111118] border border-white/8 p-6 shadow-[0_16px_40px_rgba(0,0,0,0.4)] flex flex-col justify-between">
-          <div>
-            <div className="flex items-center justify-between pb-4 mb-4 border-b border-white/5">
-              <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-xl bg-[#0054F9]/15 border border-[#0054F9]/30 text-[#0054F9] flex items-center justify-center">
-                  <Award size={16} />
-                </div>
-                <div>
-                  <h3 className="font-display font-bold text-base text-white">
-                    High-Active Customers Leaderboard
-                  </h3>
-                  <p className="text-[11px] text-zinc-400">
-                    Top clients by booking frequency & marketplace expenditure
-                  </p>
-                </div>
-              </div>
-              <Link
-                href="/dashboard/admin/customers"
-                className="text-xs text-[#0054F9] hover:underline font-semibold flex items-center gap-1"
-              >
-                <span>View All</span>
-                <ArrowUpRight size={13} />
-              </Link>
-            </div>
-
-            <div className="space-y-2.5">
-              {CUSTOMER_LEADERBOARD.map((cust, idx) => (
-                <div
-                  key={cust.id}
-                  className="p-3.5 rounded-2xl bg-[#141420] border border-white/5 hover:border-[#0054F9]/40 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3 group"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-xl bg-[#1A1A28] border border-white/10 text-white flex items-center justify-center font-display font-bold text-xs shrink-0">
-                      #{idx + 1}
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <span className="font-display font-bold text-xs text-white">
-                          {cust.name}
-                        </span>
-                        <span className={`px-2 py-0.2 rounded-full border text-[9px] font-code font-bold ${cust.tierColor}`}>
-                          {cust.tier}
-                        </span>
-                      </div>
-                      <span className="text-[11px] text-zinc-400 block">
-                        {cust.metro} · <span className="text-zinc-300">{cust.favoriteTrade}</span>
-                      </span>
+          {topProviders.length === 0 ? (
+            <p className="py-8 text-center text-sm text-ink-muted">{loading ? "Loading…" : "No providers yet."}</p>
+          ) : (
+            <ol className="mt-4 space-y-2">
+              {topProviders.map((p, i) => (
+                <li key={p.id} className="flex items-center justify-between gap-3 rounded-md border border-hairline bg-surface p-3">
+                  <div className="flex min-w-0 items-center gap-3">
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-pill bg-surface-sunken font-mono text-xs text-ink-muted">
+                      {i + 1}
+                    </span>
+                    <div className="min-w-0">
+                      <p className="truncate text-sm font-semibold text-ink">{p.name}</p>
+                      <p className="truncate text-xs text-ink-muted">
+                        {p.category} · {p.area}
+                      </p>
                     </div>
                   </div>
-
-                  <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center border-t sm:border-t-0 pt-2 sm:pt-0 border-white/5">
-                    <span className="font-display font-bold text-xs text-emerald-400">
-                      {cust.lifetimeSpend}
-                    </span>
-                    <span className="font-code text-[10px] text-zinc-400">
-                      {cust.totalBookings} Completed Jobs
-                    </span>
+                  <div className="shrink-0 text-right">
+                    <p className="flex items-center justify-end gap-1 text-sm font-semibold text-ink">
+                      <Star size={14} weight="fill" className="text-status-warn" aria-hidden /> {p.rating.toFixed(1)}
+                    </p>
+                    <p className="font-mono text-[11px] text-ink-muted">{p.jobs_completed} jobs</p>
                   </div>
-                </div>
+                </li>
               ))}
-            </div>
-          </div>
-        </div>
+            </ol>
+          )}
+        </section>
 
-        {/* Right: Top Provider Master Artisans Leaderboard */}
-        <div className="rounded-[2rem] bg-[#111118] border border-white/8 p-6 shadow-[0_16px_40px_rgba(0,0,0,0.4)] flex flex-col justify-between">
-          <div>
-            <div className="flex items-center justify-between pb-4 mb-4 border-b border-white/5">
-              <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-xl bg-[#D4A843]/15 border border-[#D4A843]/30 text-[#D4A843] flex items-center justify-center">
-                  <Award size={16} />
-                </div>
-                <div>
-                  <h3 className="font-display font-bold text-base text-white">
-                    Top Master Artisans Leaderboard
-                  </h3>
-                  <p className="text-[11px] text-zinc-400">
-                    Highest customer rating, on-time arrivals & completion velocity
+        <section className="rounded-lg border border-hairline bg-surface-raised p-6" aria-labelledby="top-customers">
+          <div className="flex items-center justify-between border-b border-hairline pb-4">
+            <h2 id="top-customers" className="font-display flex items-center gap-2 text-lg font-semibold text-ink">
+              <Users size={20} weight="duotone" className="text-accent" aria-hidden /> Most active customers
+            </h2>
+            <Link href="/dashboard/admin/customers" className="inline-flex items-center gap-1 text-sm font-medium text-accent hover:underline">
+              All customers <ArrowUpRight size={14} aria-hidden />
+            </Link>
+          </div>
+          {topCustomers.length === 0 ? (
+            <p className="py-8 text-center text-sm text-ink-muted">{loading ? "Loading…" : "No customers yet."}</p>
+          ) : (
+            <ol className="mt-4 space-y-2">
+              {topCustomers.map((c, i) => (
+                <li key={c.id} className="flex items-center justify-between gap-3 rounded-md border border-hairline bg-surface p-3">
+                  <div className="flex min-w-0 items-center gap-3">
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-pill bg-surface-sunken font-mono text-xs text-ink-muted">
+                      {i + 1}
+                    </span>
+                    <div className="min-w-0">
+                      <p className="truncate text-sm font-semibold text-ink">{c.name}</p>
+                      <p className="truncate text-xs text-ink-muted">{c.area ?? "No area set"}</p>
+                    </div>
+                  </div>
+                  <p className="shrink-0 font-mono text-xs text-ink">
+                    {c.bookings_count} {c.bookings_count === 1 ? "booking" : "bookings"}
                   </p>
-                </div>
-              </div>
-              <Link
-                href="/dashboard/admin/providers"
-                className="text-xs text-[#D4A843] hover:underline font-semibold flex items-center gap-1"
-              >
-                <span>View Roster</span>
-                <ArrowUpRight size={13} />
-              </Link>
-            </div>
-
-            <div className="space-y-2.5">
-              {PROVIDER_LEADERBOARD.map((artisan) => (
-                <div
-                  key={artisan.id}
-                  className="p-3.5 rounded-2xl bg-[#141420] border border-white/5 hover:border-[#D4A843]/40 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3 group"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-xl bg-[#D4A843]/20 border border-[#D4A843]/30 text-[#D4A843] flex items-center justify-center font-display font-bold text-xs shrink-0">
-                      {artisan.rating}★
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <span className="font-display font-bold text-xs text-white">
-                          {artisan.name}
-                        </span>
-                        <span className={`px-2 py-0.2 rounded-full border text-[9px] font-code font-bold ${artisan.badgeColor}`}>
-                          {artisan.rankBadge}
-                        </span>
-                      </div>
-                      <span className="text-[11px] text-zinc-400 block">
-                        {artisan.category} · <span className="text-zinc-300">{artisan.metro}</span>
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center border-t sm:border-t-0 pt-2 sm:pt-0 border-white/5">
-                    <span className="font-display font-bold text-xs text-white">
-                      {artisan.completedJobs} Jobs ({artisan.onTimeRate})
-                    </span>
-                    <span className="font-code text-[10px] text-[#D4A843]">
-                      {artisan.grossRevenue}
-                    </span>
-                  </div>
-                </div>
+                </li>
               ))}
-            </div>
-          </div>
+            </ol>
+          )}
+        </section>
+      </div>
+
+      <section className="rounded-lg border border-hairline bg-surface-raised p-6" aria-labelledby="recent">
+        <div className="flex items-center justify-between border-b border-hairline pb-4">
+          <h2 id="recent" className="font-display flex items-center gap-2 text-lg font-semibold text-ink">
+            <ClockCounterClockwise size={20} weight="duotone" className="text-accent" aria-hidden /> Recent conversations
+          </h2>
+          <Link href="/traces" className="inline-flex items-center gap-1 text-sm font-medium text-accent hover:underline">
+            All traces <ArrowUpRight size={14} aria-hidden />
+          </Link>
         </div>
-      </div>
-
-      {/* 4. FAST SHORTCUT TILES */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <Link
-          href="/dashboard/admin/customers"
-          className="p-5 rounded-2xl bg-[#111118] border border-white/8 hover:border-[#0054F9]/40 transition-all flex items-center justify-between group shadow-sm"
-        >
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#0054F9]/15 text-[#0054F9] flex items-center justify-center">
-              <Users size={18} />
-            </div>
-            <div>
-              <span className="font-display font-bold text-sm text-white block">
-                Manage Customers
-              </span>
-              <span className="text-xs text-zinc-400">Search, edit, suspend & create accounts</span>
-            </div>
-          </div>
-          <ChevronRight size={16} className="text-zinc-500 group-hover:translate-x-1 transition-transform" />
-        </Link>
-
-        <Link
-          href="/dashboard/admin/providers"
-          className="p-5 rounded-2xl bg-[#111118] border border-white/8 hover:border-[#D4A843]/40 transition-all flex items-center justify-between group shadow-sm"
-        >
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#D4A843]/15 text-[#D4A843] flex items-center justify-center">
-              <Wrench size={18} />
-            </div>
-            <div>
-              <span className="font-display font-bold text-sm text-white block">
-                Provider Roster CRUD
-              </span>
-              <span className="text-xs text-zinc-400">NADRA vetting, pricing & specialties</span>
-            </div>
-          </div>
-          <ChevronRight size={16} className="text-zinc-500 group-hover:translate-x-1 transition-transform" />
-        </Link>
-
-        <Link
-          href="/dashboard/admin/settings"
-          className="p-5 rounded-2xl bg-[#111118] border border-white/8 hover:border-[#38BDF8]/40 transition-all flex items-center justify-between group shadow-sm"
-        >
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#38BDF8]/15 text-[#38BDF8] flex items-center justify-center">
-              <Activity size={18} />
-            </div>
-            <div>
-              <span className="font-display font-bold text-sm text-white block">
-                Platform Settings
-              </span>
-              <span className="text-xs text-zinc-400">Cluster configs, commissions & Vapi</span>
-            </div>
-          </div>
-          <ChevronRight size={16} className="text-zinc-500 group-hover:translate-x-1 transition-transform" />
-        </Link>
-      </div>
+        {!stats || stats.recent_sessions.length === 0 ? (
+          <p className="py-8 text-center text-sm text-ink-muted">{loading ? "Loading…" : "No conversations yet."}</p>
+        ) : (
+          <ul className="mt-4 divide-y divide-hairline">
+            {stats.recent_sessions.map((s) => (
+              <li key={s.id}>
+                <Link
+                  href={`/traces/${s.id}`}
+                  className="flex items-center justify-between gap-4 py-3 transition-colors hover:bg-surface-sunken sm:px-2"
+                >
+                  <p className="min-w-0 truncate text-sm text-ink">“{s.raw_input}”</p>
+                  <div className="flex shrink-0 items-center gap-3">
+                    <span className={`rounded-pill border px-2.5 py-0.5 font-mono text-[11px] ${STATUS_STYLE[s.status] ?? "border-hairline text-ink-muted"}`}>
+                      {s.status.replace("_", " ")}
+                    </span>
+                    <span className="hidden font-mono text-[11px] text-ink-muted sm:block">
+                      {new Date(s.started_at).toLocaleString()}
+                    </span>
+                  </div>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
     </div>
   );
 }

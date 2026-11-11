@@ -34,14 +34,15 @@ describe("MarketingRoot", () => {
     expect(screen.getByText("child content")).toBeInTheDocument();
   });
 
-  it("wraps children in a node carrying data-theme=\"marketing\"", () => {
+  it("stays on the single light theme (no dark data-theme on the page root)", () => {
     const { container } = render(
       <MarketingRoot>
         <span>x</span>
       </MarketingRoot>,
     );
-    const root = container.querySelector('[data-theme="marketing"]');
+    const root = container.firstElementChild as HTMLElement;
     expect(root).not.toBeNull();
+    expect(root).not.toHaveAttribute("data-theme");
     expect(root).toHaveTextContent("x");
   });
 

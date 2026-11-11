@@ -1,6 +1,7 @@
 import datetime
 import uuid
 from app.db.session import sync_engine, Base, get_sync_db
+from app.core.security import hash_password
 from app.db.models import User, Provider, ProviderSlot, Session, Booking, TraceLog, IntentResult, Notification
 
 
@@ -30,6 +31,8 @@ def seed_database():
             User(
                 id=uuid.UUID("11111111-1111-1111-1111-111111111111"),
                 clerk_user_id="user_demo_admin_1",
+                email="ayesha.malik@atelier.pk",
+                password_hash=hash_password("Admin@2026!"),
                 name="Ayesha Malik",
                 phone="+92 51 888 2040",
                 role="admin",
@@ -42,6 +45,8 @@ def seed_database():
             User(
                 id=uuid.UUID("22222222-2222-2222-2222-222222222222"),
                 clerk_user_id="user_demo_provider_1",
+                email="tariq.mehmood@atelier.pk",
+                password_hash=hash_password("Provider@2026!"),
                 name="Tariq Mehmood",
                 phone="+92 301 555 4321",
                 role="provider",
@@ -54,6 +59,8 @@ def seed_database():
             User(
                 id=uuid.UUID("33333333-3333-3333-3333-333333333333"),
                 clerk_user_id="user_demo_customer_1",
+                email="zubair.khan@gmail.com",
+                password_hash=hash_password("Customer@2026!"),
                 name="Zubair Khan",
                 phone="+92 300 987 6543",
                 role="customer",
@@ -69,6 +76,8 @@ def seed_database():
             existing = db.query(User).filter(User.id == u.id).first()
             if not existing:
                 db.add(u)
+            elif not existing.password_hash:
+                existing.email, existing.password_hash = u.email, u.password_hash
         db.flush()
 
         print("🌱 Seeding Providers (Karachi + Nationwide)...")

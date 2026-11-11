@@ -65,18 +65,22 @@ export default function TraceDetailPage() {
 
   const getAgentColor = (agentName: string) => {
     switch (agentName) {
+      case "Concierge":
+      case "Discovery":
+      case "Booking":
+      case "Followup":
       case "IntentAgent":
-        return "text-[#38BDF8] bg-[#0054F9]/15 border-[#0054F9]/30";
+        return "text-accent bg-accent-tint border-status-live-line";
       case "DiscoveryAgent":
-        return "text-[#38BDF8] bg-[#0054F9]/15 border-[#0054F9]/30";
+        return "text-accent bg-accent-tint border-status-live-line";
       case "RankingAgent":
-        return "text-[#D4A843] bg-[#D4A843]/15 border-[#D4A843]/30";
+        return "text-status-warn bg-status-warn-tint border-status-warn-line";
       case "BookingAgent":
-        return "text-[#38BDF8] bg-[#0054F9]/15 border-[#0054F9]/30";
+        return "text-accent bg-accent-tint border-status-live-line";
       case "FollowupAgent":
-        return "text-[#38BDF8] bg-[#38BDF8]/15 border-[#38BDF8]/30";
+        return "text-accent bg-accent-tint border-status-live-line";
       default:
-        return "text-zinc-400 bg-[#141420] border-white/10";
+        return "text-ink-muted bg-surface-raised border-hairline";
     }
   };
 
@@ -86,7 +90,7 @@ export default function TraceDetailPage() {
       <div className="flex items-center justify-between">
         <Link
           href="/traces"
-          className="inline-flex items-center gap-2 text-xs text-zinc-400 hover:text-[#0054F9] transition-colors"
+          className="inline-flex items-center gap-2 text-xs text-ink-muted hover:text-accent transition-colors"
         >
           <ArrowLeft className="h-4 w-4" /> Back to All Sessions
         </Link>
@@ -94,37 +98,37 @@ export default function TraceDetailPage() {
           onClick={handleExportJSON}
           variant="outline"
           size="sm"
-          className="text-xs bg-[#141420] border-white/10 text-white hover:bg-[#1A1A28] gap-1.5 rounded-xl cursor-pointer"
+          className="text-xs bg-surface-raised border-hairline text-ink hover:bg-surface-sunken gap-1.5 rounded-xl cursor-pointer"
         >
-          <Download className="h-3.5 w-3.5 text-[#38BDF8]" /> Export Trace JSON
+          <Download className="h-3.5 w-3.5 text-accent" /> Export Trace JSON
         </Button>
       </div>
 
       {/* Session Summary Card */}
-      <Card className="bg-[#111118] border-white/10 rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.4)]">
+      <Card className="bg-surface-raised border-hairline rounded-2xl shadow-raised">
         <CardHeader className="pb-4">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
             <div>
               <div className="flex items-center gap-2">
-                <Badge variant="outline" className="text-[10px] font-mono border-white/10 bg-[#0A0A0F] text-[#38BDF8]">
+                <Badge variant="outline" className="text-[10px] font-mono border-hairline bg-surface text-accent">
                   SESSION ID: {sessionId.slice(0, 8)}...
                 </Badge>
-                <Badge className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px]">
+                <Badge className="bg-status-go-tint text-status-go border border-status-go-line text-[10px]">
                   {session?.status || "completed"}
                 </Badge>
               </div>
-              <CardTitle className="font-display text-lg font-bold text-white mt-2">
+              <CardTitle className="font-display text-lg font-bold text-ink mt-2">
                 &ldquo;{session?.raw_input}&rdquo;
               </CardTitle>
             </div>
-            <div className="flex items-center gap-4 text-xs text-zinc-400">
+            <div className="flex items-center gap-4 text-xs text-ink-muted">
               <div className="flex items-center gap-1.5">
-                <Clock className="h-3.5 w-3.5 text-[#38BDF8]" />
-                <span>Total Latency: <strong className="text-white">{totalDuration} ms</strong></span>
+                <Clock className="h-3.5 w-3.5 text-accent" />
+                <span>Total Latency: <strong className="text-ink">{totalDuration} ms</strong></span>
               </div>
               <div className="flex items-center gap-1.5">
-                <Layers className="h-3.5 w-3.5 text-[#38BDF8]" />
-                <span>Steps: <strong className="text-white">{traces.length}</strong></span>
+                <Layers className="h-3.5 w-3.5 text-accent" />
+                <span>Steps: <strong className="text-ink">{traces.length}</strong></span>
               </div>
             </div>
           </div>
@@ -134,15 +138,15 @@ export default function TraceDetailPage() {
       {/* Interactive Step-by-Step Timeline */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-xs font-semibold tracking-wider text-zinc-400 uppercase flex items-center gap-2 font-code">
-            <Layers className="h-4 w-4 text-[#38BDF8]" />
+          <h2 className="text-xs font-semibold tracking-wider text-ink-muted uppercase flex items-center gap-2 font-code">
+            <Layers className="h-4 w-4 text-accent" />
             Chronological Agent Execution Chain
           </h2>
-          <span className="text-xs text-zinc-500">Click any step to expand/collapse I/O payloads</span>
+          <span className="text-xs text-ink-muted">Click any step to expand/collapse I/O payloads</span>
         </div>
 
         {loading ? (
-          <div className="text-center py-12 text-xs text-zinc-400">Loading trace timeline...</div>
+          <div className="text-center py-12 text-xs text-ink-muted">Loading trace timeline...</div>
         ) : (
           <div className="space-y-3">
             {traces.map((trace, idx) => {
@@ -151,14 +155,14 @@ export default function TraceDetailPage() {
               return (
                 <div key={trace.id} className="relative">
                   {/* Step Card */}
-                  <Card className="bg-[#111118] border-white/8 rounded-2xl overflow-hidden transition-all hover:border-[#0054F9]/40 shadow-[0_8px_24px_rgba(0,0,0,0.3)]">
+                  <Card className="bg-surface-raised border-hairline rounded-2xl overflow-hidden transition-all hover:border-status-live-line shadow-raised">
                     <div
                       onClick={() => toggleStep(trace.step)}
-                      className="p-4 flex items-center justify-between cursor-pointer select-none bg-[#141420] hover:bg-[#1A1A28] transition-colors"
+                      className="p-4 flex items-center justify-between cursor-pointer select-none bg-surface-raised hover:bg-surface-sunken transition-colors"
                     >
                       <div className="flex items-center gap-3">
                         {/* Step Circle */}
-                        <div className="h-7 w-7 rounded-full bg-[#0054F9]/10 border border-[#0054F9]/30 flex items-center justify-center text-xs font-mono font-bold text-[#38BDF8]">
+                        <div className="h-7 w-7 rounded-full bg-accent-tint border border-status-live-line flex items-center justify-center text-xs font-mono font-bold text-accent">
                           {trace.step}
                         </div>
 
@@ -168,48 +172,48 @@ export default function TraceDetailPage() {
                             <span className={`text-xs px-2 py-0.5 rounded border font-medium ${getAgentColor(trace.agent_name)}`}>
                               {trace.agent_name}
                             </span>
-                            <span className="text-xs font-mono text-zinc-400">
-                              tool: <code className="text-[#38BDF8] font-semibold">{trace.tool_used}()</code>
+                            <span className="text-xs font-mono text-ink-muted">
+                              tool: <code className="text-accent font-semibold">{trace.tool_used}()</code>
                             </span>
                           </div>
-                          <p className="text-xs text-zinc-400 mt-1">{trace.output_summary}</p>
+                          <p className="text-xs text-ink-muted mt-1">{trace.output_summary}</p>
                         </div>
                       </div>
 
                       {/* Latency & Toggle Icon */}
                       <div className="flex items-center gap-3">
-                        <span className="text-xs font-mono px-2 py-0.5 rounded bg-[#0A0A0F] text-[#38BDF8] border border-white/10">
+                        <span className="text-xs font-mono px-2 py-0.5 rounded bg-surface text-accent border border-hairline">
                           {trace.duration_ms}ms
                         </span>
                         {isExpanded ? (
-                          <ChevronDown className="h-4 w-4 text-[#38BDF8]" />
+                          <ChevronDown className="h-4 w-4 text-accent" />
                         ) : (
-                          <ChevronRight className="h-4 w-4 text-zinc-500" />
+                          <ChevronRight className="h-4 w-4 text-ink-muted" />
                         )}
                       </div>
                     </div>
 
                     {/* Collapsible JSON I/O Details */}
                     {isExpanded && (
-                      <div className="p-4 border-t border-white/8 bg-[#0A0A0F] grid grid-cols-1 lg:grid-cols-2 gap-4">
+                      <div className="p-4 border-t border-hairline bg-surface grid grid-cols-1 lg:grid-cols-2 gap-4">
                         {/* Input Payload */}
                         <div className="space-y-1.5">
-                          <div className="flex items-center justify-between text-[11px] font-semibold text-zinc-400 uppercase tracking-wider font-code">
+                          <div className="flex items-center justify-between text-[11px] font-semibold text-ink-muted uppercase tracking-wider font-code">
                             <span>Input Payload</span>
-                            <Code className="h-3 w-3 text-zinc-500" />
+                            <Code className="h-3 w-3 text-ink-muted" />
                           </div>
-                          <pre className="p-3 rounded-xl bg-[#06070B] border border-white/5 text-xs font-mono text-zinc-300 overflow-x-auto max-h-56 leading-relaxed">
+                          <pre className="p-3 rounded-xl bg-surface border border-hairline text-xs font-mono text-ink overflow-x-auto max-h-56 leading-relaxed">
                             {JSON.stringify(trace.input_payload, null, 2)}
                           </pre>
                         </div>
 
                         {/* Output Payload */}
                         <div className="space-y-1.5">
-                          <div className="flex items-center justify-between text-[11px] font-semibold text-zinc-400 uppercase tracking-wider font-code">
+                          <div className="flex items-center justify-between text-[11px] font-semibold text-ink-muted uppercase tracking-wider font-code">
                             <span>Output Payload</span>
-                            <Code className="h-3 w-3 text-zinc-500" />
+                            <Code className="h-3 w-3 text-ink-muted" />
                           </div>
-                          <pre className="p-3 rounded-xl bg-[#06070B] border border-white/5 text-xs font-mono text-[#38BDF8] overflow-x-auto max-h-56 leading-relaxed">
+                          <pre className="p-3 rounded-xl bg-surface border border-hairline text-xs font-mono text-accent overflow-x-auto max-h-56 leading-relaxed">
                             {JSON.stringify(trace.output_payload, null, 2)}
                           </pre>
                         </div>

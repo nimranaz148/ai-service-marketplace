@@ -4,6 +4,19 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { personas } from "@/lib/fixtures/personas";
 
+const API = "/api-backend";
+export const TOKEN_KEY = "atelier_ai_access_token";
+export const getToken = (): string | null => {
+  try { return localStorage.getItem(TOKEN_KEY); } catch { return null; }
+};
+
+// Seeded sandbox accounts (see backend/app/db/seed.py). These go through the real /auth/login.
+const DEMO_CREDENTIALS: Record<UserRole, { email: string; password: string }> = {
+  admin: { email: "ayesha.malik@atelier.pk", password: "Admin@2026!" },
+  provider: { email: "tariq.mehmood@atelier.pk", password: "Provider@2026!" },
+  customer: { email: "zubair.khan@gmail.com", password: "Customer@2026!" },
+};
+
 export type UserRole = "admin" | "provider" | "customer";
 
 export interface AuthUser {
@@ -52,13 +65,16 @@ export const PRESET_USERS: Record<UserRole, AuthUser> = {
   },
 };
 
+interface SignupData { name: string; email: string; password: string; role: UserRole; phone?: string; area?: string; category?: string }
+
 interface AuthContextType {
   user: AuthUser | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  login: (email: string, role?: UserRole) => void;
-  loginAsDemo: (role: UserRole) => void;
-  signup: (userData: { name: string; email: string; role: UserRole; phone?: string; area?: string; category?: string }) => void;
+  /** Resolves to an error message, or null on success (then redirects to the role's dashboard). */
+  login: (email: string, password: string, role?: UserRole) => Promise<string | null>;
+  loginAsDemo: (role: UserRole) => Promise<string | null>;
+  signup: (userData: SignupData) => Promise<string | null>;
   logout: () => void;
   switchRole: (role: UserRole) => void;
 }
@@ -67,128 +83,103 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const STORAGE_KEY = "atelier_ai_authenticated_user";
 
+function toAuthUser(u: any): AuthUser {
+  const name: string = u.name || u.email;
+  return {
+    id: u.id,
+    name,
+    email: u.email,
+    role: u.role,
+    phone: u.phone ?? undefined,
+    area: u.area ?? undefined,
+    avatar: name.split(" ").map((n: string) => n[0]).join("").substring(0, 2).toUpperCase(),
+  };
+}
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
+  // Restore the session only if a token exists, and re-verify it against the backend.
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored) {
-        setUser(JSON.parse(stored));
+    (async () => {
+      try {
+        const token = getToken();
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (token && stored) {
+          const res = await fetch(`${API}/auth/me`, { headers: { Authorization: `Bearer ${token}` } });
+          if (res.ok) setUser(toAuthUser(await res.json()));
+          else clearSession();
+        }
+      } catch (e) {
+        console.warn("Failed to restore session", e);
+      } finally {
+        setIsLoading(false);
       }
-    } catch (e) {
-      console.warn("Failed to read user from localStorage", e);
-    } finally {
-      setIsLoading(false);
-    }
+    })();
   }, []);
 
-  const saveUser = (u: AuthUser | null) => {
-    setUser(u);
-    if (u) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(u));
-    } else {
+  const clearSession = () => {
+    try {
       localStorage.removeItem(STORAGE_KEY);
-    }
+      localStorage.removeItem(TOKEN_KEY);
+    } catch {}
   };
 
-  const login = (email: string, selectedRole: UserRole = "customer") => {
-    const existing = Object.values(PRESET_USERS).find(
-      (p) => p.email.toLowerCase() === email.toLowerCase()
-    );
-    const u: AuthUser = existing || {
-      id: "usr-" + Math.random().toString(36).substring(2, 8),
-      name: email.split("@")[0].replace(".", " ").toUpperCase(),
-      email,
-      role: selectedRole,
-      area: "Islamabad / Rawalpindi",
-      avatar: email.substring(0, 2).toUpperCase(),
-    };
-    saveUser(u);
+  const startSession = (token: string, raw: any) => {
+    const u = toAuthUser(raw);
+    try {
+      localStorage.setItem(TOKEN_KEY, token);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(u));
+    } catch {}
+    setUser(u);
     redirectForRole(u.role);
   };
 
-  const loginAsDemo = (role: UserRole) => {
-    const demoUser = PRESET_USERS[role];
-    saveUser(demoUser);
-    redirectForRole(role);
+  const call = async (path: string, payload: object): Promise<string | null> => {
+    try {
+      const res = await fetch(`${API}${path}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        const d = data?.detail;
+        return typeof d === "string" ? d : "Could not sign in. Please check your details.";
+      }
+      startSession(data.access_token, data.user);
+      return null;
+    } catch {
+      return "Cannot reach the server. Is the backend running?";
+    }
   };
 
-  const signup = (userData: {
-    name: string;
-    email: string;
-    role: UserRole;
-    phone?: string;
-    area?: string;
-    category?: string;
-  }) => {
-    const initials = userData.name
-      .split(" ")
-      .map((n) => n[0])
-      .join("")
-      .substring(0, 2)
-      .toUpperCase();
-
-    const newUser: AuthUser = {
-      id: "usr-" + Math.random().toString(36).substring(2, 8),
-      name: userData.name,
-      email: userData.email,
-      role: userData.role,
-      phone: userData.phone || "+92 300 0000000",
-      area: userData.area || "Islamabad",
-      category: userData.category || (userData.role === "provider" ? "General Technician" : undefined),
-      rating: userData.role === "provider" ? 5.0 : undefined,
-      completedJobs: userData.role === "provider" ? 0 : undefined,
-      avatar: initials || "AT",
-    };
-    saveUser(newUser);
-    redirectForRole(newUser.role);
-  };
+  const login = (email: string, password: string, role?: UserRole) => call("/auth/login", { email, password, role });
+  const loginAsDemo = (role: UserRole) => call("/auth/login", { ...DEMO_CREDENTIALS[role], role });
+  const signup = (d: SignupData) => call("/auth/signup", d);
 
   const logout = () => {
-    saveUser(null);
+    clearSession();
+    setUser(null);
     router.push("/login");
   };
 
+  // Dev-only persona switcher: signs in as the seeded account for that role.
   const switchRole = (role: UserRole) => {
-    if (!user) {
-      loginAsDemo(role);
-      return;
-    }
-    const updated = {
-      ...user,
-      role,
-      name: PRESET_USERS[role].name,
-      category: PRESET_USERS[role].category,
-    };
-    saveUser(updated);
-    redirectForRole(role);
+    void loginAsDemo(role);
   };
 
   const redirectForRole = (role: UserRole) => {
-    if (role === "admin") {
-      router.push("/dashboard/admin");
-    } else if (role === "provider") {
-      router.push("/dashboard/provider");
-    } else {
-      router.push("/dashboard/customer");
-    }
+    if (role === "admin") router.push("/dashboard/admin");
+    else if (role === "provider") router.push("/dashboard/provider");
+    else router.push("/dashboard/customer");
   };
 
   return (
     <AuthContext.Provider
-      value={{
-        user,
-        isAuthenticated: !!user,
-        isLoading,
-        login,
-        loginAsDemo,
-        signup,
-        logout,
-        switchRole,
-      }}
+      value={{ user, isAuthenticated: !!user, isLoading, login, loginAsDemo, signup, logout, switchRole }}
     >
       {children}
     </AuthContext.Provider>

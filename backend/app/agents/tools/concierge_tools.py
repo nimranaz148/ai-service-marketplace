@@ -1,15 +1,16 @@
 """
-Real function tools for the Concierge agent (OpenAI Agents SDK).
+Real function tools for the marketplace's agents (OpenAI Agents SDK).
 
 Each tool wraps the existing DB-backed implementation (provider_tools /
-booking_tools / notification_tools) and additionally writes a TraceLog row,
-so every tool call the agent makes is visible in trace_logs — the same
+booking_tools / notification_tools) and additionally writes a TraceLog row
+under the specific agent that owns it, so the trace panel shows not just
+that a tool ran, but which agent in the handoff chain ran it — the same
 table the /foundations agent-activity primitives already render from.
 """
 import json
 import logging
-from dataclasses import dataclass, field
-from typing import Any, Dict, Optional
+from dataclasses import dataclass
+from typing import Any, Dict
 
 from sqlalchemy.ext.asyncio import AsyncSession
 from agents import RunContextWrapper, function_tool
@@ -23,8 +24,9 @@ logger = logging.getLogger("concierge_tools")
 
 
 @dataclass
-class ConciergeContext:
-    """Per-turn context handed to every tool call via RunContextWrapper."""
+class AgentTurnContext:
+    """Per-turn context handed to every tool call via RunContextWrapper,
+    shared across every agent in the handoff chain for one turn."""
 
     db: AsyncSession
     session_id: str
@@ -37,12 +39,12 @@ class ConciergeContext:
         return current
 
 
-async def _log(ctx: ConciergeContext, tool_used: str, input_payload: Dict[str, Any], output_payload: Any, summary: str, duration_ms: int = 0) -> None:
+async def _log(ctx: AgentTurnContext, agent_name: str, tool_used: str, input_payload: Dict[str, Any], output_payload: Any, summary: str, duration_ms: int = 0) -> None:
     try:
         await write_trace_log(
             session_id=ctx.session_id,
             step=ctx.next_step(),
-            agent_name="Concierge",
+            agent_name=agent_name,
             tool_used=tool_used,
             input_payload=input_payload,
             output_payload=output_payload if isinstance(output_payload, (dict, list)) else {"value": output_payload},
@@ -55,7 +57,7 @@ async def _log(ctx: ConciergeContext, tool_used: str, input_payload: Dict[str, A
 
 
 @function_tool
-async def find_providers_tool(ctx: RunContextWrapper[ConciergeContext], category: str, area: str) -> str:
+async def find_providers_tool(ctx: RunContextWrapper[AgentTurnContext], category: str, area: str) -> str:
     """Find verified, active providers matching a service category near an area.
 
     Args:
@@ -70,6 +72,7 @@ async def find_providers_tool(ctx: RunContextWrapper[ConciergeContext], category
     )
     await _log(
         ctx.context,
+        agent_name="Discovery",
         tool_used="find_providers",
         input_payload={"category": category, "area": area},
         output_payload={"providers": providers},
@@ -97,7 +100,7 @@ async def find_providers_tool(ctx: RunContextWrapper[ConciergeContext], category
 
 
 @function_tool
-async def create_booking_tool(ctx: RunContextWrapper[ConciergeContext], provider_id: str, slot_id: str) -> str:
+async def create_booking_tool(ctx: RunContextWrapper[AgentTurnContext], provider_id: str, slot_id: str) -> str:
     """Confirm a booking for the customer with a specific provider and time slot.
     Only call this after the customer has explicitly agreed to a provider and a slot.
 
@@ -113,6 +116,7 @@ async def create_booking_tool(ctx: RunContextWrapper[ConciergeContext], provider
     )
     await _log(
         ctx.context,
+        agent_name="Booking",
         tool_used="create_booking",
         input_payload={"provider_id": provider_id, "slot_id": slot_id},
         output_payload=output.model_dump(),
@@ -123,7 +127,7 @@ async def create_booking_tool(ctx: RunContextWrapper[ConciergeContext], provider
 
 
 @function_tool
-async def schedule_followup_tool(ctx: RunContextWrapper[ConciergeContext], booking_id: str, provider_name: str, slot_time: str) -> str:
+async def schedule_followup_tool(ctx: RunContextWrapper[AgentTurnContext], booking_id: str, provider_name: str, slot_time: str) -> str:
     """Schedule a post-service follow-up notification for a confirmed booking.
 
     Args:
@@ -140,6 +144,7 @@ async def schedule_followup_tool(ctx: RunContextWrapper[ConciergeContext], booki
     )
     await _log(
         ctx.context,
+        agent_name="Followup",
         tool_used="schedule_followup",
         input_payload={"booking_id": booking_id, "provider_name": provider_name, "slot_time": slot_time},
         output_payload=output.model_dump() if hasattr(output, "model_dump") else {"value": str(output)},

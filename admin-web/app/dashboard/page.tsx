@@ -27,8 +27,8 @@ export default function DashboardRouterPage() {
 
   return (
     <div className="min-h-[60vh] flex flex-col items-center justify-center gap-3">
-      <div className="w-8 h-8 rounded-xl bg-[#0054F9]/20 border border-[#0054F9] animate-spin shadow-[0_0_20px_rgba(0,84,249,0.3)]" />
-      <span className="text-xs font-code text-zinc-400 uppercase tracking-wider">
+      <div className="w-8 h-8 rounded-xl bg-accent-tint border border-accent animate-spin shadow-raised" />
+      <span className="text-xs font-code text-ink-muted uppercase tracking-wider">
         Routing to your role workspace...
       </span>
     </div>

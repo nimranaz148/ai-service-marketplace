@@ -6,6 +6,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 
 from app.db.session import get_db
+from app.core.security import get_current_user
 from app.db.models import Provider, ProviderSlot, Booking, User
 from app.db.schemas import (
     ProviderResponse,
@@ -24,49 +25,15 @@ router = APIRouter(prefix="/me/provider", tags=["Provider Self-Service"])
 
 async def resolve_current_provider(
     db: AsyncSession,
-    user_id: Optional[str] = None,
+    user_id: Optional[str] = None,  # ignored: identity comes only from the verified token
     authorization: Optional[str] = None,
 ) -> Provider:
-    """Resolves the Provider row owned by the calling user.
-
-    Real auth (Clerk) isn't wired up yet, so this accepts the same
-    "explicit id, else demo fallback" shape the rest of the app already
-    uses (see ConversationService._resolve_user_id) rather than inventing
-    a second convention: a `user_id` query param (UUID or clerk_user_id),
-    or — when neither is given — the seeded demo provider persona.
-    """
-    clerk_token: Optional[str] = None
-    if authorization:
-        scheme, _, token = authorization.partition(" ")
-        if scheme.lower() == "bearer" and token:
-            clerk_token = token
-
-    candidate = user_id or clerk_token
-
-    user: Optional[User] = None
-    if candidate:
-        try:
-            user = await db.get(User, uuid.UUID(candidate))
-        except ValueError:
-            stmt = select(User).where(User.clerk_user_id == candidate)
-            res = await db.execute(stmt)
-            user = res.scalar_one_or_none()
-
-    if not user:
-        stmt = select(User).where(User.clerk_user_id == "user_demo_provider_1")
-        res = await db.execute(stmt)
-        user = res.scalar_one_or_none()
-
-    if not user:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No provider account found")
-
-    stmt = (
-        select(Provider)
-        .where(Provider.user_id == user.id)
-        .options(selectinload(Provider.slots))
-    )
-    res = await db.execute(stmt)
-    provider = res.scalar_one_or_none()
+    """The Provider row owned by the authenticated provider user."""
+    user = await get_current_user(authorization=authorization, db=db)
+    if user.role != "provider":
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Requires role: provider")
+    stmt = select(Provider).where(Provider.user_id == user.id).options(selectinload(Provider.slots))
+    provider = (await db.execute(stmt)).scalar_one_or_none()
     if not provider:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,

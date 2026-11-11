@@ -15,7 +15,10 @@ from app.api.routes import (
     vapi,
     me,
     provider_me,
+    auth,
 )
+from fastapi import Depends
+from app.core.security import get_current_user, require_roles
 
 # Setup logging
 logging.basicConfig(
@@ -64,14 +67,15 @@ async def health_check():
 
 
 # Include Routers
-app.include_router(requests.router)
-app.include_router(traces.router)
-app.include_router(providers.router)
-app.include_router(bookings.router)
-app.include_router(admin.router)
-app.include_router(vapi.router)
+app.include_router(auth.router)
+app.include_router(requests.router, dependencies=[Depends(require_roles("customer", "admin"))])
+app.include_router(traces.router, dependencies=[Depends(get_current_user)])
+app.include_router(providers.router, dependencies=[Depends(get_current_user)])
+app.include_router(bookings.router, dependencies=[Depends(get_current_user)])
+app.include_router(admin.router, dependencies=[Depends(require_roles("admin"))])
+app.include_router(vapi.router)  # voice webhook: not a user session
 app.include_router(me.router)
-app.include_router(provider_me.router)
+app.include_router(provider_me.router)  # guards itself via resolve_current_provider
 
 
 if __name__ == "__main__":

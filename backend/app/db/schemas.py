@@ -253,6 +253,7 @@ class ConversationResponse(BaseModel):
     awaiting_input: bool
     area: Optional[str] = None
     agent_message: Optional[str] = None
+    current_agent: Optional[str] = None  # Concierge, Discovery, Booking, or Followup
     turns: List[TurnResponse] = []
     trace_logs: List[TraceLogResponse] = []
 

@@ -59,8 +59,10 @@ class User(Base):
     id = Column(GUID, primary_key=True, default=uuid.uuid4)
     clerk_user_id = Column(String(255), unique=True, nullable=True, index=True)
     name = Column(String(255), nullable=False)
+    email = Column(String(255), unique=True, nullable=True, index=True)
+    password_hash = Column(String(255), nullable=True)
     phone = Column(String(50), nullable=True)
-    role = Column(String(50), default="customer")  # "customer", "admin"
+    role = Column(String(50), default="customer")  # "customer", "provider", "admin"
     preferred_language = Column(String(50), default="roman_urdu")  # "roman_urdu", "urdu", "english"
     area = Column(String(255), nullable=True)
     lat = Column(Float, nullable=True)
@@ -126,6 +128,9 @@ class Session(Base):
     conversation_history = Column(JSON, nullable=True)
     # UI-facing transcript: [{role: "user"|"agent", content, created_at}, ...]
     turns = Column(JSON, nullable=True)
+    # Which agent in the handoff chain (Concierge/Discovery/Booking/Followup)
+    # was last active — a fresh session starts at Concierge implicitly (NULL).
+    current_agent = Column(String(50), nullable=True)
     started_at = Column(DateTime(timezone=True), server_default=func.now())
     completed_at = Column(DateTime(timezone=True), nullable=True)
 

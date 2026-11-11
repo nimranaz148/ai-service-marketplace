@@ -1,11 +1,14 @@
 """
-ConversationService — turn-based front door onto the Concierge agent.
+ConversationService — turn-based front door onto the multi-agent graph
+(Concierge -> Discovery -> Booking -> Followup, see app/agents/registry.py).
 
 Owns the multi-turn contract the API routes need: start a session, continue
 it with the customer's next message, and always leave behind a real,
 readable transcript (`Session.turns`) plus the SDK's own continuation state
 (`Session.conversation_history`) so the next HTTP request can resume exactly
-where the agent left off.
+where the agent chain left off — including which agent in the chain was
+last active (`Session.current_agent`), since a handoff can leave a
+different agent "holding" the conversation than the one it started with.
 
 When OPENAI_API_KEY isn't configured (local/demo without secrets), falls
 back to a small deterministic multi-turn script instead of the real SDK —
@@ -24,22 +27,12 @@ from app.services.user_resolver import resolve_user_id
 
 logger = logging.getLogger("conversation_service")
 
-_openai_key_configured = False
-
-
 def _ensure_openai_key_configured() -> bool:
-    """Registers the OpenAI key with the Agents SDK once, lazily (import-time
-    key checks would run before .env is guaranteed loaded)."""
-    global _openai_key_configured
-    if _openai_key_configured:
-        return True
-    if not settings.OPENAI_API_KEY or settings.OPENAI_API_KEY == "your-openai-api-key":
-        return False
-    from agents import set_default_openai_key
+    """True when an LLM key (Gemini preferred, else OpenAI) is configured;
+    the model itself is built by app.agents.model_factory."""
+    from app.agents.model_factory import llm_configured
 
-    set_default_openai_key(settings.OPENAI_API_KEY)
-    _openai_key_configured = True
-    return True
+    return llm_configured()
 
 
 def _now() -> str:
@@ -101,19 +94,24 @@ class ConversationService:
     # ------------------------------------------------------------------
     async def _run_sdk_turn(self, db: AsyncSession, session_obj: Session, message: str) -> Tuple[str, bool]:
         from agents import Runner, ToolCallItem
-        from app.agents.concierge_agent import concierge_agent
-        from app.agents.tools.concierge_tools import ConciergeContext
+        from app.agents.registry import AGENTS_BY_NAME, concierge_agent
+        from app.agents.tools.concierge_tools import AgentTurnContext
 
         history: List[Dict[str, Any]] = list(session_obj.conversation_history or [])
         turn_input = history + [{"role": "user", "content": message}] if history else message
 
+        # Resume with whichever agent the handoff chain left "holding" the
+        # conversation last turn (a fresh session always starts at Concierge).
+        starting_agent = AGENTS_BY_NAME.get(session_obj.current_agent or "", concierge_agent)
+
         # Next trace step continues after whatever this session already logged.
         next_step = (await self._max_trace_step(db, session_obj.id)) + 1
-        ctx = ConciergeContext(db=db, session_id=str(session_obj.id), user_id=str(session_obj.user_id), step=next_step)
+        ctx = AgentTurnContext(db=db, session_id=str(session_obj.id), user_id=str(session_obj.user_id), step=next_step)
 
-        result = await Runner.run(concierge_agent, turn_input, context=ctx)
+        result = await Runner.run(starting_agent, turn_input, context=ctx)
 
         session_obj.conversation_history = result.to_input_list()
+        session_obj.current_agent = result.last_agent.name
         agent_message = result.final_output if isinstance(result.final_output, str) else str(result.final_output)
 
         booked = any(
@@ -132,7 +130,7 @@ class ConversationService:
         message: str,
         turns: List[Dict[str, Any]],
     ) -> Tuple[str, bool]:
-        from app.agents.tools.concierge_tools import ConciergeContext
+        from app.agents.tools.concierge_tools import AgentTurnContext
         from app.agents.tools.provider_tools import find_providers
         from app.agents.tools.booking_tools import create_booking
         from app.agents.tools.notification_tools import schedule_followups
@@ -143,20 +141,23 @@ class ConversationService:
         area = session_obj.area or self._detect_area(combined_text)
 
         next_step = (await self._max_trace_step(db, session_obj.id)) + 1
-        ctx = ConciergeContext(db=db, session_id=str(session_obj.id), user_id=str(session_obj.user_id), step=next_step)
+        ctx = AgentTurnContext(db=db, session_id=str(session_obj.id), user_id=str(session_obj.user_id), step=next_step)
 
         if not category:
+            session_obj.current_agent = "Concierge"
             return ("Konsi service chahiye — AC, plumbing, electrical, cleaning ya tuition?", False)
 
         if not area:
+            session_obj.current_agent = "Concierge"
             return (f"{category} ke liye, aap kis area mein hain (e.g. G-13 Islamabad, Gulberg Lahore)?", False)
 
+        session_obj.current_agent = "Discovery"
         session_obj.area = area
         providers, duration_ms = await find_providers(category=category, location_text=area, db=db)
         await write_trace_log(
             session_id=str(session_obj.id),
             step=ctx.next_step(),
-            agent_name="Concierge",
+            agent_name="Discovery",
             tool_used="find_providers",
             input_payload={"category": category, "area": area},
             output_payload={"providers": providers},
@@ -182,13 +183,14 @@ class ConversationService:
             return (f"Maazrat, {top['name']} ke paas abhi koi open slot nahi hai.", True)
         slot = top["slots"][0]
 
+        session_obj.current_agent = "Booking"
         booking_out, duration_ms = await create_booking(
             provider_id=top["id"], user_id=str(session_obj.user_id), slot_id=slot["id"], db=db
         )
         await write_trace_log(
             session_id=str(session_obj.id),
             step=ctx.next_step(),
-            agent_name="Concierge",
+            agent_name="Booking",
             tool_used="create_booking",
             input_payload={"provider_id": top["id"], "slot_id": slot["id"]},
             output_payload=booking_out.model_dump(),
@@ -197,6 +199,7 @@ class ConversationService:
             db=db,
         )
 
+        session_obj.current_agent = "Followup"
         followup_out, duration_ms = await schedule_followups(
             booking_id=booking_out.booking_id,
             user_id=str(session_obj.user_id),
@@ -207,7 +210,7 @@ class ConversationService:
         await write_trace_log(
             session_id=str(session_obj.id),
             step=ctx.next_step(),
-            agent_name="Concierge",
+            agent_name="Followup",
             tool_used="schedule_followup",
             input_payload={"booking_id": booking_out.booking_id},
             output_payload=followup_out.model_dump(),

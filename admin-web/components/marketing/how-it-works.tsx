@@ -4,6 +4,9 @@ import * as React from "react";
 import { SplitText } from "gsap/SplitText";
 import { copy } from "@/lib/marketing/copy";
 import { useScrollScene } from "@/lib/motion/use-scroll-scene";
+import { ChatCircleDots, UserCheck, MapPinLine } from "@phosphor-icons/react";
+
+const STEP_ICONS = [ChatCircleDots, UserCheck, MapPinLine] as const;
 
 const STEPS = copy.howItWorks.steps;
 
@@ -87,12 +90,21 @@ export function HowItWorks() {
           </h2>
         </div>
 
-        <ol ref={listRef} className="mt-12 grid gap-6 md:grid-cols-3">
+        <ol ref={listRef} className="relative mt-12 grid gap-6 md:grid-cols-3">
+          <div aria-hidden className="pointer-events-none absolute left-[16%] right-[16%] top-[3.1rem] hidden border-t-2 border-dashed border-status-live-line md:block" />
           {STEPS.map((step, i) => (
             <li
               key={step.n}
-              className="rounded-lg border border-hairline bg-surface-raised p-6"
+              className="group relative rounded-lg border border-hairline bg-surface-raised p-6 transition-all duration-slow ease-out hover:-translate-y-1 hover:border-accent hover:shadow-overlay"
             >
+              {(() => {
+                const Ico = STEP_ICONS[i];
+                return (
+                  <div className="absolute right-5 top-5 flex h-12 w-12 items-center justify-center rounded-md bg-accent-tint text-accent transition-transform duration-slow group-hover:scale-110">
+                    <Ico size={26} weight="duotone" aria-hidden />
+                  </div>
+                );
+              })()}
               <span
                 aria-hidden="true"
                 className="font-display block text-4xl font-semibold tabular-nums text-accent"

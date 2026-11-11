@@ -7,7 +7,7 @@ import { getGsap } from "@/lib/motion/gsap";
 /**
  * MarketingRoot — the client wrapper the marketing home page composes its
  * sections inside. It:
- *  - stamps `data-theme="marketing"` on the page root so the dark surface applies,
+ *  - keeps the page on the single light-paper theme (only DispatchFilm opts into the dark stage),
  *  - mounts the Lenis smooth-scroll singleton (a no-op under reduced-motion / SSR),
  *  - opens a page-scoped `gsap.context()` so any tween a section forgets to scope
  *    is still reverted on unmount.
@@ -26,7 +26,7 @@ export function MarketingRoot({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <div ref={rootRef} data-theme="marketing" className="min-h-screen bg-surface text-ink">
+    <div ref={rootRef} className="min-h-screen bg-surface text-ink">
       {children}
     </div>
   );

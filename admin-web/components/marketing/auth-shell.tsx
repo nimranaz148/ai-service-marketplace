@@ -25,7 +25,7 @@ type AuthShellProps = {
  */
 export function AuthShell({ kicker, title, subtitle, footer, children }: AuthShellProps) {
   return (
-    <div data-theme="marketing" className="flex min-h-screen flex-col bg-surface text-ink">
+    <div className="flex min-h-screen flex-col bg-surface text-ink">
       <header className="border-b border-hairline">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
           <Link

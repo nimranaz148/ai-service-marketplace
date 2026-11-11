@@ -21,6 +21,7 @@ export default function CustomerRequestPage() {
   const [traceLogs, setTraceLogs] = React.useState<ConversationResponse["trace_logs"]>([]);
   const [sessionId, setSessionId] = React.useState<string | null>(null);
   const [status, setStatus] = React.useState<ConversationResponse["status"] | null>(null);
+  const [currentAgent, setCurrentAgent] = React.useState<string | null>(null);
   const [input, setInput] = React.useState("");
   const [pending, setPending] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
@@ -41,6 +42,7 @@ export default function CustomerRequestPage() {
         : await api.startConversation(message, user?.id);
       setSessionId(res.session_id);
       setStatus(res.status);
+      setCurrentAgent(res.current_agent ?? null);
       setTurns(res.turns);
       setTraceLogs(res.trace_logs);
     } catch (e) {
@@ -77,6 +79,11 @@ export default function CustomerRequestPage() {
           </Link>
           <h1 className="font-display mt-1 text-2xl font-semibold text-ink">Ask for help</h1>
         </div>
+        {currentAgent ? (
+          <span className="mr-2 inline-flex items-center rounded-md border border-hairline px-2.5 py-1 font-mono text-xs text-ink-muted">
+            Agent: {currentAgent}
+          </span>
+        ) : null}
         {status ? (
           <span className={cn("inline-flex items-center rounded-md border px-2.5 py-1 text-xs font-medium text-ink", statusTone[status])}>
             {statusLabel[status] ?? status}
@@ -108,7 +115,7 @@ export default function CustomerRequestPage() {
                 </div>
               ))
             )}
-            {pending ? <p className="font-mono text-xs text-ink-muted">Concierge is working…</p> : null}
+            {pending ? <p className="font-mono text-xs text-ink-muted">{currentAgent ?? "Concierge"} is working…</p> : null}
           </div>
 
           <form onSubmit={onSubmit} className="flex items-center gap-2 border-t border-hairline p-3">

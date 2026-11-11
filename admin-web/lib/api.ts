@@ -1,8 +1,24 @@
+export const authedFetch = (input: string, init: RequestInit = {}): Promise<Response> => {
+  let token: string | null = null;
+  try { token = typeof window !== "undefined" ? localStorage.getItem("atelier_ai_access_token") : null; } catch {}
+  const headers = new Headers(init.headers);
+  if (token) headers.set("Authorization", `Bearer ${token}`);
+  return fetch(input, { ...init, headers }).then((res) => {
+    if (res.status === 401 && typeof window !== "undefined" && !window.location.pathname.includes("login")) {
+      try {
+        localStorage.removeItem("atelier_ai_access_token");
+        localStorage.removeItem("atelier_ai_authenticated_user");
+      } catch {}
+      window.location.href = "/login";
+    }
+    return res;
+  });
+};
+
 const getBaseUrl = (): string => {
   if (typeof window !== "undefined") {
-    // In browser: relative URL delegates to Next.js rewrites proxying to port 8000.
-    // This eliminates Mixed Content errors on Cloudflare HTTPS tunnels!
-    return "";
+    // In browser: same-origin /api-backend/* is proxied by Next.js rewrites to the FastAPI port.
+    return "/api-backend";
   }
   return process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
 };
@@ -79,6 +95,7 @@ export interface ConversationResponse {
   session_id: string;
   status: "in_progress" | "needs_input" | "completed" | "failed";
   awaiting_input: boolean;
+  current_agent?: "Concierge" | "Discovery" | "Booking" | "Followup" | string | null;
   area?: string | null;
   agent_message?: string | null;
   turns: ConversationTurn[];
@@ -153,37 +170,37 @@ export interface ProviderItem {
 
 export const api = {
   getStats: async (): Promise<AdminStats> => {
-    const res = await fetch(`${getBaseUrl()}/admin/stats`, { cache: "no-store" });
+    const res = await authedFetch(`${getBaseUrl()}/admin/stats`, { cache: "no-store" });
     if (!res.ok) throw new Error("Failed to fetch admin stats");
     return res.json();
   },
 
   getSessions: async (): Promise<SessionItem[]> => {
-    const res = await fetch(`${getBaseUrl()}/admin/sessions`, { cache: "no-store" });
+    const res = await authedFetch(`${getBaseUrl()}/admin/sessions`, { cache: "no-store" });
     if (!res.ok) throw new Error("Failed to fetch sessions");
     return res.json();
   },
 
   getSessionTraces: async (sessionId: string): Promise<TraceLog[]> => {
-    const res = await fetch(`${getBaseUrl()}/requests/${sessionId}/trace`, { cache: "no-store" });
+    const res = await authedFetch(`${getBaseUrl()}/requests/${sessionId}/trace`, { cache: "no-store" });
     if (!res.ok) throw new Error("Failed to fetch session traces");
     return res.json();
   },
 
   getBookings: async (): Promise<BookingItem[]> => {
-    const res = await fetch(`${getBaseUrl()}/admin/bookings`, { cache: "no-store" });
+    const res = await authedFetch(`${getBaseUrl()}/admin/bookings`, { cache: "no-store" });
     if (!res.ok) throw new Error("Failed to fetch bookings");
     return res.json();
   },
 
   getProviders: async (): Promise<ProviderItem[]> => {
-    const res = await fetch(`${getBaseUrl()}/admin/providers`, { cache: "no-store" });
+    const res = await authedFetch(`${getBaseUrl()}/admin/providers`, { cache: "no-store" });
     if (!res.ok) throw new Error("Failed to fetch providers");
     return res.json();
   },
 
   createProvider: async (providerData: Partial<ProviderItem>): Promise<ProviderItem> => {
-    const res = await fetch(`${getBaseUrl()}/admin/providers`, {
+    const res = await authedFetch(`${getBaseUrl()}/admin/providers`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(providerData),
@@ -196,7 +213,7 @@ export const api = {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 9000);
     try {
-      const res = await fetch(`${getBaseUrl()}/requests`, {
+      const res = await authedFetch(`${getBaseUrl()}/requests`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message }),
@@ -213,7 +230,7 @@ export const api = {
 
   // ---- Conversational agent (Phase 2 backend) ----
   startConversation: async (message: string, userId?: string, area?: string): Promise<ConversationResponse> => {
-    const res = await fetch(`${getBaseUrl()}/requests`, {
+    const res = await authedFetch(`${getBaseUrl()}/requests`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ message, user_id: userId, area }),
@@ -223,7 +240,7 @@ export const api = {
   },
 
   continueConversation: async (sessionId: string, message: string): Promise<ConversationResponse> => {
-    const res = await fetch(`${getBaseUrl()}/requests/${sessionId}/reply`, {
+    const res = await authedFetch(`${getBaseUrl()}/requests/${sessionId}/reply`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ message }),
@@ -238,7 +255,7 @@ export const api = {
   // back to the seeded demo provider persona when it's omitted.
   getMyProvider: async (userId?: string): Promise<MyProviderProfile> => {
     const qs = userId ? `?user_id=${encodeURIComponent(userId)}` : "";
-    const res = await fetch(`${getBaseUrl()}/me/provider${qs}`, { cache: "no-store" });
+    const res = await authedFetch(`${getBaseUrl()}/me/provider${qs}`, { cache: "no-store" });
     if (!res.ok) throw new Error(`Failed to load provider profile: ${res.status}`);
     return res.json();
   },
@@ -248,7 +265,7 @@ export const api = {
     userId?: string,
   ): Promise<MyProviderProfile> => {
     const qs = userId ? `?user_id=${encodeURIComponent(userId)}` : "";
-    const res = await fetch(`${getBaseUrl()}/me/provider${qs}`, {
+    const res = await authedFetch(`${getBaseUrl()}/me/provider${qs}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(patch),
@@ -259,7 +276,7 @@ export const api = {
 
   getMyBookings: async (userId?: string): Promise<ProviderBooking[]> => {
     const qs = userId ? `?user_id=${encodeURIComponent(userId)}` : "";
-    const res = await fetch(`${getBaseUrl()}/me/provider/bookings${qs}`, { cache: "no-store" });
+    const res = await authedFetch(`${getBaseUrl()}/me/provider/bookings${qs}`, { cache: "no-store" });
     if (!res.ok) throw new Error(`Failed to load bookings: ${res.status}`);
     return res.json();
   },
@@ -270,7 +287,7 @@ export const api = {
     userId?: string,
   ): Promise<ProviderBooking> => {
     const qs = userId ? `?user_id=${encodeURIComponent(userId)}` : "";
-    const res = await fetch(`${getBaseUrl()}/me/provider/bookings/${bookingId}${qs}`, {
+    const res = await authedFetch(`${getBaseUrl()}/me/provider/bookings/${bookingId}${qs}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ status: newStatus }),
@@ -281,14 +298,14 @@ export const api = {
 
   getMySlots: async (userId?: string): Promise<ProviderSlotItem[]> => {
     const qs = userId ? `?user_id=${encodeURIComponent(userId)}` : "";
-    const res = await fetch(`${getBaseUrl()}/me/provider/slots${qs}`, { cache: "no-store" });
+    const res = await authedFetch(`${getBaseUrl()}/me/provider/slots${qs}`, { cache: "no-store" });
     if (!res.ok) throw new Error(`Failed to load slots: ${res.status}`);
     return res.json();
   },
 
   createMySlot: async (slotDate: string, slotTime: string, userId?: string): Promise<ProviderSlotItem> => {
     const qs = userId ? `?user_id=${encodeURIComponent(userId)}` : "";
-    const res = await fetch(`${getBaseUrl()}/me/provider/slots${qs}`, {
+    const res = await authedFetch(`${getBaseUrl()}/me/provider/slots${qs}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ slot_date: slotDate, slot_time: slotTime }),
@@ -299,19 +316,19 @@ export const api = {
 
   deleteMySlot: async (slotId: string, userId?: string): Promise<void> => {
     const qs = userId ? `?user_id=${encodeURIComponent(userId)}` : "";
-    const res = await fetch(`${getBaseUrl()}/me/provider/slots/${slotId}${qs}`, { method: "DELETE" });
+    const res = await authedFetch(`${getBaseUrl()}/me/provider/slots/${slotId}${qs}`, { method: "DELETE" });
     if (!res.ok) throw new Error(`Failed to delete slot: ${res.status}`);
   },
 
   // ---- Admin customer management ----
   getCustomers: async (): Promise<AdminCustomer[]> => {
-    const res = await fetch(`${getBaseUrl()}/admin/customers`, { cache: "no-store" });
+    const res = await authedFetch(`${getBaseUrl()}/admin/customers`, { cache: "no-store" });
     if (!res.ok) throw new Error("Failed to fetch customers");
     return res.json();
   },
 
   createCustomer: async (data: { name: string; phone?: string; area?: string }): Promise<AdminCustomer> => {
-    const res = await fetch(`${getBaseUrl()}/admin/customers`, {
+    const res = await authedFetch(`${getBaseUrl()}/admin/customers`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ...data, role: "customer" }),
@@ -324,7 +341,7 @@ export const api = {
     id: string,
     patch: Partial<{ name: string; phone: string; area: string; is_suspended: boolean }>,
   ): Promise<AdminCustomer> => {
-    const res = await fetch(`${getBaseUrl()}/admin/customers/${id}`, {
+    const res = await authedFetch(`${getBaseUrl()}/admin/customers/${id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(patch),
@@ -334,7 +351,7 @@ export const api = {
   },
 
   deleteCustomer: async (id: string): Promise<void> => {
-    const res = await fetch(`${getBaseUrl()}/admin/customers/${id}`, { method: "DELETE" });
+    const res = await authedFetch(`${getBaseUrl()}/admin/customers/${id}`, { method: "DELETE" });
     if (!res.ok) throw new Error("Failed to delete customer");
   },
 };

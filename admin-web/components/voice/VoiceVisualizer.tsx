@@ -262,17 +262,17 @@ export function VoiceVisualizer({
   };
 
   const dotColor: Record<CallStatus, string> = {
-    idle: "bg-[#5E796F]",
-    connecting: "bg-[#D4A843] animate-pulse",
-    connected: "bg-[#34D399] animate-pulse",
-    ended: "bg-[#8EAAA0]",
-    error: "bg-[#F87171]",
+    idle: "bg-ink-muted",
+    connecting: "bg-status-warn animate-pulse",
+    connected: "bg-status-go animate-pulse",
+    ended: "bg-ink-muted",
+    error: "bg-status-stop",
   };
 
   return (
-    <div className="rounded-3xl bg-[#111C17] border border-[#20332B] p-6 relative overflow-hidden transition-all duration-300 shadow-[0_16px_40px_rgba(0,0,0,0.5)]">
+    <div className="rounded-3xl bg-[#111C17] border border-[var(--status-go-line)] p-6 relative overflow-hidden transition-all duration-300 shadow-[0_16px_40px_rgba(0,0,0,0.5)]">
       {/* Background ambient light */}
-      <div className="absolute top-0 right-0 w-80 h-80 bg-[#34D399]/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-0 right-0 w-80 h-80 bg-status-go/10 rounded-full blur-3xl pointer-events-none" />
 
       <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         {/* Left Info */}
@@ -282,33 +282,33 @@ export function VoiceVisualizer({
               <span className={`animate-ping absolute inline-flex h-full w-full rounded-full ${dotColor[callStatus]} opacity-75`} />
               <span className={`relative inline-flex rounded-full h-2.5 w-2.5 ${dotColor[callStatus]}`} />
             </span>
-            <span className="text-xs font-semibold uppercase tracking-wider text-[#8EAAA0]">
+            <span className="text-xs font-semibold uppercase tracking-wider text-ink-muted">
               Vapi WebRTC Voice Concierge
             </span>
-            <Badge variant="outline" className="bg-[#162D23] text-[#34D399] border-[#2B493B] text-[10px] font-mono">
+            <Badge variant="outline" className="bg-status-go-tint text-status-go border-[#2B493B] text-[10px] font-mono">
               {statusLabel[callStatus]}
             </Badge>
           </div>
 
-          <h2 className="text-lg font-bold text-[#F2F7F4] tracking-tight flex items-center gap-2">
+          <h2 className="text-lg font-bold text-ink tracking-tight flex items-center gap-2">
             Real-Time Spoken Audio Channel
-            <Sparkles className="h-4 w-4 text-[#34D399]" />
+            <Sparkles className="h-4 w-4 text-status-go" />
           </h2>
 
-          <p className="text-xs text-[#A3B8AF] leading-relaxed">
+          <p className="text-xs text-ink-muted leading-relaxed">
             Roman Urdu, Urdu, ya English mein bolein. AI autonomously providers dhundh ke booking confirm karega.
           </p>
         </div>
 
         {/* Center Audio Waveform Visualizer */}
-        <div className="flex items-center gap-1.5 h-14 px-6 rounded-2xl bg-[#0B1310] border border-[#1F3329] shadow-inner">
+        <div className="flex items-center gap-1.5 h-14 px-6 rounded-2xl bg-status-go-tint border border-[var(--status-go-line)] shadow-inner">
           {audioLevel.map((height, idx) => (
             <div
               key={idx}
               className={`w-1.5 rounded-full transition-all duration-100 ease-out ${
                 isActive
-                  ? "bg-[#34D399] shadow-[0_0_8px_rgba(52,211,153,0.5)]"
-                  : "bg-[#1F3329]"
+                  ? "bg-status-go shadow-[0_0_8px_rgba(52,211,153,0.5)]"
+                  : "bg-status-go-tint"
               }`}
               style={{ height: `${height}%` }}
             />
@@ -322,12 +322,12 @@ export function VoiceVisualizer({
             <Button
               onClick={handleToggleMute}
               variant="outline"
-              className="h-10 px-4 rounded-xl border-[#20332B] bg-[#16251F] text-[#F2F7F4] text-xs font-semibold hover:bg-[#1C2F27]"
+              className="h-10 px-4 rounded-xl border-[var(--status-go-line)] bg-status-go-tint text-ink text-xs font-semibold hover:bg-[#1C2F27]"
             >
               {isMuted ? (
-                <span className="flex items-center gap-1.5"><Mic className="h-4 w-4 text-[#34D399]" /> Unmute</span>
+                <span className="flex items-center gap-1.5"><Mic className="h-4 w-4 text-status-go" /> Unmute</span>
               ) : (
-                <span className="flex items-center gap-1.5"><MicOff className="h-4 w-4 text-[#8EAAA0]" /> Mute</span>
+                <span className="flex items-center gap-1.5"><MicOff className="h-4 w-4 text-ink-muted" /> Mute</span>
               )}
             </Button>
           )}
@@ -336,30 +336,30 @@ export function VoiceVisualizer({
           {!isActive ? (
             <Button
               onClick={handleStartCall}
-              className="h-12 px-6 rounded-2xl font-semibold text-sm bg-[#162D23] hover:bg-[#1E3B2E] text-[#F2F7F4] border border-[#2F5444] shadow-[0_0_24px_rgba(52,211,153,0.2)] transition-all duration-200"
+              className="h-12 px-6 rounded-2xl font-semibold text-sm bg-status-go-tint hover:bg-[#1E3B2E] text-ink border border-[#2F5444] shadow-[0_0_24px_rgba(52,211,153,0.2)] transition-all duration-200"
             >
               <span className="flex items-center gap-2">
-                <Mic className="h-4 w-4 text-[#34D399] animate-pulse" />
+                <Mic className="h-4 w-4 text-status-go animate-pulse" />
                 Start Voice Concierge
               </span>
             </Button>
           ) : callStatus === "connecting" ? (
             <Button
               disabled
-              className="h-12 px-6 rounded-2xl font-semibold text-sm bg-[#1A2D24] text-[#8EAAA0] border border-[#254234] cursor-not-allowed"
+              className="h-12 px-6 rounded-2xl font-semibold text-sm bg-[#1A2D24] text-ink-muted border border-[#254234] cursor-not-allowed"
             >
               <span className="flex items-center gap-2">
-                <Loader2 className="h-4 w-4 animate-spin text-[#34D399]" />
+                <Loader2 className="h-4 w-4 animate-spin text-status-go" />
                 Connecting...
               </span>
             </Button>
           ) : (
             <Button
               onClick={handleEndCall}
-              className="h-12 px-6 rounded-2xl font-semibold text-sm bg-[#2D1619] hover:bg-[#3D1D22] text-[#F87171] border border-[#52252B] transition-all duration-200"
+              className="h-12 px-6 rounded-2xl font-semibold text-sm bg-status-stop-tint hover:bg-status-stop-tint text-status-stop border border-[#52252B] transition-all duration-200"
             >
               <span className="flex items-center gap-2">
-                <PhoneOff className="h-4 w-4 text-[#F87171]" />
+                <PhoneOff className="h-4 w-4 text-status-stop" />
                 End Call
               </span>
             </Button>
@@ -368,24 +368,24 @@ export function VoiceVisualizer({
       </div>
 
       {/* Spoken Dialog Box */}
-      <div className="mt-4 p-3.5 rounded-2xl bg-[#0B1310] border border-[#1F3329] flex items-start gap-3">
-        <Volume2 className="h-4 w-4 text-[#34D399] shrink-0 mt-0.5" />
-        <div className="text-xs text-[#D1E0D9] flex-1">
-          <span className="font-semibold text-[#34D399]">Assistant Audio: </span>
-          <span className="italic text-[#F2F7F4] font-sans">{spokenText}</span>
+      <div className="mt-4 p-3.5 rounded-2xl bg-status-go-tint border border-[var(--status-go-line)] flex items-start gap-3">
+        <Volume2 className="h-4 w-4 text-status-go shrink-0 mt-0.5" />
+        <div className="text-xs text-ink flex-1">
+          <span className="font-semibold text-status-go">Assistant Audio: </span>
+          <span className="italic text-ink font-sans">{spokenText}</span>
         </div>
       </div>
 
       {/* Last user transcript chip */}
       {transcript && (
-        <div className="mt-2 px-4 py-2 rounded-xl bg-[#132A1F] border border-[#214735] text-xs text-[#34D399] font-medium">
-          🗣️ Last speech detected: <span className="italic text-[#F2F7F4]">&quot;{transcript}&quot;</span>
+        <div className="mt-2 px-4 py-2 rounded-xl bg-[#132A1F] border border-[#214735] text-xs text-status-go font-medium">
+          🗣️ Last speech detected: <span className="italic text-ink">&quot;{transcript}&quot;</span>
         </div>
       )}
 
       {/* Quick Voice Simulation Trigger Buttons */}
       <div className="mt-3.5 pt-3 border-t border-[#1C2E25] flex flex-wrap items-center gap-2">
-        <span className="font-code text-[10px] text-[#6B8579] uppercase font-semibold">
+        <span className="font-code text-[10px] text-ink-muted uppercase font-semibold">
           Voice Quick Test:
         </span>
         {[
@@ -396,9 +396,9 @@ export function VoiceVisualizer({
           <button
             key={idx}
             onClick={() => simulateVoiceCall(queryText)}
-            className="px-2.5 py-1 rounded-lg bg-[#16251F] hover:bg-[#1E332A] border border-[#233B30] text-[11px] text-[#A3B8AF] hover:text-[#34D399] transition-all flex items-center gap-1.5 cursor-pointer"
+            className="px-2.5 py-1 rounded-lg bg-status-go-tint hover:bg-[#1E332A] border border-[#233B30] text-[11px] text-ink-muted hover:text-status-go transition-all flex items-center gap-1.5 cursor-pointer"
           >
-            <Mic size={11} className="text-[#34D399]" />
+            <Mic size={11} className="text-status-go" />
             <span>&ldquo;{queryText.slice(0, 35)}...&rdquo;</span>
           </button>
         ))}

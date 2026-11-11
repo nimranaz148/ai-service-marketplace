@@ -1,0 +1,221 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:Sw;src:url("file:///C:/code/ai-service-marketplace/admin-web/public/fonts/Switzer-Medium.woff2");font-weight:500}
+@font-face{font-family:Sw;src:url("file:///C:/code/ai-service-marketplace/admin-web/public/fonts/Switzer-Semibold.woff2");font-weight:600}
+@font-face{font-family:Cl;src:url("file:///C:/code/ai-service-marketplace/admin-web/public/fonts/ClashDisplay-Semibold.woff2");font-weight:600}
+@font-face{font-family:Jb;src:url("file:///C:/code/ai-service-marketplace/admin-web/public/fonts/JetBrainsMono-Medium.woff2");font-weight:500}
+html,body{margin:0;background:#17100B}
+svg{display:block}
+text{font-family:Sw,sans-serif}
+.mono{font-family:Jb,monospace}
+.disp{font-family:Cl,sans-serif}
+</style></head>
+<body><svg id="s" width="1280" height="720" viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg"></svg>
+<script>
+const EMBER="#FF5A1F", EMBER2="#DE5527", PAPER="#F5F2EA", INK="#1C1A17", BRASS="#B08D57", GO="#3FA37A", BG="#17100B", BG2="#1F1610";
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const seg=(t,a,b)=>clamp((t-a)/(b-a));
+const ease=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
+const eo=x=>1-Math.pow(1-x,3);
+const lerp=(a,b,x)=>a+(b-a)*x;
+const G={
+ chat:'<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
+ search:'<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',
+ cal:'<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18m-11 5 2 2 4-4"/>',
+ bell:'<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.94 1.94 0 0 0 3.4 0"/>',
+ snow:'<path d="M2 12h20M12 2v20m-7-17 14 14M19 5 5 19"/>',
+ wrench:'<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94z"/>',
+ bolt:'<path d="M13 2 3 14h9l-1 8 10-12h-9z"/>',
+ drop:'<path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/>',
+ check:'<path d="M20 6 9 17l-5-5"/>',
+ star:'<path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/>',
+ pin:'<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/>',
+};
+const ic=(k,x,y,s,col,sw=1.8,fill='none')=>`<g transform="translate(${x-12*s},${y-12*s}) scale(${s})" stroke="${col}" stroke-width="${sw}" fill="${fill}" stroke-linecap="round" stroke-linejoin="round">${G[k]}</g>`;
+const T=(x,y,str,o={})=>`<text x="${x}" y="${y}" font-size="${o.size||16}" fill="${o.fill||PAPER}" font-weight="${o.w||500}" text-anchor="${o.anchor||'start'}" opacity="${o.op==null?1:o.op}" class="${o.cls||''}" ${o.ls?`letter-spacing="${o.ls}"`:''}>${str}</text>`;
+const R=(x,y,w,h,r,fill,o={})=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${r}" fill="${fill}" ${o.stroke?`stroke="${o.stroke}" stroke-width="${o.sw||1.5}"`:''} opacity="${o.op==null?1:o.op}"/>`;
+
+function typed(lines,n){let out=[];let left=n;for(const l of lines){const k=Math.max(0,Math.min(l.length,Math.floor(left)));out.push(l.slice(0,k));left-=l.length;}return out;}
+
+function world(t){
+  let o='';
+  // ---------- ACT 1: phone (x 0..1280) ----------
+  const a1=0;
+  const phoneIn=eo(seg(t,0,.04));
+  o+=`<g transform="translate(${a1},${(1-phoneIn)*40})" opacity="${phoneIn}">`;
+  o+=R(500,60,280,600,42,'#0E0804',{stroke:'rgba(245,242,234,.28)',sw:2});
+  o+=R(514,74,252,572,30,PAPER);
+  o+=R(514,74,252,58,30,PAPER)+`<rect x="514" y="104" width="252" height="28" fill="${PAPER}"/>`;
+  o+=`<circle cx="542" cy="103" r="13" fill="${EMBER2}"/>`+T(542,108,'A',{size:14,fill:'#fff',w:600,anchor:'middle'});
+  o+=T(564,100,'Atelier concierge',{size:15,fill:INK,w:600})+T(564,117,'online · Roman Urdu',{size:11,fill:'#6B665C',cls:'mono'});
+  o+=`<rect x="514" y="132" width="252" height="1" fill="#E4E1D7"/>`;
+  const userLines=["G-13 mein AC thanda","nahi kar raha. Kal","subah aa sakte hain?"];
+  const tl=typed(userLines,seg(t,.03,.13)*60);
+  const bubbleH=22*3+22;
+  if(t>.03){
+    o+=R(548,160,206,bubbleH,18,EMBER2);
+    tl.forEach((l,i)=>{o+=T(564,188+i*22,l,{size:15,fill:'#fff',w:500});});
+  }
+  // typing dots then reply
+  const dots=seg(t,.14,.17), reply=eo(seg(t,.17,.21));
+  if(t>.14&&t<.18){const ph=(t-.14)*60;for(let i=0;i<3;i++){o+=`<circle cx="${566+i*16}" cy="${272}" r="4.5" fill="#B8B5AD" opacity="${.45+.55*Math.abs(Math.sin(ph+i))}"/>`;}}
+  if(t>=.17){
+    o+=`<g opacity="${reply}" transform="translate(0,${(1-reply)*12})">`;
+    o+=R(526,244,228,92,18,'#fff',{stroke:'#E4E1D7'});
+    o+=T(542,272,'Samajh gaya:',{size:15,fill:INK,w:600});
+    o+=T(542,294,'AC repair · G-13 · kal subah',{size:14,fill:'#3D3A34'});
+    o+=T(542,316,'Ab sahi banda dhoond raha hoon…',{size:13,fill:'#6B665C'});
+    o+='</g>';
+  }
+  const chip=eo(seg(t,.22,.27));
+  if(chip>0){
+    o+=`<g opacity="${chip}" transform="translate(0,${(1-chip)*10})">`;
+    o+=R(526,356,228,50,14,'rgba(222,85,39,.12)',{stroke:'rgba(222,85,39,.45)'});
+    o+=`<circle cx="552" cy="381" r="${5+2*Math.sin(t*140)}" fill="${EMBER2}"/>`;
+    o+=T(570,386,'Handing off to Discovery',{size:14,fill:'#A63D18',w:600});
+    o+='</g>';
+  }
+  // composer
+  o+=R(526,590,228,40,20,'#F4F2EC',{stroke:'#E4E1D7'})+T(544,615,'Type or tap the mic…',{size:13,fill:'#8A8882'})+`<circle cx="734" cy="610" r="14" fill="${EMBER2}"/>`+ic('chat',734,610,.55,'#fff',2.4);
+  o+='</g>';
+  // floating trades around phone
+  const tr=[['snow',300,220,'AC & fridge'],['drop',250,430,'Plumbing'],['bolt',950,250,'Electrical'],['wrench',990,460,'Appliance']];
+  tr.forEach(([k,x,y,lab],i)=>{
+    const p=eo(seg(t,.01+i*.012,.07+i*.012))*(1-seg(t,.26,.32));
+    if(p<=0)return;
+    const dy=Math.sin(t*38+i*1.7)*6;
+    o+=`<g opacity="${p}" transform="translate(${x},${y+dy-(1-p)*20})">`;
+    o+=R(-62,-30,124,60,16,'rgba(245,242,234,.07)',{stroke:'rgba(245,242,234,.22)'});
+    o+=ic(k,-34,0,1.0,EMBER);
+    o+=T(-14,5,lab,{size:13,fill:PAPER});
+    o+='</g>';
+  });
+  o+=T(640,700,'ROMAN URDU · URDU · ENGLISH',{size:11,fill:'rgba(245,242,234,.5)',anchor:'middle',cls:'mono',ls:2});
+
+  // ---------- ACT 2: handoff graph (x 1280..2560) ----------
+  const a2=1280;
+  const nodes=[['chat','Concierge','Triage'],['search','Discovery','finds providers'],['cal','Booking','locks the slot'],['bell','Followup','checks in after']];
+  const nx=[a2+170,a2+450,a2+730,a2+1010], ny=250;
+  const act2=seg(t,.30,.36);
+  const stepT=[.36,.44,.53,.62]; // when packet reaches each node
+  let active=-1; stepT.forEach((s,i)=>{if(t>=s)active=i;});
+  const pk=(()=>{ // packet position
+    if(t<stepT[0])return null;
+    for(let i=0;i<3;i++){ if(t<stepT[i+1]){const p=ease(seg(t,stepT[i]+.015,stepT[i+1]-.005));return {x:lerp(nx[i]+62,nx[i+1]-62,p),y:ny};} }
+    return {x:nx[3]-62,y:ny};
+  })();
+  o+=`<g opacity="${act2}">`;
+  o+=T(a2+640,92,active<0?'HANDOFF CHAIN':`AGENT ${active+1} OF 4 · ${nodes[active][1].toUpperCase()}`,{size:13,fill:EMBER,anchor:'middle',cls:'mono',ls:3});
+  o+=T(a2+640,138,'Four agents. One request. Zero guessing.',{size:34,fill:PAPER,anchor:'middle',w:600,cls:'disp'});
+  for(let i=0;i<3;i++){
+    const done=t>=stepT[i+1]; const prog=seg(t,stepT[i]+.015,stepT[i+1]-.005);
+    o+=`<line x1="${nx[i]+62}" y1="${ny}" x2="${nx[i+1]-62}" y2="${ny}" stroke="rgba(245,242,234,.22)" stroke-width="2" stroke-dasharray="6 7"/>`;
+    o+=`<line x1="${nx[i]+62}" y1="${ny}" x2="${lerp(nx[i]+62,nx[i+1]-62,done?1:ease(prog))}" y2="${ny}" stroke="${EMBER}" stroke-width="3"/>`;
+  }
+  nodes.forEach(([k,name,sub],i)=>{
+    const on=i<=active, cur=i===active;
+    const r=58+(cur?4*Math.sin(t*90):0);
+    o+=`<circle cx="${nx[i]}" cy="${ny}" r="${r+14}" fill="none" stroke="${EMBER}" stroke-width="1.5" opacity="${cur?.35:0}"/>`;
+    o+=`<circle cx="${nx[i]}" cy="${ny}" r="58" fill="${on?EMBER2:'#2A1D14'}" stroke="${on?EMBER:'rgba(245,242,234,.25)'}" stroke-width="2"/>`;
+    o+=ic(k,nx[i],ny,2.1,on?'#fff':'rgba(245,242,234,.75)',1.8);
+    o+=T(nx[i],ny+100,name,{size:21,fill:PAPER,anchor:'middle',w:600,cls:'disp'});
+    o+=T(nx[i],ny+122,sub,{size:13,fill:'rgba(245,242,234,.6)',anchor:'middle'});
+  });
+  if(pk)o+=`<circle cx="${pk.x}" cy="${pk.y}" r="9" fill="${PAPER}" stroke="${EMBER}" stroke-width="3"/>`;
+  // Discovery results
+  const dr=eo(seg(t,.455,.5)), sel=eo(seg(t,.5,.53));
+  if(dr>0){
+    const cards=[['Tariq Mehmood','4.9','G-13 · PKR 2500'],['Imran Baig','4.8','Karachi · PKR 2500']];
+    cards.forEach(([n,r,s],i)=>{
+      const y=ny+160+i*66; const isSel=i===0;
+      o+=`<g opacity="${dr}" transform="translate(0,${(1-dr)*14})">`;
+      o+=R(nx[1]-110,y,220,56,14,isSel&&sel>0?'rgba(222,85,39,.16)':'rgba(245,242,234,.06)',{stroke:isSel&&sel>0?EMBER:'rgba(245,242,234,.2)',sw:isSel&&sel>0?2:1.2});
+      o+=`<circle cx="${nx[1]-82}" cy="${y+28}" r="16" fill="${BRASS}"/>`+T(nx[1]-82,y+33,n[0],{size:14,fill:INK,anchor:'middle',w:600});
+      o+=T(nx[1]-56,y+25,n,{size:14,fill:PAPER,w:600})+T(nx[1]-56,y+43,s,{size:11,fill:'rgba(245,242,234,.6)'});
+      o+=ic('star',nx[1]+78,y+23,.52,BRASS,1.6,BRASS)+T(nx[1]+90,y+28,r,{size:13,fill:PAPER,w:600});
+      o+='</g>';
+    });
+  }
+  // Booking ticket
+  const bk=eo(seg(t,.545,.6));
+  if(bk>0){
+    o+=`<g opacity="${bk}" transform="translate(0,${(1-bk)*14})">`;
+    o+=R(nx[2]-110,ny+160,220,56,14,'rgba(245,242,234,.06)',{stroke:'rgba(245,242,234,.2)'});
+    o+=T(nx[2]-92,ny+184,'Tomorrow · 09:00 AM',{size:14,fill:PAPER,w:600})+T(nx[2]-92,ny+203,'slot reserved atomically',{size:11,fill:'rgba(245,242,234,.6)'});
+    const st=eo(seg(t,.57,.61));
+    o+=`<g transform="translate(${nx[2]},${ny+250}) rotate(${-4})" opacity="${st}">`+R(-96,-24,192,48,10,'rgba(63,163,122,.15)',{stroke:GO,sw:2})+ic('check',-66,0,.8,GO,2.6)+T(-44,6,'BK-4178 confirmed',{size:14,fill:'#7FD1AE',w:600})+'</g>';
+    o+='</g>';
+  }
+  const fu=eo(seg(t,.625,.67));
+  if(fu>0){
+    o+=`<g opacity="${fu}" transform="translate(0,${(1-fu)*14})">`;
+    o+=R(nx[3]-110,ny+160,220,56,14,'rgba(245,242,234,.06)',{stroke:'rgba(245,242,234,.2)'});
+    o+=T(nx[3]-92,ny+184,'Check-in scheduled',{size:14,fill:PAPER,w:600})+T(nx[3]-92,ny+203,'after the visit, in your language',{size:11,fill:'rgba(245,242,234,.6)'});
+    o+='</g>';
+  }
+  o+='</g>';
+
+  // ---------- ACT 3: dispatch map + AC fixed (x 2560..3840) ----------
+  const a3=2560, act3=seg(t,.70,.75);
+  o+=`<g opacity="${act3}">`;
+  // city blocks
+  for(let gx=0;gx<9;gx++)for(let gy=0;gy<5;gy++){
+    const x=a3+60+gx*135, y=150+gy*104;
+    o+=R(x,y,112,82,10,'rgba(245,242,234,.05)');
+  }
+  const path=[[a3+130,600],[a3+130,430],[a3+470,430],[a3+470,250],[a3+870,250]];
+  const lens=[];let tot=0;for(let i=0;i<path.length-1;i++){const l=Math.abs(path[i+1][0]-path[i][0])+Math.abs(path[i+1][1]-path[i][1]);lens.push(l);tot+=l;}
+  const mv=ease(seg(t,.75,.88));
+  const pointAt=(p)=>{let d=p*tot;for(let i=0;i<lens.length;i++){if(d<=lens[i]){const k=d/lens[i];return [lerp(path[i][0],path[i+1][0],k),lerp(path[i][1],path[i+1][1],k)];}d-=lens[i];}return path[path.length-1];};
+  const pts=path.map(p=>p.join(',')).join(' ');
+  o+=`<polyline points="${pts}" fill="none" stroke="rgba(245,242,234,.22)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 12"/>`;
+  // travelled portion
+  let trav=[path[0]];{let d=mv*tot;for(let i=0;i<lens.length;i++){if(d>=lens[i]){trav.push(path[i+1]);d-=lens[i];}else{const k=d/lens[i];trav.push([lerp(path[i][0],path[i+1][0],k),lerp(path[i][1],path[i+1][1],k)]);break;}}}
+  o+=`<polyline points="${trav.map(p=>p.join(',')).join(' ')}" fill="none" stroke="${EMBER}" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>`;
+  // origin
+  o+=ic('pin',path[0][0],path[0][1]-4,1.2,PAPER,1.8)+T(path[0][0]+22,path[0][1]+4,'Tariq · G-13 workshop',{size:13,fill:'rgba(245,242,234,.75)'});
+  // house
+  const hx=a3+920, hy=250;
+  o+=`<g transform="translate(${hx},${hy})">`+`<path d="M-44 8 0 -34 44 8" fill="none" stroke="${PAPER}" stroke-width="3" stroke-linejoin="round"/>`+R(-34,8,68,52,4,'rgba(245,242,234,.08)',{stroke:PAPER,sw:3})+R(-9,30,18,30,2,EMBER2)+'</g>';
+  o+=T(hx,hy+88,'Your home · G-13',{size:13,fill:PAPER,anchor:'middle',w:600});
+  // scooter marker
+  const [mx,my]=pointAt(mv);
+  o+=`<circle cx="${mx}" cy="${my}" r="17" fill="${EMBER2}" stroke="${PAPER}" stroke-width="3"/>`+ic('wrench',mx,my,.62,'#fff',2.2);
+  // ETA
+  const eta=Math.max(0,Math.round(14*(1-mv)));
+  o+=R(a3+60,70,300,74,16,'rgba(245,242,234,.07)',{stroke:'rgba(245,242,234,.2)'});
+  o+=T(a3+82,98,mv>=1?'TECHNICIAN ARRIVED':'TECHNICIAN EN ROUTE',{size:11,fill:EMBER,cls:'mono',ls:2});
+  o+=T(a3+82,130,mv>=1?'Tariq is at your door':`ETA ${eta} min`,{size:26,fill:PAPER,w:600,cls:'disp'});
+  // thermometer card
+  const fix=ease(seg(t,.86,.95));
+  const temp=Math.round(lerp(38,24,fix));
+  o+=R(a3+930,420,280,150,18,'rgba(245,242,234,.07)',{stroke:'rgba(245,242,234,.2)'});
+  o+=T(a3+952,452,'LIVING ROOM',{size:11,fill:'rgba(245,242,234,.6)',cls:'mono',ls:2});
+  o+=T(a3+952,520,`${temp}°C`,{size:56,fill:fix>.98?'#7FD1AE':PAPER,w:600,cls:'disp'});
+  o+=ic('snow',a3+1160,484,1.6,fix>.3?'#7FD1AE':'rgba(245,242,234,.35)',1.8);
+  o+=R(a3+952,545,236,6,3,'rgba(245,242,234,.14)')+R(a3+952,545,236*fix,6,3,'#7FD1AE');
+  // completion card
+  const done=eo(seg(t,.93,.98));
+  if(done>0){
+    o+=`<g opacity="${done}" transform="translate(${a3+520},${500+(1-done)*16})">`;
+    o+=R(0,0,380,150,18,'#F5F2EA');
+    o+=ic('check',34,38,1.0,GO,2.6)+T(60,46,'AC fixed. Job complete.',{size:20,fill:INK,w:600,cls:'disp'});
+    for(let i=0;i<5;i++)o+=ic('star',34+i*30,84,.58,BRASS,1.6,BRASS);
+    o+=T(200,90,'Rated 5.0',{size:14,fill:'#3D3A34',w:600});
+    o+=T(22,126,'Booking BK-4178 · follow-up sent',{size:13,fill:'#6B665C'});
+    o+='</g>';
+  }
+  o+='</g>';
+  return o;
+}
+
+function render(t){
+  const cam = 1280*ease(seg(t,.30,.37)) + 1280*ease(seg(t,.66,.74));
+  const grid=[];const gp=-cam*0.5%48;
+  let d='';for(let x=gp;x<1280;x+=48)for(let y=0;y<720;y+=48)d+=`<circle cx="${x.toFixed(1)}" cy="${y}" r="1.4" fill="rgba(245,242,234,.08)"/>`;
+  document.getElementById('s').innerHTML=`<rect width="1280" height="720" fill="${BG}"/>`+d+`<g transform="translate(${-cam.toFixed(2)},0)">${world(t)}</g>`
+   +`<rect x="0" y="702" width="${(1280*t).toFixed(1)}" height="3" fill="${EMBER}"/>`;
+}
+window.render=render; render(0);
+</script></body></html>

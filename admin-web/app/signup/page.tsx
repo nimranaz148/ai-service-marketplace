@@ -9,20 +9,23 @@ export default function CustomerSignupPage() {
   const { signup } = useAuth();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
   const [phone, setPhone] = useState("");
   const [area, setArea] = useState("Sector F-10, Islamabad");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name || !email) return;
 
-    signup({
+    setError(await signup({
       name,
       email,
+      password,
       role: "customer",
       phone: phone || "+92 300 1234567",
       area,
-    });
+    }));
   };
 
   const fieldClass =
@@ -99,6 +102,25 @@ export default function CustomerSignupPage() {
             <option value="Gulshan-e-Iqbal, Karachi">Gulshan-e-Iqbal, Karachi</option>
           </select>
         </div>
+
+        <div className="space-y-1.5">
+          <label htmlFor="password" className="block text-sm font-medium text-ink">
+            Password (min 8 characters)
+          </label>
+          <input
+            id="password"
+            type="password"
+            required
+            minLength={8}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className={fieldClass}
+          />
+        </div>
+
+        {error ? (
+          <p role="alert" className="rounded-md border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>
+        ) : null}
 
         <button
           type="submit"

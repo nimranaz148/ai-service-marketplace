@@ -8,7 +8,8 @@ import { copy } from "@/lib/marketing/copy";
 import { getGsap, prefersReducedMotion } from "@/lib/motion/gsap";
 import { useScrollScene } from "@/lib/motion/use-scroll-scene";
 import { RequestBox } from "./request-box";
-import { DispatchMotif } from "./dispatch-motif";
+import { HeroPanel } from "./hero-panel";
+import { ShieldCheck, Receipt, Translate } from "@phosphor-icons/react";
 
 /**
  * Hero — the opening beat. Headline splits into lines and reveals once on mount
@@ -109,10 +110,26 @@ export function Hero() {
               {copy.hero.ctaSecondary}
             </Link>
           </div>
+
+          <ul className="flex flex-wrap gap-x-6 gap-y-2 pt-2 text-sm text-ink-muted">
+            {[
+              [ShieldCheck, "Verified providers"],
+              [Receipt, "Rate shown before you book"],
+              [Translate, "Roman Urdu · Urdu · English"],
+            ].map(([Ico, label]) => {
+              const I = Ico as typeof ShieldCheck;
+              return (
+                <li key={label as string} className="inline-flex items-center gap-2">
+                  <I size={18} weight="duotone" className="text-accent" aria-hidden />
+                  {label as string}
+                </li>
+              );
+            })}
+          </ul>
         </div>
 
-        <div ref={motifRef} className="hidden lg:block lg:translate-y-6">
-          <DispatchMotif caption={copy.hero.motifCaption} className="ml-auto w-full max-w-sm -rotate-2" />
+        <div ref={motifRef} className="hidden lg:block lg:-translate-y-6">
+          <HeroPanel className="ml-auto" />
         </div>
       </div>
     </section>

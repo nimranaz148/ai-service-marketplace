@@ -46,7 +46,8 @@ describe("marketing home", () => {
     render(<HomePage />);
     for (const id of [
       "content",
-      "agent-beat",
+      "film",
+      "providers",
       "how-it-works",
       "trades",
       "proof",

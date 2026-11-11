@@ -50,12 +50,14 @@ class Settings(BaseSettings):
     OPENAI_MODEL: str = "gpt-4o-mini"
     GEMINI_API_KEY: str = ""
     GEMINI_BASE_URL: str = "https://generativelanguage.googleapis.com/v1beta/openai/"
-    GEMINI_MODEL: str = "gemini-3.6-flash"
+    GEMINI_MODEL: str = "gemini-2.5-flash"
 
     # Celery & Redis
     REDIS_URL: str = "redis://localhost:6379/0"
 
-    # Auth (Clerk)
+    # Auth (backend-issued JWT; Clerk keys kept for a future swap)
+    JWT_SECRET: str = "dev-only-change-me-in-production-please-32b+"
+    JWT_EXPIRE_MINUTES: int = 60 * 12
     CLERK_SECRET_KEY: str = ""
     CLERK_PUBLISHABLE_KEY: str = ""
 
