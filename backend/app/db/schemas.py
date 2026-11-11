@@ -179,6 +179,10 @@ class ProviderBookingResponse(BookingResponse):
     customer: Optional[UserResponse] = None
 
 
+class ProviderBookingStatusUpdate(BaseModel):
+    status: str = Field(..., description="One of: confirmed, en_route, arrived, completed, cancelled")
+
+
 # ==========================================
 # Session Schemas
 # ==========================================

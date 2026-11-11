@@ -14,7 +14,10 @@ from app.db.schemas import (
     ProviderSlotResponse,
     ProviderSlotCreate,
     ProviderBookingResponse,
+    ProviderBookingStatusUpdate,
 )
+
+VALID_BOOKING_STATUSES = {"confirmed", "en_route", "arrived", "completed", "cancelled"}
 
 router = APIRouter(prefix="/me/provider", tags=["Provider Self-Service"])
 
@@ -123,6 +126,33 @@ async def list_my_bookings(
         item.customer = b.user
         out.append(item)
     return out
+
+
+@router.patch("/bookings/{booking_id}", response_model=ProviderBookingResponse)
+async def update_my_booking_status(
+    booking_id: uuid.UUID,
+    payload: ProviderBookingStatusUpdate,
+    user_id: Optional[str] = None,
+    authorization: Optional[str] = Header(None),
+    db: AsyncSession = Depends(get_db),
+):
+    """Move a booking through the real field-service lifecycle
+    (confirmed -> en_route -> arrived -> completed), or cancel it."""
+    if payload.status not in VALID_BOOKING_STATUSES:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=f"status must be one of {sorted(VALID_BOOKING_STATUSES)}",
+        )
+    provider = await resolve_current_provider(db, user_id, authorization)
+    booking = await db.get(Booking, booking_id, options=[selectinload(Booking.slot), selectinload(Booking.user)])
+    if not booking or booking.provider_id != provider.id:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Booking not found")
+    booking.status = payload.status
+    await db.commit()
+    await db.refresh(booking)
+    item = ProviderBookingResponse.model_validate(booking)
+    item.customer = booking.user
+    return item
 
 
 @router.get("/slots", response_model=List[ProviderSlotResponse])

@@ -1,246 +1,190 @@
 "use client";
 
-import React, { useState } from "react";
+import * as React from "react";
 import Link from "next/link";
 import { useAuth } from "@/lib/auth-context";
-import {
-  Wrench,
-  CalendarCheck,
-  CheckCircle2,
-  Clock,
-  MapPin,
-  Sparkles,
-  TrendingUp,
-  Star,
-  Layers,
-  ArrowRight,
-  ShieldCheck,
-  ChevronRight,
-  ArrowUpRight,
-} from "lucide-react";
+import { CalendarCheck, Clock, MapPin, Star, Layers, ChevronRight, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { api, type MyProviderProfile, type ProviderBooking } from "@/lib/api";
+import { cn } from "@/lib/utils";
 
+/**
+ * Real provider dashboard: profile, KPIs and the next booking all come from
+ * /me/provider and /me/provider/bookings — no fabricated earnings, no fake
+ * "NADRA Verified" badge, no scripted job card.
+ */
 export default function ProviderDashboardPage() {
   const { user } = useAuth();
-  const [isOnline, setIsOnline] = useState(true);
+  const [profile, setProfile] = React.useState<MyProviderProfile | null>(null);
+  const [bookings, setBookings] = React.useState<ProviderBooking[]>([]);
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState<string | null>(null);
+  const [savingActive, setSavingActive] = React.useState(false);
 
-  const toggleOnline = () => {
-    setIsOnline(!isOnline);
-  };
+  React.useEffect(() => {
+    let cancelled = false;
+    async function load() {
+      try {
+        const [p, b] = await Promise.all([api.getMyProvider(user?.id), api.getMyBookings(user?.id)]);
+        if (!cancelled) {
+          setProfile(p);
+          setBookings(b);
+        }
+      } catch (e) {
+        if (!cancelled) setError(e instanceof Error ? e.message : "Could not load your provider profile.");
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+    void load();
+    return () => {
+      cancelled = true;
+    };
+  }, [user?.id]);
+
+  async function toggleActive() {
+    if (!profile || savingActive) return;
+    setSavingActive(true);
+    try {
+      const updated = await api.updateMyProvider({ is_active: !profile.is_active }, user?.id);
+      setProfile((prev) => (prev ? { ...prev, is_active: updated.is_active } : prev));
+    } catch {
+      // Leave state as-is; the toggle simply doesn't flip if the write failed.
+    } finally {
+      setSavingActive(false);
+    }
+  }
+
+  if (loading) {
+    return (
+      <div className="flex min-h-[40vh] items-center justify-center text-ink-muted">
+        <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Loading your profile…
+      </div>
+    );
+  }
+
+  if (error || !profile) {
+    return (
+      <div className="rounded-lg border border-hairline bg-surface-raised p-6 text-sm text-ink-muted">
+        {error ?? "No provider profile is linked to this account yet."}
+      </div>
+    );
+  }
+
+  const today = new Date().toISOString().slice(0, 10);
+  const todaysBookings = bookings.filter((b) => b.slot?.slot_date === today);
+  const openSlots = (profile.slots ?? []).filter((s) => !s.is_booked && s.slot_date >= today);
+  const nextBooking = [...bookings]
+    .filter((b) => b.status !== "cancelled")
+    .sort((a, b) => (a.slot?.slot_date ?? "").localeCompare(b.slot?.slot_date ?? ""))[0];
+
+  const kpis = [
+    { title: "Today's Appointments", value: String(todaysBookings.length), icon: CalendarCheck },
+    { title: "Rating", value: `${profile.rating.toFixed(1)} ★`, icon: Star },
+    { title: "Jobs Completed", value: String(profile.jobs_completed), icon: CalendarCheck },
+    { title: "Open Slots", value: String(openSlots.length), icon: Clock },
+  ];
 
   return (
-    <div className="space-y-8 pb-12">
-      {/* 1. TOP ARTISAN DISPATCH STATUS BANNER */}
-      <div className="relative rounded-[2rem] p-6 sm:p-8 bg-[#111118] border border-white/10 shadow-[0_16px_40px_rgba(0,0,0,0.5)] overflow-hidden">
-        <div className="absolute -right-16 -top-16 w-64 h-64 rounded-full bg-[#D4A843]/15 blur-[120px] pointer-events-none" />
-
-        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div className="flex items-center gap-4">
-            <div className="w-16 h-16 rounded-2xl bg-[#D4A843]/15 border border-[#D4A843]/30 text-[#D4A843] flex items-center justify-center font-display font-extrabold text-2xl shrink-0 shadow-[0_0_20px_rgba(212,168,67,0.2)]">
-              {user?.avatar || "TM"}
-            </div>
-            <div>
-              <div className="flex items-center gap-2 mb-1.5">
-                <span className="text-xs font-code uppercase font-bold text-[#D4A843] tracking-wider">
-                  Master Artisan Profile
-                </span>
-                <span className="inline-flex items-center gap-1 text-[10px] font-code text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/30">
-                  <ShieldCheck size={11} />
-                  <span>NADRA Verified</span>
-                </span>
-              </div>
-
-              <h1 className="font-display font-extrabold text-2xl sm:text-3xl text-white tracking-tight">
-                Welcome back, {user?.name || "Tariq Mehmood"}
-              </h1>
-              <p className="font-body text-xs text-zinc-400 mt-1 flex items-center gap-2">
-                <span className="text-[#D4A843] font-semibold">{user?.category || "AC Technician & HVAC"}</span>
-                <span>·</span>
-                <span className="flex items-center gap-1"><MapPin size={12} className="text-[#0054F9]" /> {user?.area || "Sector G-13, Islamabad"}</span>
-              </p>
-            </div>
+    <div className="space-y-6 pb-12">
+      {/* Profile banner */}
+      <div className="rounded-lg border border-hairline bg-surface-raised p-6">
+        <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+          <div>
+            <p className="font-mono text-xs uppercase tracking-[0.12em] text-ink-muted">Provider profile</p>
+            <h1 className="font-display mt-1 text-2xl font-semibold text-ink">
+              Welcome back, {profile.name}
+            </h1>
+            <p className="mt-1 flex items-center gap-2 text-sm text-ink-muted">
+              <span>{profile.category}</span>
+              <span>·</span>
+              <span className="flex items-center gap-1">
+                <MapPin size={13} /> {profile.area}
+              </span>
+            </p>
           </div>
-
-          {/* Dispatch Readiness Toggle Button */}
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-            <button
-              onClick={toggleOnline}
-              className={`h-12 px-5 rounded-full border font-display font-bold text-xs flex items-center gap-2.5 transition-all cursor-pointer shadow-lg active:scale-95 ${
-                isOnline
-                  ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-400 shadow-[0_0_20px_rgba(52,211,153,0.2)]"
-                  : "bg-red-500/10 border-red-500/30 text-red-400"
-              }`}
-            >
-              <span className={`w-2.5 h-2.5 rounded-full ${isOnline ? "bg-emerald-400 animate-pulse" : "bg-red-400"}`} />
-              <span>{isOnline ? "ONLINE — Ready for Dispatch" : "BUSY — In Field"}</span>
-            </button>
-          </div>
+          <Button variant={profile.is_active ? "default" : "outline"} onClick={toggleActive} disabled={savingActive}>
+            {profile.is_active ? "Online — accepting jobs" : "Offline"}
+          </Button>
         </div>
       </div>
 
-      {/* 2. ARTISAN TELEMETRY KPI METRICS */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {[
-          {
-            title: "Today's Appointments",
-            value: "3 Jobs",
-            sub: "Next slot at 02:00 PM",
-            badge: "2 Pending Confirmation",
-            icon: CalendarCheck,
-            color: "text-[#D4A843] bg-[#D4A843]/10",
-          },
-          {
-            title: "Monthly Earnings",
-            value: "PKR 142,500",
-            sub: "Escrow payments deposited",
-            badge: "+22% vs Last Month",
-            icon: TrendingUp,
-            color: "text-emerald-400 bg-emerald-500/10",
-          },
-          {
-            title: "Artisan Rating",
-            value: "4.96 ★",
-            sub: "Based on 142 client reviews",
-            badge: "Top 1% Tier",
-            icon: Star,
-            color: "text-[#D4A843] bg-[#D4A843]/10",
-          },
-          {
-            title: "On-Time Arrival Rate",
-            value: "99.4%",
-            sub: "Average ETA: 18 mins",
-            badge: "Zero Delays",
-            icon: Clock,
-            color: "text-[#0054F9] bg-[#0054F9]/10",
-          },
-        ].map((kpi, idx) => {
+      {/* KPIs — every number here has a real backing field */}
+      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+        {kpis.map((kpi) => {
           const Icon = kpi.icon;
           return (
-            <div
-              key={idx}
-              className="p-5 rounded-2xl bg-[#111118] border border-white/8 hover:border-[#D4A843]/40 transition-all shadow-[0_8px_24px_rgba(0,0,0,0.3)] flex flex-col justify-between group"
-            >
-              <div className="flex items-center justify-between mb-3">
-                <span className="font-display font-bold text-xs uppercase tracking-wider text-zinc-400">
-                  {kpi.title}
-                </span>
-                <div className={`w-8 h-8 rounded-xl flex items-center justify-center ${kpi.color}`}>
-                  <Icon size={15} />
-                </div>
+            <div key={kpi.title} className="rounded-lg border border-hairline bg-surface-raised p-4">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-medium uppercase tracking-wide text-ink-muted">{kpi.title}</span>
+                <Icon size={16} className="text-accent" />
               </div>
-
-              <div className="mb-2">
-                <span className="font-display font-extrabold text-2xl text-white tracking-tight group-hover:text-[#D4A843] transition-colors">
-                  {kpi.value}
-                </span>
-              </div>
-
-              <div className="flex items-center justify-between pt-3 border-t border-white/5 text-xs">
-                <span className="font-body text-[11px] text-zinc-400 truncate">{kpi.sub}</span>
-                <span className="font-code text-[10px] px-2 py-0.5 rounded bg-[#141420] text-emerald-400 font-semibold shrink-0 ml-1">
-                  {kpi.badge}
-                </span>
-              </div>
+              <p className="font-display mt-2 text-2xl font-semibold text-ink">{kpi.value}</p>
             </div>
           );
         })}
       </div>
 
-      {/* 3. ACTIVE QUEUE & QUICK SHORTCUTS */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Next Assigned Job Alert Card */}
-        <div className="lg:col-span-2 rounded-[2rem] bg-[#111118] border border-white/8 p-6 shadow-[0_16px_40px_rgba(0,0,0,0.4)] space-y-4">
-          <div className="flex items-center justify-between pb-3 border-b border-white/5">
-            <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-[#0054F9] animate-ping" />
-              <h3 className="font-display font-bold text-base text-white">
-                Next Scheduled Job in Queue
-              </h3>
-            </div>
-            <Link
-              href="/dashboard/provider/bookings"
-              className="text-xs text-[#0054F9] hover:underline font-semibold flex items-center gap-1"
-            >
-              <span>View All Bookings</span>
-              <ArrowUpRight size={13} />
+      <div className="grid gap-4 lg:grid-cols-3">
+        {/* Next booking */}
+        <div className="rounded-lg border border-hairline bg-surface-raised p-5 lg:col-span-2">
+          <div className="flex items-center justify-between border-b border-hairline pb-3">
+            <h2 className="font-display text-base font-semibold text-ink">Next booking</h2>
+            <Link href="/dashboard/provider/bookings" className="text-xs font-medium text-accent hover:underline">
+              View all bookings
             </Link>
           </div>
-
-          <div className="p-5 rounded-2xl bg-[#141420] border border-white/5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div className="space-y-1.5">
-              <div className="flex items-center gap-2">
-                <span className="font-display font-bold text-sm text-white">
-                  Dr. Ayesha Siddiqui
-                </span>
-                <span className="px-2 py-0.2 rounded-full bg-[#0054F9]/20 text-[#0054F9] text-[10px] font-code font-bold">
-                  Token: BK-8011
-                </span>
+          {nextBooking ? (
+            <div className="mt-4 flex flex-col justify-between gap-3 rounded-md border border-hairline bg-surface p-4 sm:flex-row sm:items-center">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-semibold text-ink">{nextBooking.customer?.name ?? "Customer"}</span>
+                  <span className="rounded-md bg-accent-tint px-2 py-0.5 font-mono text-xs text-ink">
+                    {nextBooking.confirmation_code}
+                  </span>
+                </div>
+                <p className="flex items-center gap-1.5 text-xs text-ink-muted">
+                  <MapPin size={12} /> {nextBooking.customer?.area ?? "—"}
+                  {nextBooking.slot ? ` · ${nextBooking.slot.slot_date} ${nextBooking.slot.slot_time}` : ""}
+                </p>
               </div>
-              <p className="text-xs text-zinc-400 flex items-center gap-1.5">
-                <MapPin size={13} className="text-[#0054F9]" />
-                <span>Sector G-13/2, Islamabad · 1.2 km away</span>
-              </p>
-              <p className="text-xs text-zinc-300 italic">
-                &ldquo;Inverter AC cooling trip ho rahi hai, continuous E6 error display.&rdquo;
-              </p>
-            </div>
-
-            <div className="flex items-center gap-2 shrink-0">
               <Link
                 href="/dashboard/provider/bookings"
-                className="inline-flex items-center justify-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-accent-ink transition-colors hover:bg-accent-hover h-10 px-4 text-xs font-display font-bold flex items-center gap-1.5"
+                className="inline-flex shrink-0 items-center justify-center gap-1.5 rounded-md bg-primary px-4 py-2 text-xs font-medium text-primary-foreground transition-colors hover:bg-[var(--accent-strong-hover)]"
               >
-                <span>Manage Job</span>
-                <ChevronRight size={14} />
+                Manage <ChevronRight size={14} />
               </Link>
             </div>
-          </div>
+          ) : (
+            <p className="mt-4 text-sm text-ink-muted">No upcoming bookings.</p>
+          )}
         </div>
 
-        {/* Quick Hub Navigation Links */}
-        <div className="rounded-[2rem] bg-[#111118] border border-white/8 p-6 shadow-[0_16px_40px_rgba(0,0,0,0.4)] flex flex-col justify-between space-y-3">
-          <div className="pb-3 border-b border-white/5">
-            <h3 className="font-display font-bold text-base text-white">
-              Artisan Operations
-            </h3>
-            <p className="text-xs text-zinc-400 mt-0.5">Quick access to services and scheduling</p>
-          </div>
-
-          <div className="space-y-2.5">
+        {/* Quick nav */}
+        <div className="rounded-lg border border-hairline bg-surface-raised p-5">
+          <h2 className="font-display text-base font-semibold text-ink">Operations</h2>
+          <div className="mt-3 space-y-2">
             <Link
               href="/dashboard/provider/services"
-              className="p-3.5 rounded-2xl bg-[#141420] border border-white/5 hover:border-[#D4A843]/50 transition-all flex items-center justify-between group"
+              className={cn(
+                "flex items-center justify-between rounded-md border border-hairline bg-surface p-3 transition-colors hover:bg-surface-sunken",
+              )}
             >
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-xl bg-[#D4A843]/15 text-[#D4A843] flex items-center justify-center">
-                  <Layers size={16} />
-                </div>
-                <div>
-                  <span className="font-display font-bold text-xs text-white block">
-                    Services CRUD & Preview
-                  </span>
-                  <span className="text-[10px] text-zinc-400">Live client card preview</span>
-                </div>
-              </div>
-              <ChevronRight size={14} className="text-zinc-500 group-hover:translate-x-1 transition-transform" />
+              <span className="flex items-center gap-2 text-sm text-ink">
+                <Layers size={16} className="text-accent" /> Manage listing
+              </span>
+              <ChevronRight size={14} className="text-ink-muted" />
             </Link>
-
             <Link
               href="/dashboard/provider/slots"
-              className="p-3.5 rounded-2xl bg-[#141420] border border-white/5 hover:border-[#0054F9]/50 transition-all flex items-center justify-between group"
+              className={cn(
+                "flex items-center justify-between rounded-md border border-hairline bg-surface p-3 transition-colors hover:bg-surface-sunken",
+              )}
             >
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-xl bg-[#0054F9]/15 text-[#0054F9] flex items-center justify-center">
-                  <Clock size={16} />
-                </div>
-                <div>
-                  <span className="font-display font-bold text-xs text-white block">
-                    Availability & Open Slots
-                  </span>
-                  <span className="text-[10px] text-zinc-400">Manage appointment times</span>
-                </div>
-              </div>
-              <ChevronRight size={14} className="text-zinc-500 group-hover:translate-x-1 transition-transform" />
+              <span className="flex items-center gap-2 text-sm text-ink">
+                <Clock size={16} className="text-accent" /> Availability
+              </span>
+              <ChevronRight size={14} className="text-ink-muted" />
             </Link>
           </div>
         </div>

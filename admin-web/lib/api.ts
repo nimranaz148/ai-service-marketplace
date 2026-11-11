@@ -85,6 +85,59 @@ export interface ConversationResponse {
   trace_logs: TraceLog[];
 }
 
+export interface ProviderSlotItem {
+  id: string;
+  provider_id: string;
+  slot_date: string;
+  slot_time: string;
+  is_booked: boolean;
+  created_at?: string;
+}
+
+export interface MyProviderProfile {
+  id: string;
+  name: string;
+  category: string;
+  area: string;
+  lat: number;
+  lng: number;
+  rating: number;
+  jobs_completed: number;
+  price_range: string;
+  is_active: boolean;
+  slots: ProviderSlotItem[];
+}
+
+export interface CustomerContact {
+  id: string;
+  name: string;
+  phone?: string | null;
+  area?: string | null;
+}
+
+export interface ProviderBooking {
+  id: string;
+  provider_id: string;
+  user_id: string;
+  slot_id?: string | null;
+  status: string;
+  confirmation_code: string;
+  booked_at?: string | null;
+  slot?: ProviderSlotItem | null;
+  customer?: CustomerContact | null;
+}
+
+export interface AdminCustomer {
+  id: string;
+  name: string;
+  phone?: string | null;
+  area?: string | null;
+  role: string;
+  is_suspended: boolean;
+  bookings_count: number;
+  created_at?: string | null;
+}
+
 export interface ProviderItem {
   id: string;
   name: string;
@@ -177,5 +230,111 @@ export const api = {
     });
     if (!res.ok) throw new Error(`Failed to continue conversation: ${res.status}`);
     return res.json();
+  },
+
+  // ---- Provider self-service (/me/provider) ----
+  // Real per-role auth isn't wired up yet — `userId` is the same explicit-id
+  // convention the conversation endpoints already use; the backend falls
+  // back to the seeded demo provider persona when it's omitted.
+  getMyProvider: async (userId?: string): Promise<MyProviderProfile> => {
+    const qs = userId ? `?user_id=${encodeURIComponent(userId)}` : "";
+    const res = await fetch(`${getBaseUrl()}/me/provider${qs}`, { cache: "no-store" });
+    if (!res.ok) throw new Error(`Failed to load provider profile: ${res.status}`);
+    return res.json();
+  },
+
+  updateMyProvider: async (
+    patch: Partial<Pick<MyProviderProfile, "name" | "category" | "area" | "price_range" | "is_active">>,
+    userId?: string,
+  ): Promise<MyProviderProfile> => {
+    const qs = userId ? `?user_id=${encodeURIComponent(userId)}` : "";
+    const res = await fetch(`${getBaseUrl()}/me/provider${qs}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(patch),
+    });
+    if (!res.ok) throw new Error(`Failed to update provider profile: ${res.status}`);
+    return res.json();
+  },
+
+  getMyBookings: async (userId?: string): Promise<ProviderBooking[]> => {
+    const qs = userId ? `?user_id=${encodeURIComponent(userId)}` : "";
+    const res = await fetch(`${getBaseUrl()}/me/provider/bookings${qs}`, { cache: "no-store" });
+    if (!res.ok) throw new Error(`Failed to load bookings: ${res.status}`);
+    return res.json();
+  },
+
+  updateMyBookingStatus: async (
+    bookingId: string,
+    newStatus: "confirmed" | "en_route" | "arrived" | "completed" | "cancelled",
+    userId?: string,
+  ): Promise<ProviderBooking> => {
+    const qs = userId ? `?user_id=${encodeURIComponent(userId)}` : "";
+    const res = await fetch(`${getBaseUrl()}/me/provider/bookings/${bookingId}${qs}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status: newStatus }),
+    });
+    if (!res.ok) throw new Error(`Failed to update booking status: ${res.status}`);
+    return res.json();
+  },
+
+  getMySlots: async (userId?: string): Promise<ProviderSlotItem[]> => {
+    const qs = userId ? `?user_id=${encodeURIComponent(userId)}` : "";
+    const res = await fetch(`${getBaseUrl()}/me/provider/slots${qs}`, { cache: "no-store" });
+    if (!res.ok) throw new Error(`Failed to load slots: ${res.status}`);
+    return res.json();
+  },
+
+  createMySlot: async (slotDate: string, slotTime: string, userId?: string): Promise<ProviderSlotItem> => {
+    const qs = userId ? `?user_id=${encodeURIComponent(userId)}` : "";
+    const res = await fetch(`${getBaseUrl()}/me/provider/slots${qs}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ slot_date: slotDate, slot_time: slotTime }),
+    });
+    if (!res.ok) throw new Error(`Failed to create slot: ${res.status}`);
+    return res.json();
+  },
+
+  deleteMySlot: async (slotId: string, userId?: string): Promise<void> => {
+    const qs = userId ? `?user_id=${encodeURIComponent(userId)}` : "";
+    const res = await fetch(`${getBaseUrl()}/me/provider/slots/${slotId}${qs}`, { method: "DELETE" });
+    if (!res.ok) throw new Error(`Failed to delete slot: ${res.status}`);
+  },
+
+  // ---- Admin customer management ----
+  getCustomers: async (): Promise<AdminCustomer[]> => {
+    const res = await fetch(`${getBaseUrl()}/admin/customers`, { cache: "no-store" });
+    if (!res.ok) throw new Error("Failed to fetch customers");
+    return res.json();
+  },
+
+  createCustomer: async (data: { name: string; phone?: string; area?: string }): Promise<AdminCustomer> => {
+    const res = await fetch(`${getBaseUrl()}/admin/customers`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...data, role: "customer" }),
+    });
+    if (!res.ok) throw new Error("Failed to create customer");
+    return res.json();
+  },
+
+  updateCustomer: async (
+    id: string,
+    patch: Partial<{ name: string; phone: string; area: string; is_suspended: boolean }>,
+  ): Promise<AdminCustomer> => {
+    const res = await fetch(`${getBaseUrl()}/admin/customers/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(patch),
+    });
+    if (!res.ok) throw new Error("Failed to update customer");
+    return res.json();
+  },
+
+  deleteCustomer: async (id: string): Promise<void> => {
+    const res = await fetch(`${getBaseUrl()}/admin/customers/${id}`, { method: "DELETE" });
+    if (!res.ok) throw new Error("Failed to delete customer");
   },
 };
