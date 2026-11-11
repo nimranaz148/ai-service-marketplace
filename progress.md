@@ -81,3 +81,10 @@
   - Customer Concierge Hub (`/dashboard/customer`, `/providers`, `/bookings`, `/profile`)
 - [x] **Verification:**
   - Zero TypeScript compilation errors (`npx tsc --noEmit` exited 0).
+
+## Phase 0 — Foundation & Cleanup
+
+**Date:** 2026-09-10
+**Status: COMPLETED**
+
+Rebuilt `admin-web` on a CSS-variable token system as single source of truth (mirrored to `tokens.ts`), self-hosted Clash Display / Zodiak / Switzer / JetBrains Mono via `next/font/local`, a shadcn/ui primitive layer restyled to tokens, props-driven agent-activity primitives, a `contracts` + `fixtures` single source of truth aligned with the backend seed, a rebuilt light-surface app shell with an RBAC-shaped auth stub, and a `/foundations` reference page. Removed ~1,450 LOC of dead code (5 orphaned landing components + hand-rolled primitives + old shell) and neutralized 3 legacy design-token generations, with a `no-legacy` guard test locking the cleanup in.
