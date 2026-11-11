@@ -69,6 +69,22 @@ export interface BookingItem {
   };
 }
 
+export interface ConversationTurn {
+  role: "user" | "agent";
+  content: string;
+  created_at?: string;
+}
+
+export interface ConversationResponse {
+  session_id: string;
+  status: "in_progress" | "needs_input" | "completed" | "failed";
+  awaiting_input: boolean;
+  area?: string | null;
+  agent_message?: string | null;
+  turns: ConversationTurn[];
+  trace_logs: TraceLog[];
+}
+
 export interface ProviderItem {
   id: string;
   name: string;
@@ -140,5 +156,26 @@ export const api = {
       clearTimeout(timeoutId);
       throw e;
     }
+  },
+
+  // ---- Conversational agent (Phase 2 backend) ----
+  startConversation: async (message: string, userId?: string, area?: string): Promise<ConversationResponse> => {
+    const res = await fetch(`${getBaseUrl()}/requests`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message, user_id: userId, area }),
+    });
+    if (!res.ok) throw new Error(`Failed to start conversation: ${res.status}`);
+    return res.json();
+  },
+
+  continueConversation: async (sessionId: string, message: string): Promise<ConversationResponse> => {
+    const res = await fetch(`${getBaseUrl()}/requests/${sessionId}/reply`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message }),
+    });
+    if (!res.ok) throw new Error(`Failed to continue conversation: ${res.status}`);
+    return res.json();
   },
 };

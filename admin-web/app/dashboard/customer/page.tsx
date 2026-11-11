@@ -256,6 +256,20 @@ export default function CustomerDashboardPage() {
         </div>
       </div>
 
+      {/* ─── REAL CONCIERGE AGENT (Phase 2 backend) ───────────────────── */}
+      <Link
+        href="/dashboard/customer/request"
+        className="flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-[#111118] px-5 py-4 transition-colors hover:bg-[#16161f]"
+      >
+        <div>
+          <p className="font-display text-sm font-bold text-white">Talk to the concierge agent</p>
+          <p className="mt-0.5 text-xs text-zinc-400">
+            A real conversation — it asks what it needs to know and shows you every step it takes.
+          </p>
+        </div>
+        <ChevronRight size={18} className="shrink-0 text-zinc-400" />
+      </Link>
+
       {/* ─── SECTION 1: HERO CATEGORY GRID & VOICE ORDER ──────────────── */}
       <div className="relative rounded-3xl p-6 sm:p-8 bg-[#111118] border border-white/10 shadow-[0_16px_40px_rgba(0,0,0,0.5)] overflow-hidden">
         <div className="absolute -right-16 -top-16 w-64 h-64 rounded-full bg-[#0054F9]/15 blur-[120px] pointer-events-none" />
