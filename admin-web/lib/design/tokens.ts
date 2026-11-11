@@ -5,8 +5,8 @@
  */
 export const tokens = {
   color: {
-    "warm-950": "#0B0B0B", "warm-900": "#131211", "warm-850": "#1A1917",
-    "warm-800": "#232120", "warm-700": "#2E2B29", "warm-500": "#8A8882",
+    "warm-950": "#17100B", "warm-900": "#1F1610", "warm-850": "#281C13",
+    "warm-800": "#32241A", "warm-700": "#3D2C1F", "warm-500": "#8A8882",
     "warm-300": "#B8B5AD", "warm-150": "#DEDBD2", "warm-100": "#F5F2EA",
     "paper-0": "#FBFAF6", "paper-50": "#F4F2EC", "paper-100": "#ECEAE1", "paper-200": "#E4E1D7",
     "ink-900": "#1C1A17", "ink-700": "#3D3A34", "ink-500": "#6B665C",

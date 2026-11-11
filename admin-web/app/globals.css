@@ -5,11 +5,11 @@
 @layer base {
   :root {
     /* ---- PRIMITIVES (never referenced by components directly) ---- */
-    --warm-950: #0B0B0B;
-    --warm-900: #131211;
-    --warm-850: #1A1917;
-    --warm-800: #232120;
-    --warm-700: #2E2B29;
+    --warm-950: #17100B;
+    --warm-900: #1F1610;
+    --warm-850: #281C13;
+    --warm-800: #32241A;
+    --warm-700: #3D2C1F;
     --warm-500: #8A8882;
     --warm-300: #B8B5AD;
     --warm-150: #DEDBD2;
@@ -149,7 +149,7 @@
   [data-theme="marketing"],
   .theme-marketing {
     --surface: var(--warm-950);
-    --surface-sunken: #060606;
+    --surface-sunken: #0D0805;
     --surface-raised: var(--warm-900);
     --hairline: rgba(245, 242, 234, 0.10);
     --ink: var(--warm-100);

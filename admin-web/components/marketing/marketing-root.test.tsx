@@ -78,12 +78,17 @@ describe("RequestBox", () => {
 });
 
 describe("DispatchMotif", () => {
-  it("renders an aria-hidden inline svg and merges className", () => {
+  it("renders an aria-hidden inline svg inside a card that merges className", () => {
     const { container } = render(<DispatchMotif className="test-motif" />);
     const svg = container.querySelector("svg");
     expect(svg).not.toBeNull();
     expect(svg).toHaveAttribute("aria-hidden", "true");
-    expect(svg).toHaveClass("test-motif");
+    expect(container.firstElementChild).toHaveClass("test-motif");
     expect(container.querySelector("image")).toBeNull();
+  });
+
+  it("renders an optional caption as plain static text", () => {
+    render(<DispatchMotif caption="AC repair — G-13, Islamabad" />);
+    expect(screen.getByText("AC repair — G-13, Islamabad")).toBeInTheDocument();
   });
 });

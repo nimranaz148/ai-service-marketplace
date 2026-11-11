@@ -66,12 +66,16 @@ export function Hero() {
       ref={sectionRef}
       className="relative overflow-hidden bg-surface"
     >
-      <div className="mx-auto grid max-w-6xl gap-12 px-4 pb-20 pt-32 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-10 lg:pt-40">
-        <div className="space-y-6">
+      <div className="mx-auto grid max-w-7xl gap-12 px-4 pb-24 pt-28 sm:px-6 lg:grid-cols-[1.3fr_0.7fr] lg:items-end lg:gap-8 lg:pb-28 lg:pt-36">
+        <div className="max-w-3xl space-y-7 lg:pr-8">
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent">
+            {copy.hero.kicker}
+          </p>
+
           <div className="overflow-hidden">
             <h1
               ref={headlineRef}
-              className="font-display text-4xl font-semibold leading-[1.05] tracking-tight text-ink sm:text-5xl lg:text-6xl"
+              className="font-display text-[3rem] font-semibold leading-[0.98] tracking-tight text-ink sm:text-[4.5rem] lg:text-[5.5rem]"
             >
               {copy.hero.headline}
             </h1>
@@ -107,8 +111,8 @@ export function Hero() {
           </div>
         </div>
 
-        <div ref={motifRef} className="hidden lg:block">
-          <DispatchMotif className="mx-auto max-w-md" />
+        <div ref={motifRef} className="hidden lg:block lg:translate-y-6">
+          <DispatchMotif caption={copy.hero.motifCaption} className="ml-auto w-full max-w-sm -rotate-2" />
         </div>
       </div>
     </section>

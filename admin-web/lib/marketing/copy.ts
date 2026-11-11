@@ -1,11 +1,13 @@
 export const copy = {
   nav: { links: ["How it works", "Trades", "Pricing"], signIn: "Sign in", cta: "Get help now" },
   hero: {
+    kicker: "No forms. No categories. Just say it.",
     headline: "Ghar ka masla? Bol do.",
     sub: "AC, plumbing, bijli, safai, tuition — apni zabaan mein batayein, hum ek verified banda bhej dete hain. Islamabad, Karachi, Lahore.",
     boxPlaceholder: "Maslan: G-13 mein AC theek karana hai, kal subah…",
     ctaPrimary: "Get help now",
     ctaSecondary: "See how it works",
+    motifCaption: "AC repair — G-13, Islamabad",
   },
   agentBeat: {
     kicker: "Behind the scenes",
