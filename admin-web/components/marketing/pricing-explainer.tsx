@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { SplitText } from "gsap/SplitText";
 import { copy } from "@/lib/marketing/copy";
 import { TRADES } from "@/lib/marketing/trades";
 import { providers } from "@/lib/fixtures";
@@ -50,21 +51,51 @@ const HAS_MONTHLY = ALL_RATES.some((r) => isMonthly(r.price));
  */
 export function PricingExplainer() {
   const sectionRef = React.useRef<HTMLElement>(null);
+  const headingRef = React.useRef<HTMLHeadingElement>(null);
+  const pointsRef = React.useRef<HTMLUListElement>(null);
   const rowsRef = React.useRef<HTMLUListElement>(null);
 
   const build = React.useCallback<Parameters<typeof useScrollScene>[1]>(
-    ({ gsap, el }) => {
-      const rows = rowsRef.current
-        ? Array.from(rowsRef.current.children)
-        : [];
-      if (!rows.length) return;
-      gsap.from(rows, {
-        opacity: 0,
-        y: 12,
-        stagger: 0.06,
-        duration: 0.4,
-        ease: "power2.out",
-        scrollTrigger: { trigger: el, start: "top 80%", once: true },
+    ({ gsap, ScrollTrigger, el }) => {
+      ScrollTrigger.create({
+        trigger: el,
+        start: "top 80%",
+        once: true,
+        onEnter: () => {
+          if (headingRef.current) {
+            const split = new SplitText(headingRef.current, { type: "lines" });
+            gsap.from(split.lines, {
+              yPercent: 100,
+              opacity: 0,
+              stagger: 0.06,
+              duration: 0.5,
+              ease: "power3.out",
+            });
+          }
+          if (pointsRef.current) {
+            gsap.from(Array.from(pointsRef.current.children), {
+              x: -16,
+              opacity: 0,
+              stagger: 0.08,
+              duration: 0.5,
+              ease: "power3.out",
+              delay: 0.15,
+            });
+          }
+          const rows = rowsRef.current
+            ? Array.from(rowsRef.current.children)
+            : [];
+          if (rows.length) {
+            gsap.from(rows, {
+              opacity: 0,
+              y: 12,
+              stagger: 0.06,
+              duration: 0.4,
+              ease: "power2.out",
+              delay: 0.35,
+            });
+          }
+        },
       });
     },
     [],
@@ -75,11 +106,16 @@ export function PricingExplainer() {
   return (
     <section id="pricing" ref={sectionRef} className="bg-surface">
       <div className="mx-auto max-w-6xl px-4 py-24 sm:px-6">
-        <h2 className="font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
-          {copy.pricing.title}
-        </h2>
+        <div className="overflow-hidden">
+          <h2
+            ref={headingRef}
+            className="font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl"
+          >
+            {copy.pricing.title}
+          </h2>
+        </div>
 
-        <ul className="mt-8 max-w-xl space-y-3 text-base text-ink">
+        <ul ref={pointsRef} className="mt-8 max-w-xl space-y-3 text-base text-ink">
           {copy.pricing.points.map((point) => (
             <li key={point} className="border-l-2 border-hairline pl-4">
               {point}

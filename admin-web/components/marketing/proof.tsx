@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { SplitText } from "gsap/SplitText";
 import { copy } from "@/lib/marketing/copy";
 import { TRADES } from "@/lib/marketing/trades";
 import { providers, cities } from "@/lib/fixtures";
@@ -22,6 +23,9 @@ const AVG_RATING =
  */
 export function Proof() {
   const sectionRef = React.useRef<HTMLElement>(null);
+  const headingRef = React.useRef<HTMLHeadingElement>(null);
+  const statsRef = React.useRef<HTMLDivElement>(null);
+  const quotesRef = React.useRef<HTMLDivElement>(null);
 
   // State is ALWAYS seeded with the true final value — on the server and on the
   // client alike. The prerendered HTML therefore never ships a placeholder zero,
@@ -53,6 +57,37 @@ export function Proof() {
         start: "top 80%",
         once: true,
         onEnter: () => {
+          if (headingRef.current) {
+            const split = new SplitText(headingRef.current, { type: "lines" });
+            gsap.from(split.lines, {
+              yPercent: 100,
+              opacity: 0,
+              stagger: 0.06,
+              duration: 0.5,
+              ease: "power3.out",
+            });
+          }
+          if (statsRef.current) {
+            gsap.from(Array.from(statsRef.current.children), {
+              y: 24,
+              opacity: 0,
+              stagger: 0.08,
+              duration: 0.5,
+              ease: "power3.out",
+              delay: 0.1,
+            });
+          }
+          if (quotesRef.current) {
+            gsap.from(Array.from(quotesRef.current.children), {
+              y: 24,
+              opacity: 0,
+              stagger: 0.1,
+              duration: 0.5,
+              ease: "power3.out",
+              delay: 0.3,
+            });
+          }
+
           countInt(PROVIDER_COUNT, setProviderDisplay);
           countInt(CITY_COUNT, setCityDisplay);
           countInt(TRADE_COUNT, setTradeDisplay);
@@ -83,11 +118,16 @@ export function Proof() {
   return (
     <section id="proof" ref={sectionRef} className="bg-surface">
       <div className="mx-auto max-w-6xl px-4 py-24 sm:px-6">
-        <h2 className="font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
-          {copy.proof.title}
-        </h2>
+        <div className="overflow-hidden">
+          <h2
+            ref={headingRef}
+            className="font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl"
+          >
+            {copy.proof.title}
+          </h2>
+        </div>
 
-        <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <div ref={statsRef} className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
           {stats.map((s) => (
             <div
               key={s.key}
@@ -101,7 +141,7 @@ export function Proof() {
           ))}
         </div>
 
-        <div className="mt-12 grid gap-6 sm:grid-cols-2">
+        <div ref={quotesRef} className="mt-12 grid gap-6 sm:grid-cols-2">
           {copy.proof.quotes.map((q) => (
             <blockquote
               key={q.who}

@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { SplitText } from "gsap/SplitText";
 import { cn } from "@/lib/utils";
 import { copy } from "@/lib/marketing/copy";
 import { TRADES } from "@/lib/marketing/trades";
@@ -21,6 +22,7 @@ import { useScrollScene } from "@/lib/motion/use-scroll-scene";
  */
 export function TradesCoverage() {
   const sectionRef = React.useRef<HTMLElement>(null);
+  const headingRef = React.useRef<HTMLHeadingElement>(null);
   const stripRef = React.useRef<HTMLDivElement>(null);
   const chipsRef = React.useRef<HTMLUListElement>(null);
 
@@ -41,6 +43,18 @@ export function TradesCoverage() {
 
   const build = React.useCallback<Parameters<typeof useScrollScene>[1]>(
     ({ gsap, ScrollTrigger, el }) => {
+      if (headingRef.current) {
+        const split = new SplitText(headingRef.current, { type: "lines" });
+        gsap.from(split.lines, {
+          yPercent: 100,
+          opacity: 0,
+          stagger: 0.06,
+          duration: 0.5,
+          ease: "power3.out",
+          scrollTrigger: { trigger: el, start: "top 85%", once: true },
+        });
+      }
+
       if (!canPin) return;
       const strip = stripRef.current;
       if (!strip) return;
@@ -81,9 +95,14 @@ export function TradesCoverage() {
   return (
     <section id="trades" ref={sectionRef} className="bg-surface">
       <div className="mx-auto flex max-w-6xl flex-col gap-12 px-4 py-24 sm:px-6">
-        <h2 className="font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
-          {copy.trades.title}
-        </h2>
+        <div className="overflow-hidden">
+          <h2
+            ref={headingRef}
+            className="font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl"
+          >
+            {copy.trades.title}
+          </h2>
+        </div>
 
         {/* Trade strip. Pinned: one horizontal flex row translated on x.
             Not pinned: a responsive grid, all 5 cards visible, no x transform. */}

@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { SplitText } from "gsap/SplitText";
 import { copy } from "@/lib/marketing/copy";
 import { useScrollScene } from "@/lib/motion/use-scroll-scene";
 
@@ -14,6 +15,8 @@ const STEPS = copy.howItWorks.steps;
  */
 export function HowItWorks() {
   const sectionRef = React.useRef<HTMLElement>(null);
+  const headingRef = React.useRef<HTMLHeadingElement>(null);
+  const listRef = React.useRef<HTMLOListElement>(null);
   const [counts, setCounts] = React.useState<number[]>(() =>
     STEPS.map((s) => s.n),
   );
@@ -25,6 +28,27 @@ export function HowItWorks() {
         start: "top 80%",
         once: true,
         onEnter: () => {
+          if (headingRef.current) {
+            const split = new SplitText(headingRef.current, { type: "lines" });
+            gsap.from(split.lines, {
+              yPercent: 100,
+              opacity: 0,
+              stagger: 0.06,
+              duration: 0.5,
+              ease: "power3.out",
+            });
+          }
+          if (listRef.current) {
+            gsap.from(Array.from(listRef.current.children), {
+              y: 32,
+              opacity: 0,
+              stagger: 0.1,
+              duration: 0.6,
+              ease: "power3.out",
+              delay: 0.15,
+            });
+          }
+
           setCounts(STEPS.map(() => 0));
           STEPS.forEach((step, i) => {
             const box = { v: 0 };
@@ -33,6 +57,7 @@ export function HowItWorks() {
               snap: { v: 1 },
               duration: 0.8,
               ease: "power1.out",
+              delay: 0.4,
               onUpdate: () => {
                 setCounts((prev) => {
                   const next = prev.slice();
@@ -53,11 +78,16 @@ export function HowItWorks() {
   return (
     <section id="how-it-works" ref={sectionRef} className="bg-surface">
       <div className="mx-auto max-w-6xl px-4 py-24 sm:px-6">
-        <h2 className="font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
-          {copy.howItWorks.title}
-        </h2>
+        <div className="overflow-hidden">
+          <h2
+            ref={headingRef}
+            className="font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl"
+          >
+            {copy.howItWorks.title}
+          </h2>
+        </div>
 
-        <ol className="mt-12 grid gap-6 md:grid-cols-3">
+        <ol ref={listRef} className="mt-12 grid gap-6 md:grid-cols-3">
           {STEPS.map((step, i) => (
             <li
               key={step.n}

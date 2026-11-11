@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { SplitText } from "gsap/SplitText";
 import { cn } from "@/lib/utils";
 import { copy } from "@/lib/marketing/copy";
 import { useScrollScene } from "@/lib/motion/use-scroll-scene";
@@ -19,16 +20,35 @@ import { RequestBox } from "@/components/marketing/request-box";
 export function FinalCta() {
   const sectionRef = React.useRef<HTMLElement>(null);
   const spotlightRef = React.useRef<HTMLDivElement>(null);
+  const headingRef = React.useRef<HTMLHeadingElement>(null);
 
   const build = React.useCallback<Parameters<typeof useScrollScene>[1]>(
-    ({ gsap, el }) => {
-      if (!spotlightRef.current) return;
-      gsap.from(spotlightRef.current, {
-        scale: 0.6,
-        autoAlpha: 0,
-        duration: 1,
-        ease: "power2.out",
-        scrollTrigger: { trigger: el, start: "top 80%", once: true },
+    ({ gsap, ScrollTrigger, el }) => {
+      ScrollTrigger.create({
+        trigger: el,
+        start: "top 80%",
+        once: true,
+        onEnter: () => {
+          if (spotlightRef.current) {
+            gsap.from(spotlightRef.current, {
+              scale: 0.6,
+              autoAlpha: 0,
+              duration: 1,
+              ease: "power2.out",
+            });
+          }
+          if (headingRef.current) {
+            const split = new SplitText(headingRef.current, { type: "lines" });
+            gsap.from(split.lines, {
+              yPercent: 100,
+              opacity: 0,
+              stagger: 0.08,
+              duration: 0.6,
+              ease: "power3.out",
+              delay: 0.2,
+            });
+          }
+        },
       });
     },
     [],
@@ -50,9 +70,14 @@ export function FinalCta() {
       />
 
       <div className="relative mx-auto max-w-2xl px-4 py-28 text-center sm:px-6">
-        <h2 className="font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
-          {copy.finalCta.title}
-        </h2>
+        <div className="overflow-hidden">
+          <h2
+            ref={headingRef}
+            className="font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl"
+          >
+            {copy.finalCta.title}
+          </h2>
+        </div>
 
         <RequestBox variant="cta" className="mx-auto mt-8 max-w-xl" />
 
