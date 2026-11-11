@@ -13,6 +13,7 @@ export const tokens = {
     "ember-600": "#C24A1E", "ember-500": "#DE5527", "ember-400": "#F26B3A",
     "ember-tint": "rgba(222, 85, 39, 0.12)",
     "accent-strong": "#C24A1E",
+    "accent-strong-hover": "#A63D18",
     signal: "#FF5A1F",
     "go-500": "#2E7D5B", "warn-500": "#C98A12", "stop-500": "#C0392B", "info-500": "#3E6C8A",
     tile: "#1E3A5F", terracotta: "#A8492B", brass: "#B08D57", plaster: "#EBE6D9",

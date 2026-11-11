@@ -33,7 +33,7 @@ export default function CustomerSignupPage() {
       kicker="Homeowner onboarding"
       title="Create customer account"
       subtitle="Get access to verified providers with a clear price before anything is booked."
-      footer={<>Atelier concierge network. High-assurance domestic trade dispatch.</>}
+      footer={<>Atelier concierge network. Verified domestic trades.</>}
     >
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="space-y-1.5">
@@ -102,7 +102,7 @@ export default function CustomerSignupPage() {
 
         <button
           type="submit"
-          className="inline-flex w-full items-center justify-center rounded-md bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--focus-ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+          className="inline-flex w-full items-center justify-center rounded-md bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-[var(--accent-strong-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--focus-ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
         >
           Complete registration
         </button>

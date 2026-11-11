@@ -95,6 +95,10 @@
     --ink-muted: var(--ink-500);
     --accent: var(--ember-500);
     --accent-strong: #C24A1E;
+    /* Darkened hover for the PRIMARY (--accent-strong) button. Shared by both
+       surfaces on purpose — it is the hover of the same --primary colour, and it
+       clears AA for white text (≈6.4:1) where --accent-hover does not. */
+    --accent-strong-hover: #A63D18;
     --accent-hover: var(--ember-600);
     --accent-ink: #FFFFFF;
     --accent-tint: var(--ember-tint);

@@ -18,14 +18,14 @@ export default function AdminLoginPage() {
 
   return (
     <AuthShell
-      kicker="Superuser access level 4"
+      kicker="Administrator access"
       title="Admin operations login"
       subtitle="Restricted governance console for telemetry, customer/provider CRUD, and AI agents."
       footer={<>Atelier command kernel. Microservices and multi-agent mesh controller.</>}
     >
       <div className="mb-5 rounded-md border border-hairline bg-surface p-3 text-xs text-ink-muted">
-        This terminal is audited under SOC2 security standards. All CRUD mutations
-        and trace inspections are logged with IP attribution.
+        This console is restricted to administrator accounts and reads the demo
+        dataset only — no production customer data is reachable from this build.
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -61,7 +61,7 @@ export default function AdminLoginPage() {
 
         <button
           type="submit"
-          className="inline-flex w-full items-center justify-center rounded-md bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--focus-ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+          className="inline-flex w-full items-center justify-center rounded-md bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-[var(--accent-strong-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--focus-ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
         >
           Authenticate terminal
         </button>

@@ -23,13 +23,25 @@ function cheapestPriceLabel(id: ProviderCategory): string | null {
   return best.priceLabel;
 }
 
-// Derived once from the fixture: skip trades with no providers.
-const RATE_ROWS = TRADES.map((t) => {
+/** A recurring (monthly-package) rate, which this section's headline disclaims. */
+function isMonthly(label: string): boolean {
+  return /\/\s*mo\b/i.test(label);
+}
+
+// Derived once from the fixture: skip trades with no providers, and keep
+// monthly-package rates out of the per-job list so the rate rows never
+// contradict the "Per job. No subscription." headline above them.
+const ALL_RATES = TRADES.map((t) => {
   const price = cheapestPriceLabel(t.id);
   return price
-    ? { id: t.id, text: `${PROVIDER_CATEGORY_LABEL[t.id]} — ${price}` }
+    ? { id: t.id, price, text: `${PROVIDER_CATEGORY_LABEL[t.id]} — ${price}` }
     : null;
-}).filter((r): r is { id: ProviderCategory; text: string } => r !== null);
+}).filter(
+  (r): r is { id: ProviderCategory; price: string; text: string } => r !== null,
+);
+
+const RATE_ROWS = ALL_RATES.filter((r) => !isMonthly(r.price));
+const HAS_MONTHLY = ALL_RATES.some((r) => isMonthly(r.price));
 
 /**
  * PricingExplainer — one honest "how pricing works" block: per job, no
@@ -86,6 +98,11 @@ export function PricingExplainer() {
               </li>
             ))}
           </ul>
+          {HAS_MONTHLY && (
+            <p className="mt-3 text-sm text-ink-muted">
+              {copy.pricing.monthlyNote}
+            </p>
+          )}
         </div>
       </div>
     </section>

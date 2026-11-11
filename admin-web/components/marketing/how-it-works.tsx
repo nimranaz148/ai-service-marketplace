@@ -2,19 +2,20 @@
 
 import * as React from "react";
 import { copy } from "@/lib/marketing/copy";
-import { prefersReducedMotion } from "@/lib/motion/gsap";
 import { useScrollScene } from "@/lib/motion/use-scroll-scene";
 
 const STEPS = copy.howItWorks.steps;
 
 /**
- * HowItWorks — three step cards. Each step number counter-tweens 0 -> n once the
- * section enters view. Under reduced motion the final numbers render directly.
+ * HowItWorks — three step cards. The real step numbers are the mount-time state
+ * on server and client alike (no placeholder zero in the prerendered HTML, no
+ * hydration mismatch under prefers-reduced-motion). When motion is allowed the
+ * numbers dip to 0 and count back up to the same values once on scroll-in.
  */
 export function HowItWorks() {
   const sectionRef = React.useRef<HTMLElement>(null);
   const [counts, setCounts] = React.useState<number[]>(() =>
-    STEPS.map((s) => (prefersReducedMotion() ? s.n : 0)),
+    STEPS.map((s) => s.n),
   );
 
   const build = React.useCallback<Parameters<typeof useScrollScene>[1]>(
@@ -24,6 +25,7 @@ export function HowItWorks() {
         start: "top 80%",
         once: true,
         onEnter: () => {
+          setCounts(STEPS.map(() => 0));
           STEPS.forEach((step, i) => {
             const box = { v: 0 };
             gsap.to(box, {

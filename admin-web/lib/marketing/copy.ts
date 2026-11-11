@@ -42,6 +42,9 @@ export const copy = {
       "Cancel before dispatch — free.",
     ],
     ratesLabel: "Typical starting rates",
+    // Shown only when a trade's rate is a monthly package, so the rate list
+    // never contradicts the "No subscription." headline above it.
+    monthlyNote: "Tutoring is billed as a monthly package — see Trades above.",
   },
   finalCta: { title: "Pehli booking abhi karein.", cta: "Get help now" },
   footer: {

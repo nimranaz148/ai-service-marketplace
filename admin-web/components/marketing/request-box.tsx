@@ -68,7 +68,7 @@ export function RequestBox({
         aria-label={copy.hero.ctaPrimary}
         className={cn(
           "inline-flex shrink-0 items-center justify-center gap-2 rounded-md bg-primary font-medium text-primary-foreground transition-colors",
-          "hover:bg-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--focus-ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-surface",
+          "hover:bg-[var(--accent-strong-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--focus-ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-surface",
           hero ? "h-10 px-4 text-sm" : "h-8 px-3 text-xs",
         )}
       >

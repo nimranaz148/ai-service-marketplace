@@ -46,6 +46,10 @@ describe("body text meets WCAG AA/AAA on application surfaces", () => {
   it("--accent-ink on --accent-strong (primary button) clears AA", () => {
     expect(ratio("#FFFFFF", tokens.color["accent-strong"])).toBeGreaterThanOrEqual(4.5);
   });
+
+  it("--accent-ink on --accent-strong-hover (primary button hover) clears AA", () => {
+    expect(ratio("#FFFFFF", tokens.color["accent-strong-hover"])).toBeGreaterThanOrEqual(4.5);
+  });
 });
 
 describe("StatusBadge label (--ink on each status tint) meets AA", () => {

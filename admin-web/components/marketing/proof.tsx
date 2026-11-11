@@ -5,7 +5,6 @@ import { copy } from "@/lib/marketing/copy";
 import { TRADES } from "@/lib/marketing/trades";
 import { providers, cities } from "@/lib/fixtures";
 import { useScrollScene } from "@/lib/motion/use-scroll-scene";
-import { prefersReducedMotion } from "@/lib/motion/gsap";
 
 // Every figure below is derived from the fixtures — nothing is invented.
 const PROVIDER_COUNT = providers.length;
@@ -16,54 +15,57 @@ const AVG_RATING =
 
 /**
  * Proof — a small, honest credibility block. Four counts that all come straight
- * from the fixtures (verified providers, cities, trades, average rating), each
- * counter-tweening once when the section scrolls into view, plus two clearly
+ * from the fixtures (verified providers, cities, trades, average rating). The
+ * true figures render immediately; when motion is allowed they dip to zero and
+ * count back up once as the section scrolls into view. Plus two clearly
  * labelled illustrative quotes. No fabricated testimonials, logos, or metrics.
  */
 export function Proof() {
   const sectionRef = React.useRef<HTMLElement>(null);
-  const reduced = prefersReducedMotion();
 
-  const [providerDisplay, setProviderDisplay] = React.useState(
-    reduced ? PROVIDER_COUNT : 0,
-  );
-  const [cityDisplay, setCityDisplay] = React.useState(
-    reduced ? CITY_COUNT : 0,
-  );
-  const [tradeDisplay, setTradeDisplay] = React.useState(
-    reduced ? TRADE_COUNT : 0,
-  );
-  const [avgDisplay, setAvgDisplay] = React.useState(
-    reduced ? AVG_RATING.toFixed(1) : "0.0",
-  );
+  // State is ALWAYS seeded with the true final value — on the server and on the
+  // client alike. The prerendered HTML therefore never ships a placeholder zero,
+  // and there is no hydration text mismatch under prefers-reduced-motion. The
+  // count-up below is a flourish layered on top of the honest value: when motion
+  // is allowed, entering the viewport dips the number to 0 and tweens it back to
+  // the same real figure.
+  const [providerDisplay, setProviderDisplay] = React.useState(PROVIDER_COUNT);
+  const [cityDisplay, setCityDisplay] = React.useState(CITY_COUNT);
+  const [tradeDisplay, setTradeDisplay] = React.useState(TRADE_COUNT);
+  const [avgDisplay, setAvgDisplay] = React.useState(AVG_RATING.toFixed(1));
 
   const build = React.useCallback<Parameters<typeof useScrollScene>[1]>(
-    ({ gsap, el }) => {
-      const scrollTrigger = { trigger: el, start: "top 80%", once: true };
-
+    ({ gsap, ScrollTrigger, el }) => {
       const countInt = (target: number, set: (n: number) => void) => {
+        set(0);
         const box = { v: 0 };
         gsap.to(box, {
           v: target,
           snap: { v: 1 },
           duration: 0.9,
           ease: "power1.out",
-          scrollTrigger,
           onUpdate: () => set(Math.round(box.v)),
         });
       };
 
-      countInt(PROVIDER_COUNT, setProviderDisplay);
-      countInt(CITY_COUNT, setCityDisplay);
-      countInt(TRADE_COUNT, setTradeDisplay);
+      ScrollTrigger.create({
+        trigger: el,
+        start: "top 80%",
+        once: true,
+        onEnter: () => {
+          countInt(PROVIDER_COUNT, setProviderDisplay);
+          countInt(CITY_COUNT, setCityDisplay);
+          countInt(TRADE_COUNT, setTradeDisplay);
 
-      const avgBox = { v: 0 };
-      gsap.to(avgBox, {
-        v: AVG_RATING,
-        duration: 0.9,
-        ease: "power1.out",
-        scrollTrigger,
-        onUpdate: () => setAvgDisplay(avgBox.v.toFixed(1)),
+          setAvgDisplay((0).toFixed(1));
+          const avgBox = { v: 0 };
+          gsap.to(avgBox, {
+            v: AVG_RATING,
+            duration: 0.9,
+            ease: "power1.out",
+            onUpdate: () => setAvgDisplay(avgBox.v.toFixed(1)),
+          });
+        },
       });
     },
     [],

@@ -7,7 +7,7 @@ const r = (p: string) => readFileSync(resolve(__dirname, "..", p), "utf8");
 /**
  * Auth-page logic guard.
  *
- * Task 10 restyles the 4 unauthenticated auth pages with marketing chrome
+ * Task 10 restyles the unauthenticated auth pages with marketing chrome
  * WITHOUT changing behaviour. These anchors were captured verbatim from
  * `git show HEAD:<path>` before the restyle. Because the edits are visual-only
  * (className / wrapper / decoration), every anchor is still present after the
@@ -90,6 +90,39 @@ const ANCHORS: Record<string, string[]> = {
     'href="/provider/login"',
     "export default function AdminLoginPage()",
   ],
+  // The 5th unauthenticated page. The Phase 0.5 spec's auth-chrome scope listed
+  // only 4, so this one kept its legacy dark styling until the review fix wave;
+  // these anchors were captured from the pre-restyle file and lock its logic the
+  // same way.
+  "app/provider/signup/page.tsx": [
+    '"use client";',
+    'import { useAuth } from "@/lib/auth-context";',
+    "const { signup } = useAuth();",
+    'const [name, setName] = useState("");',
+    'const [email, setEmail] = useState("");',
+    'const [phone, setPhone] = useState("");',
+    'const [area, setArea] = useState("Sector G-13, Islamabad");',
+    'const [category, setCategory] = useState("AC Technician & HVAC");',
+    "const handleSubmit = (e: React.FormEvent) => {",
+    "if (!name || !email) return;",
+    "signup({",
+    'role: "provider",',
+    'phone: phone || "+92 301 5554321",',
+    "category,",
+    "<form onSubmit={handleSubmit}",
+    "onChange={(e) => setName(e.target.value)}",
+    "onChange={(e) => setEmail(e.target.value)}",
+    // NOTE: the baseline page declares `phone` state but never renders a phone
+    // input, so `signup()` always sends the fallback number. That gap is left
+    // exactly as-is by the restyle (visual-only) and is reported separately —
+    // wiring a new field here would be a behaviour change, not a restyle.
+    "onChange={(e) => setCategory(e.target.value)}",
+    "onChange={(e) => setArea(e.target.value)}",
+    'value="AC Technician & HVAC"',
+    'value="Sector G-13, Islamabad"',
+    'href="/provider/login"',
+    "export default function ProviderSignupPage()",
+  ],
 };
 
 describe("auth pages keep their logic through the marketing-chrome restyle", () => {
@@ -99,6 +132,23 @@ describe("auth pages keep their logic through the marketing-chrome restyle", () 
       for (const a of anchors) {
         expect(src, `${file} must still contain: ${a}`).toContain(a);
       }
+    });
+  }
+});
+
+/**
+ * Route-level honesty guard for the unauthenticated surface, mirroring the
+ * banned-claim assertion in tests/marketing-home.test.tsx. These pages are
+ * public, so they must not assert certifications, security audits, access-tier
+ * numbers, or payment guarantees that nothing in this build backs.
+ */
+const BANNED_CLAIMS = /\b(SOC2|ISO 27001|escrow|biometric|GPS|Raast|NADRA|guaranteed)\b/i;
+
+describe("auth pages assert no unbacked claims", () => {
+  for (const file of Object.keys(ANCHORS)) {
+    it(file, () => {
+      const match = r(file).match(BANNED_CLAIMS);
+      expect(match?.[0], `${file} makes an unbacked claim`).toBeUndefined();
     });
   }
 });

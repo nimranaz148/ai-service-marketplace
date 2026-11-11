@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeAll, vi } from "vitest";
 import { render } from "@testing-library/react";
+import { axe } from "vitest-axe";
 import HomePage from "@/app/page";
 
 // jsdom lacks matchMedia; several sections call it behind a client guard.
@@ -66,5 +67,14 @@ describe("marketing home", () => {
     const text = container.textContent ?? "";
     expect(text).not.toMatch(/\b(biometric|escrow|GPS|Raast|NADRA|guaranteed)\b/i);
     expect(text).not.toMatch(/\b\d{1,3}\s?%/);
+  });
+
+  it("has no serious/critical a11y violations", async () => {
+    const { container } = render(<HomePage />);
+    const results = await axe(container);
+    const serious = results.violations.filter(
+      (v) => v.impact === "serious" || v.impact === "critical",
+    );
+    expect(serious).toEqual([]);
   });
 });

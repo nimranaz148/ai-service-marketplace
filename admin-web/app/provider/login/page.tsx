@@ -61,7 +61,7 @@ export default function ProviderLoginPage() {
 
         <button
           type="submit"
-          className="inline-flex w-full items-center justify-center rounded-md bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--focus-ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+          className="inline-flex w-full items-center justify-center rounded-md bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-[var(--accent-strong-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--focus-ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
         >
           Open provider HUD
         </button>
@@ -85,7 +85,7 @@ export default function ProviderLoginPage() {
                 Instant demo: Tariq Mehmood (Provider)
               </span>
               <span className="block text-xs text-ink-muted">
-                Master HVAC · 142 jobs · 4.96 rating
+                AC &amp; HVAC · Islamabad · demo dataset
               </span>
             </span>
           </span>

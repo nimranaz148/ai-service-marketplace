@@ -21,7 +21,7 @@ export default function CustomerLoginPage() {
       kicker="Client concierge access"
       title="Customer sign in"
       subtitle="Track your active bookings, view verified providers, and manage premises."
-      footer={<>Atelier concierge network. High-assurance domestic trade dispatch.</>}
+      footer={<>Atelier concierge network. Verified domestic trades.</>}
     >
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="space-y-1.5">
@@ -61,7 +61,7 @@ export default function CustomerLoginPage() {
 
         <button
           type="submit"
-          className="inline-flex w-full items-center justify-center rounded-md bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--focus-ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+          className="inline-flex w-full items-center justify-center rounded-md bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-[var(--accent-strong-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--focus-ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
         >
           Access concierge hub
         </button>
@@ -85,7 +85,7 @@ export default function CustomerLoginPage() {
                 Instant demo: Zubair Khan (Customer)
               </span>
               <span className="block text-xs text-ink-muted">
-                F-10 Islamabad · 3 active requests
+                Customer persona · demo dataset
               </span>
             </span>
           </span>
