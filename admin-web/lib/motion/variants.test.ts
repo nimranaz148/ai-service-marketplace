@@ -13,7 +13,7 @@ describe("motion variants", () => {
   });
 
   it("durations are within the token envelope (<= 0.26s)", () => {
-    const nums = [...JSON.stringify(variants).matchAll(/"duration"\s*:\s*([\d.]+)/g)].map((m) => Number(m[1]));
+    const nums = Array.from(JSON.stringify(variants).matchAll(/"duration"\s*:\s*([\d.]+)/g)).map((m) => Number(m[1]));
     expect(nums.length).toBeGreaterThan(0);
     for (const n of nums) expect(n).toBeLessThanOrEqual(0.26);
   });
