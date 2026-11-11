@@ -3,7 +3,6 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Sparkles, Star, MapPin, ShieldCheck } from "lucide-react";
-import { SpotlightCard } from "@/components/ui/SpotlightCard";
 
 const TESTIMONIALS = [
   {
@@ -92,7 +91,7 @@ export function TestimonialsSection() {
         >
           {TESTIMONIALS.map((t, idx) => (
             <motion.div key={idx} variants={cardVariants} className="pt-6">
-              <SpotlightCard className="p-8 pt-12 relative flex flex-col justify-between space-y-6 h-full !overflow-visible">
+              <div className="p-8 pt-12 relative flex flex-col justify-between space-y-6 h-full !overflow-visible">
                 {/* Floating Top Avatar with Bounce */}
                 <motion.div 
                   whileHover={{ scale: 1.15, rotate: 6 }}
@@ -128,7 +127,7 @@ export function TestimonialsSection() {
                     {t.service}
                   </div>
                 </div>
-              </SpotlightCard>
+              </div>
             </motion.div>
           ))}
         </motion.div>

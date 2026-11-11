@@ -4,7 +4,6 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Sparkles, ShieldCheck, Zap, Bot, Lock, ArrowUpRight, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
-import { SpotlightCard } from "@/components/ui/SpotlightCard";
 
 export function BenefitsSection() {
   const containerVariants = {
@@ -65,7 +64,7 @@ export function BenefitsSection() {
         >
           {/* Card 1 */}
           <motion.div variants={cardVariants}>
-            <SpotlightCard className="p-6 sm:p-8 flex flex-col justify-between space-y-6 h-full backdrop-blur-md">
+            <div className="p-6 sm:p-8 flex flex-col justify-between space-y-6 h-full backdrop-blur-md">
               <div className="space-y-4">
                 <motion.div 
                   whileHover={{ rotate: 10, scale: 1.15 }}
@@ -85,12 +84,12 @@ export function BenefitsSection() {
                 <span>Natural Speech</span>
                 <span className="text-[#0054F9] group-hover:translate-x-1 transition-transform">Vapi Engine →</span>
               </div>
-            </SpotlightCard>
+            </div>
           </motion.div>
 
           {/* Card 2 */}
           <motion.div variants={cardVariants}>
-            <SpotlightCard className="p-6 sm:p-8 flex flex-col justify-between space-y-6 h-full backdrop-blur-md">
+            <div className="p-6 sm:p-8 flex flex-col justify-between space-y-6 h-full backdrop-blur-md">
               <div className="space-y-4">
                 <motion.div 
                   whileHover={{ rotate: 10, scale: 1.15 }}
@@ -110,12 +109,12 @@ export function BenefitsSection() {
                 <span>Zero Delay</span>
                 <span className="text-[#0054F9] group-hover:translate-x-1 transition-transform">&lt; 300ms Match →</span>
               </div>
-            </SpotlightCard>
+            </div>
           </motion.div>
 
           {/* Card 3 */}
           <motion.div variants={cardVariants}>
-            <SpotlightCard className="p-6 sm:p-8 flex flex-col justify-between space-y-6 h-full backdrop-blur-md">
+            <div className="p-6 sm:p-8 flex flex-col justify-between space-y-6 h-full backdrop-blur-md">
               <div className="space-y-4">
                 <motion.div 
                   whileHover={{ rotate: 10, scale: 1.15 }}
@@ -135,12 +134,12 @@ export function BenefitsSection() {
                 <span>100% Escrow</span>
                 <span className="text-[#0054F9] group-hover:translate-x-1 transition-transform">Guaranteed →</span>
               </div>
-            </SpotlightCard>
+            </div>
           </motion.div>
 
           {/* Card 4 */}
           <motion.div variants={cardVariants}>
-            <SpotlightCard className="p-6 sm:p-8 flex flex-col justify-between space-y-6 h-full backdrop-blur-md">
+            <div className="p-6 sm:p-8 flex flex-col justify-between space-y-6 h-full backdrop-blur-md">
               <div className="space-y-4">
                 <motion.div 
                   whileHover={{ rotate: 10, scale: 1.15 }}
@@ -160,7 +159,7 @@ export function BenefitsSection() {
                 <span>NADRA Verified</span>
                 <span className="text-[#0054F9] group-hover:translate-x-1 transition-transform">Biometric →</span>
               </div>
-            </SpotlightCard>
+            </div>
           </motion.div>
 
         </motion.div>

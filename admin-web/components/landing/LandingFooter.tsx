@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { ArrowRight, Sparkles, Shield, MapPin, CheckCircle2 } from "lucide-react";
-import { toast } from "@/components/ui/Toaster";
+import { toast } from "sonner";
 
 export function LandingFooter() {
   const [email, setEmail] = useState("");

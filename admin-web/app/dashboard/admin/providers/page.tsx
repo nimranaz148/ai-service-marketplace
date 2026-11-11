@@ -22,7 +22,7 @@ import {
   Edit2,
   X,
 } from "lucide-react";
-import { toast } from "@/components/ui/Toaster";
+import { toast } from "sonner";
 
 export default function AdminProvidersPage() {
   const [providers, setProviders] = useState<ProviderItem[]>([]);

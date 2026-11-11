@@ -15,7 +15,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { toast } from "@/components/ui/Toaster";
+import { toast } from "sonner";
 
 interface AssignedBooking {
   id: string;

@@ -1,6 +1,6 @@
 "use client";
 
-import { toast } from "@/components/ui/Toaster";
+import { toast } from "sonner";
 import React, { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import gsap from "gsap";

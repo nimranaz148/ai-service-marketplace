@@ -3,7 +3,6 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Sparkles, Shield, Clock, Award, CheckCircle2 } from "lucide-react";
-import { SpotlightCard } from "@/components/ui/SpotlightCard";
 
 export function AboutSection() {
   const containerVariants = {
@@ -63,7 +62,7 @@ export function AboutSection() {
           className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-8 border-t border-white/8"
         >
           <motion.div variants={cardVariants}>
-            <SpotlightCard className="p-6 text-center space-y-2 cursor-default h-full">
+            <div className="p-6 text-center space-y-2 cursor-default h-full">
               <motion.div 
                 whileHover={{ scale: 1.08 }}
                 transition={{ type: "spring", stiffness: 400, damping: 20 }}
@@ -77,11 +76,11 @@ export function AboutSection() {
               <p className="font-body text-xs text-zinc-400">
                 Autonomous agents match nearest available master artisans in under 300 milliseconds.
               </p>
-            </SpotlightCard>
+            </div>
           </motion.div>
 
           <motion.div variants={cardVariants}>
-            <SpotlightCard className="p-6 text-center space-y-2 cursor-default h-full">
+            <div className="p-6 text-center space-y-2 cursor-default h-full">
               <motion.div 
                 whileHover={{ scale: 1.08 }}
                 transition={{ type: "spring", stiffness: 400, damping: 20 }}
@@ -95,11 +94,11 @@ export function AboutSection() {
               <p className="font-body text-xs text-zinc-400">
                 Hyper-local cluster dispatch across Islamabad, Karachi, and Lahore.
               </p>
-            </SpotlightCard>
+            </div>
           </motion.div>
 
           <motion.div variants={cardVariants}>
-            <SpotlightCard className="p-6 text-center space-y-2 cursor-default h-full">
+            <div className="p-6 text-center space-y-2 cursor-default h-full">
               <motion.div 
                 whileHover={{ scale: 1.08 }}
                 transition={{ type: "spring", stiffness: 400, damping: 20 }}
@@ -113,7 +112,7 @@ export function AboutSection() {
               <p className="font-body text-xs text-zinc-400">
                 Every artisan is biometrically verified. Payments locked in escrow until OTP sign-off.
               </p>
-            </SpotlightCard>
+            </div>
           </motion.div>
         </motion.div>
       </div>

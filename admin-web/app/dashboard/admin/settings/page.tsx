@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { Settings, ShieldCheck, Radio, Cpu, Database, Save, ChevronLeft, CheckCircle2, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { toast } from "@/components/ui/Toaster";
+import { toast } from "sonner";
 
 export default function AdminSettingsPage() {
   const [commissionRate, setCommissionRate] = useState(10);
