@@ -176,7 +176,7 @@ export default function AdminDashboardPage() {
 
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
-            <div className="catalis-badge mb-3">
+            <div className="inline-flex items-center gap-2 rounded-pill border border-hairline bg-surface-sunken px-3 py-1 text-xs font-medium text-ink-muted mb-3">
               <ShieldCheck size={13} className="text-[#0054F9]" />
               <span>SUPER ADMIN COMMAND DECK</span>
             </div>
@@ -205,7 +205,7 @@ export default function AdminDashboardPage() {
             </Link>
             <Link
               href="/traces"
-              className="catalis-btn catalis-btn-primary h-10 px-4 text-xs font-display font-bold shadow-[0_0_20px_rgba(0,84,249,0.3)]"
+              className="inline-flex items-center justify-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-accent-ink transition-colors hover:bg-accent-hover h-10 px-4 text-xs font-display font-bold"
             >
               <Activity size={14} />
               <span>Live Traces</span>

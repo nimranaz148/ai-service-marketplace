@@ -71,7 +71,7 @@ export default function CustomerSignupPage() {
       <main className="relative z-10 flex-1 flex items-center justify-center p-4 sm:p-8">
         <div className="w-full max-w-md bg-[#111118]/90 border border-white/10 rounded-[2.5rem] p-6 sm:p-8 shadow-[0_24px_80px_rgba(0,0,0,0.8)] backdrop-blur-xl">
           <div className="text-center mb-6">
-            <div className="catalis-badge mb-3">
+            <div className="inline-flex items-center gap-2 rounded-pill border border-hairline bg-surface-sunken px-3 py-1 text-xs font-medium text-ink-muted mb-3">
               <Sparkles size={12} className="text-[#0054F9]" />
               <span>HOMEOWNER ONBOARDING</span>
             </div>
@@ -158,7 +158,7 @@ export default function CustomerSignupPage() {
 
             <button
               type="submit"
-              className="catalis-btn catalis-btn-primary w-full py-3.5 text-sm font-display font-bold shadow-[0_0_25px_rgba(0,84,249,0.35)] mt-2"
+              className="inline-flex items-center justify-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-accent-ink transition-colors hover:bg-accent-hover w-full py-3.5 text-sm font-display font-bold mt-2"
             >
               <span>Complete Registration</span>
               <ArrowRight size={16} />

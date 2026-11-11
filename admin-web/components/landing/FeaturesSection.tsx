@@ -11,7 +11,7 @@ export function FeaturesSection() {
       <div className="space-y-12">
         {/* Header */}
         <div className="max-w-3xl mx-auto text-center space-y-4">
-          <div className="catalis-badge">
+          <div className="inline-flex items-center gap-2 rounded-pill border border-hairline bg-surface-sunken px-3 py-1 text-xs font-medium text-ink-muted">
             <Sparkles size={12} className="text-[#0054F9]" />
             <span>Platform Features</span>
           </div>

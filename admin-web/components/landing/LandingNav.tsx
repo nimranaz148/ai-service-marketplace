@@ -113,7 +113,7 @@ export function LandingNav() {
             <Link href="/dashboard">
               <button
                 ref={ctaRef}
-                className="catalis-btn catalis-btn-primary text-xs font-display font-bold py-2 px-4 shadow-[0_0_20px_rgba(0,84,249,0.4)]"
+                className="inline-flex items-center justify-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-accent-ink transition-colors hover:bg-accent-hover text-xs font-display font-bold py-2 px-4"
               >
                 <span>Dashboard ({user?.role?.toUpperCase()})</span>
                 <ArrowUpRight size={14} />
@@ -137,7 +137,7 @@ export function LandingNav() {
               <Link href="/signup">
                 <button
                   ref={ctaRef}
-                  className="catalis-btn catalis-btn-primary text-xs font-display font-bold py-2 px-4 shadow-[0_0_20px_rgba(0,84,249,0.4)]"
+                  className="inline-flex items-center justify-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-accent-ink transition-colors hover:bg-accent-hover text-xs font-display font-bold py-2 px-4"
                 >
                   <span>Get Started</span>
                   <ArrowUpRight size={14} />
@@ -200,7 +200,7 @@ export function LandingNav() {
               <Link
                 href="/dashboard"
                 onClick={() => setMobileOpen(false)}
-                className="catalis-btn catalis-btn-primary w-full py-2.5 text-center text-sm"
+                className="inline-flex items-center justify-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-accent-ink transition-colors hover:bg-accent-hover w-full py-2.5 text-center text-sm"
               >
                 Go to Dashboard ({user?.role?.toUpperCase()})
               </Link>
@@ -224,7 +224,7 @@ export function LandingNav() {
                 <Link
                   href="/signup"
                   onClick={() => setMobileOpen(false)}
-                  className="catalis-btn catalis-btn-primary w-full py-2.5 text-center text-xs"
+                  className="inline-flex items-center justify-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-accent-ink transition-colors hover:bg-accent-hover w-full py-2.5 text-center text-xs"
                 >
                   Get Started as Client
                 </Link>

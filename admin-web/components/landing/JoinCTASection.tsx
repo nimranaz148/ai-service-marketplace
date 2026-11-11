@@ -23,7 +23,7 @@ export function JoinCTASection() {
         />
 
         <div className="relative z-10 max-w-3xl mx-auto space-y-6">
-          <div className="catalis-badge">
+          <div className="inline-flex items-center gap-2 rounded-pill border border-hairline bg-surface-sunken px-3 py-1 text-xs font-medium text-ink-muted">
             <Sparkles size={12} className="text-[#0054F9]" />
             <span>Join The Network</span>
           </div>
@@ -46,7 +46,7 @@ export function JoinCTASection() {
                 whileHover={{ scale: 1.04, y: -2 }}
                 whileTap={{ scale: 0.96 }}
                 transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                className="catalis-btn catalis-btn-primary px-8 py-4 text-sm font-bold font-display shadow-[0_0_30px_rgba(0,84,249,0.5)]"
+                className="inline-flex items-center justify-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-accent-ink transition-colors hover:bg-accent-hover px-8 py-4 text-sm font-bold font-display"
               >
                 <span>Get Started as Client</span>
                 <ArrowRight size={16} />
@@ -57,7 +57,7 @@ export function JoinCTASection() {
                 whileHover={{ scale: 1.04, y: -2 }}
                 whileTap={{ scale: 0.96 }}
                 transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                className="catalis-btn catalis-btn-secondary px-8 py-4 text-sm font-semibold flex items-center gap-2"
+                className="inline-flex items-center justify-center gap-2 rounded-md border border-hairline bg-surface px-4 py-2 text-sm font-medium text-ink transition-colors hover:bg-surface-sunken px-8 py-4 text-sm font-semibold flex items-center gap-2"
               >
                 <Wrench size={14} className="text-[#D4A843]" />
                 <span>Register as Master Artisan</span>

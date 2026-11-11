@@ -120,7 +120,7 @@ export default function AdminLoginPage() {
 
             <button
               type="submit"
-              className="catalis-btn catalis-btn-primary w-full py-3.5 text-sm font-display font-bold shadow-[0_0_25px_rgba(0,84,249,0.35)] mt-2"
+              className="inline-flex items-center justify-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-accent-ink transition-colors hover:bg-accent-hover w-full py-3.5 text-sm font-display font-bold mt-2"
             >
               <span>Authenticate Terminal</span>
               <ArrowRight size={16} />

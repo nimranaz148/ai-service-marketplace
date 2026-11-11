@@ -60,7 +60,7 @@ export function LandingFooter() {
                   />
                   <button
                     type="submit"
-                    className="catalis-btn catalis-btn-primary py-2 px-4 text-xs shrink-0 font-bold"
+                    className="inline-flex items-center justify-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-accent-ink transition-colors hover:bg-accent-hover py-2 px-4 text-xs shrink-0 font-bold"
                   >
                     <span>Get Started</span>
                   </button>

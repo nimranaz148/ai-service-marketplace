@@ -219,7 +219,7 @@ export function SpatialCardsCanvas() {
         {/* Header with Title & Controls (Catalis editorial layout) */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14">
           <div>
-            <div className="catalis-badge mb-3">
+            <div className="inline-flex items-center gap-2 rounded-pill border border-hairline bg-surface-sunken px-3 py-1 text-xs font-medium text-ink-muted mb-3">
               <Sparkles size={12} className="text-[#0054F9]" />
               <span>3D SPATIAL COVERFLOW</span>
             </div>
@@ -471,10 +471,10 @@ export function SpatialCardsCanvas() {
                       <Link href="/services">
                         <button
                           tabIndex={isCenter ? 0 : -1}
-                          className={`catalis-btn text-xs font-display font-bold px-4 py-2 ${
+                          className={`inline-flex items-center justify-center gap-2 rounded-md px-4 py-2 text-sm font-medium transition-colors text-xs font-display font-bold px-4 py-2 ${
                             isCenter
-                              ? "catalis-btn-primary shadow-[0_0_15px_rgba(0,84,249,0.35)]"
-                              : "catalis-btn-secondary"
+                              ? "bg-accent text-accent-ink hover:bg-accent-hover"
+                              : "border border-hairline bg-surface text-ink hover:bg-surface-sunken"
                           }`}
                         >
                           <span>Reserve Slot</span>

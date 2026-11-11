@@ -35,7 +35,7 @@ export function PricingSection() {
       <div className="space-y-12">
         {/* Header */}
         <div className="max-w-3xl mx-auto text-center space-y-4">
-          <div className="catalis-badge">
+          <div className="inline-flex items-center gap-2 rounded-pill border border-hairline bg-surface-sunken px-3 py-1 text-xs font-medium text-ink-muted">
             <Sparkles size={12} className="text-[#0054F9]" />
             <span>Transparent Pricing</span>
           </div>
@@ -105,7 +105,7 @@ export function PricingSection() {
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.96 }}
                 transition={{ type: "spring", stiffness: 500, damping: 25 }}
-                className="catalis-btn catalis-btn-secondary w-full py-3 text-xs font-bold font-display"
+                className="inline-flex items-center justify-center gap-2 rounded-md border border-hairline bg-surface px-4 py-2 text-sm font-medium text-ink transition-colors hover:bg-surface-sunken w-full py-3 text-xs font-bold font-display"
               >
                 <span>Book On-Demand</span>
                 <ArrowRight size={14} />
@@ -165,7 +165,7 @@ export function PricingSection() {
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.95 }}
                 transition={{ type: "spring", stiffness: 500, damping: 25 }}
-                className="catalis-btn catalis-btn-primary w-full py-3 text-xs font-extrabold font-display shadow-lg"
+                className="inline-flex items-center justify-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-accent-ink transition-colors hover:bg-accent-hover w-full py-3 text-xs font-extrabold font-display shadow-lg"
               >
                 <span>Join Emerald Club</span>
                 <ArrowRight size={14} />
@@ -217,7 +217,7 @@ export function PricingSection() {
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.96 }}
                 transition={{ type: "spring", stiffness: 500, damping: 25 }}
-                className="catalis-btn catalis-btn-secondary w-full py-3 text-xs font-bold font-display"
+                className="inline-flex items-center justify-center gap-2 rounded-md border border-hairline bg-surface px-4 py-2 text-sm font-medium text-ink transition-colors hover:bg-surface-sunken w-full py-3 text-xs font-bold font-display"
               >
                 <span>Scale Operations</span>
                 <ArrowRight size={14} />

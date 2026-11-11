@@ -118,7 +118,7 @@ export default function ProviderLoginPage() {
 
             <button
               type="submit"
-              className="catalis-btn w-full py-3.5 text-sm font-display font-bold bg-[#D4A843] text-black hover:bg-[#c49a38] shadow-[0_0_25px_rgba(212,168,67,0.35)] mt-2 flex items-center justify-center gap-2"
+              className="inline-flex items-center justify-center gap-2 rounded-md px-4 py-2 text-sm font-medium transition-colors w-full py-3.5 text-sm font-display font-bold bg-[#D4A843] text-black hover:bg-[#c49a38] mt-2 flex items-center justify-center gap-2"
             >
               <span>Open Artisan HUD</span>
               <ArrowRight size={16} />

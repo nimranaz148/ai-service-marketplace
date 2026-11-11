@@ -188,7 +188,7 @@ export default function ProviderDashboardPage() {
             <div className="flex items-center gap-2 shrink-0">
               <Link
                 href="/dashboard/provider/bookings"
-                className="catalis-btn catalis-btn-primary h-10 px-4 text-xs font-display font-bold shadow-[0_0_20px_rgba(0,84,249,0.3)] flex items-center gap-1.5"
+                className="inline-flex items-center justify-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-accent-ink transition-colors hover:bg-accent-hover h-10 px-4 text-xs font-display font-bold flex items-center gap-1.5"
               >
                 <span>Manage Job</span>
                 <ChevronRight size={14} />

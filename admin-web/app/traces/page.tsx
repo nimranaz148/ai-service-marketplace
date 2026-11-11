@@ -63,7 +63,7 @@ export default function TracesPage() {
 
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
-            <div className="catalis-badge mb-3">
+            <div className="inline-flex items-center gap-2 rounded-pill border border-hairline bg-surface-sunken px-3 py-1 text-xs font-medium text-ink-muted mb-3">
               <Activity size={13} className="text-[#0054F9]" />
               <span>SUPER ADMIN / 5-AGENT ORCHESTRATOR</span>
             </div>

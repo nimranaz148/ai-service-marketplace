@@ -35,7 +35,7 @@ export function AboutSection() {
         <div className="absolute -top-32 -left-32 w-80 h-80 bg-[#0054F9]/10 rounded-full blur-[120px] pointer-events-none" />
 
         <div className="max-w-4xl mx-auto text-center space-y-6 mb-16">
-          <div className="catalis-badge">
+          <div className="inline-flex items-center gap-2 rounded-pill border border-hairline bg-surface-sunken px-3 py-1 text-xs font-medium text-ink-muted">
             <Sparkles size={12} className="text-[#0054F9]" />
             <span>About Atelier</span>
           </div>

@@ -122,7 +122,7 @@ export function HeroSection() {
         <div className="relative z-10 max-w-4xl mx-auto text-center flex flex-col items-center">
           
           {/* Top Pill Badge */}
-          <div className="catalis-badge mb-6 shadow-sm">
+          <div className="inline-flex items-center gap-2 rounded-pill border border-hairline bg-surface-sunken px-3 py-1 text-xs font-medium text-ink-muted mb-6 shadow-sm">
             <Sparkles size={12} className="text-[#0054F9]" />
             <span>Autonomous AI Concierge Network</span>
           </div>
@@ -144,13 +144,13 @@ export function HeroSection() {
           {/* Dual Kinetic Buttons */}
           <div className="flex flex-col sm:flex-row items-center gap-4 mb-16">
             <Link href="/services">
-              <button className="catalis-btn catalis-btn-primary px-7 py-3.5 text-sm font-display font-bold shadow-[0_0_30px_rgba(0,84,249,0.45)]">
+              <button className="inline-flex items-center justify-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-accent-ink transition-colors hover:bg-accent-hover px-7 py-3.5 text-sm font-display font-bold">
                 <span>Launch AI Concierge</span>
                 <ArrowRight size={16} />
               </button>
             </Link>
             <a href="#about">
-              <button className="catalis-btn catalis-btn-secondary px-7 py-3.5 text-sm font-medium">
+              <button className="inline-flex items-center justify-center gap-2 rounded-md border border-hairline bg-surface px-4 py-2 text-sm font-medium text-ink transition-colors hover:bg-surface-sunken px-7 py-3.5 text-sm font-medium">
                 <span>Explore Platform Blueprint</span>
               </button>
             </a>
@@ -284,7 +284,7 @@ export function HeroSection() {
                         transition={{ type: "spring", stiffness: 500, damping: 25 }}
                         onClick={handleSimulateDispatch}
                         disabled={isSimulating}
-                        className="catalis-btn catalis-btn-primary py-1.5 px-4 text-xs shadow-md flex items-center gap-1.5 shrink-0"
+                        className="inline-flex items-center justify-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-accent-ink transition-colors hover:bg-accent-hover py-1.5 px-4 text-xs shadow-md flex items-center gap-1.5 shrink-0"
                       >
                         {isSimulating ? (
                           <span className="animate-spin">⟳</span>
