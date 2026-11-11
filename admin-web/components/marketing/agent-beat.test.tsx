@@ -42,9 +42,7 @@ import { copy } from "@/lib/marketing/copy";
 import { sessions } from "@/lib/fixtures";
 import { providers } from "@/lib/fixtures";
 
-const acProviders = providers.filter((p) => p.category === "ac");
-const fillers = providers.filter((p) => p.city === "khi" && p.category !== "ac");
-const providerRows = [...acProviders, ...fillers].slice(0, 3);
+const providerRows = providers.filter((p) => p.category === "ac");
 
 describe("AgentBeat", () => {
   it("renders the section title", () => {
@@ -67,13 +65,13 @@ describe("AgentBeat", () => {
     expect(text).toContain("AC Technician");
   });
 
-  it("renders at least three provider rows including the AC technicians", () => {
+  it("renders a row for every real AC technician", () => {
     const { container } = render(<AgentBeat />);
-    expect(providerRows.length).toBeGreaterThanOrEqual(3);
+    expect(providerRows.length).toBe(2);
     for (const p of providerRows) {
       expect(container.textContent).toContain(p.name);
     }
-    expect(container.querySelectorAll("[data-provider-row]").length).toBeGreaterThanOrEqual(3);
+    expect(container.querySelectorAll("[data-provider-row]").length).toBeGreaterThanOrEqual(2);
   });
 
   it("shows the confirmed booking end state with the token", () => {

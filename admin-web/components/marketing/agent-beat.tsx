@@ -34,11 +34,9 @@ const intent: IntentResult = session.intent ?? {
   language: "roman_ur",
 };
 
-const acProviders = providers.filter((p) => p.category === "ac");
-const fillers = providers.filter((p) => p.city === "khi" && p.category !== "ac");
-const providerRows = [...acProviders, ...fillers].slice(0, 3);
+const providerRows = providers.filter((p) => p.category === "ac");
 const chosen =
-  acProviders.find((p) => p.name === "Imran Baig") ??
+  providerRows.find((p) => p.name === "Imran Baig") ??
   [...providerRows].sort((a, b) => b.rating - a.rating)[0];
 
 const lastEvents = session.events.slice(-3);
@@ -132,7 +130,7 @@ export function AgentBeat() {
     >
       <div className="mx-auto flex min-h-screen max-w-5xl flex-col justify-center gap-8 px-4 py-24 sm:px-6">
         <header className="space-y-2">
-          <p className="font-mono text-xs uppercase tracking-wider text-ink-muted">
+          <p className="font-sans text-xs uppercase tracking-wider text-ink-muted">
             {copy.agentBeat.kicker}
           </p>
           <h2 className="font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
@@ -147,7 +145,7 @@ export function AgentBeat() {
               ref={requestRef}
               className="max-w-xl rounded-md border border-hairline bg-surface-raised p-4"
             >
-              <p className="font-mono text-xs text-ink-muted">Customer · Roman Urdu</p>
+              <p className="font-sans text-xs text-ink-muted">Customer · Roman Urdu</p>
               <p className="mt-1.5 text-sm text-ink">{session.rawInput}</p>
             </div>
 
