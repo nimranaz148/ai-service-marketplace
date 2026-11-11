@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { personas } from "@/lib/fixtures/personas";
 
 export type UserRole = "admin" | "provider" | "customer";
 
@@ -20,34 +21,34 @@ export interface AuthUser {
 
 export const PRESET_USERS: Record<UserRole, AuthUser> = {
   admin: {
-    id: "usr-admin-01",
-    name: "Ayesha Malik (Command)",
-    email: "admin@atelier.ai",
+    id: personas.admin.id,
+    name: personas.admin.name,
+    email: personas.admin.email,
     role: "admin",
-    phone: "+92 51 8882040",
-    area: "Blue Area, Islamabad",
-    avatar: "AM",
+    phone: personas.admin.phone,
+    area: personas.admin.area,
+    avatar: personas.admin.avatarInitials,
   },
   provider: {
-    id: "art-isb-01",
-    name: "Tariq Mehmood",
-    email: "tariq.hvac@artisan.atelier.ai",
+    id: personas.provider.id,
+    name: personas.provider.name,
+    email: personas.provider.email,
     role: "provider",
-    phone: "+92 301 5554321",
-    area: "Sector G-13, Islamabad",
+    phone: personas.provider.phone,
+    area: personas.provider.area,
     category: "AC Technician & HVAC",
-    rating: 4.96,
+    rating: 4.9,
     completedJobs: 142,
-    avatar: "TM",
+    avatar: personas.provider.avatarInitials,
   },
   customer: {
-    id: "usr-cust-01",
-    name: "Zubair Khan",
-    email: "zubair.k@gmail.com",
+    id: personas.customer.id,
+    name: personas.customer.name,
+    email: personas.customer.email,
     role: "customer",
-    phone: "+92 300 9876543",
-    area: "Gulshan-e-Iqbal, Karachi",
-    avatar: "ZK",
+    phone: personas.customer.phone,
+    area: personas.customer.area,
+    avatar: personas.customer.avatarInitials,
   },
 };
 
