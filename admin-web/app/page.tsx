@@ -1,49 +1,28 @@
-"use client";
-
-import React from "react";
-import { LandingNav } from "@/components/landing/LandingNav";
-import { HeroSection } from "@/components/landing/HeroSection";
-import { AboutSection } from "@/components/landing/AboutSection";
-import { BenefitsSection } from "@/components/landing/BenefitsSection";
-import { SpatialCardsCanvas } from "@/components/landing/SpatialCardsCanvas";
-import { FeaturesSection } from "@/components/landing/FeaturesSection";
-import { PricingSection } from "@/components/landing/PricingSection";
-import { TestimonialsSection } from "@/components/landing/TestimonialsSection";
-import { JoinCTASection } from "@/components/landing/JoinCTASection";
-import { LandingFooter } from "@/components/landing/LandingFooter";
+import { MarketingRoot } from "@/components/marketing/marketing-root";
+import { MarketingNav } from "@/components/marketing/marketing-nav";
+import { Hero } from "@/components/marketing/hero";
+import { AgentBeat } from "@/components/marketing/agent-beat";
+import { HowItWorks } from "@/components/marketing/how-it-works";
+import { TradesCoverage } from "@/components/marketing/trades-coverage";
+import { Proof } from "@/components/marketing/proof";
+import { PricingExplainer } from "@/components/marketing/pricing-explainer";
+import { FinalCta } from "@/components/marketing/final-cta";
+import { MarketingFooter } from "@/components/marketing/marketing-footer";
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-[#0A0A0F] text-[#F4F4F6] font-body overflow-x-hidden selection:bg-[#0054F9] selection:text-white">
-      {/* 1. Floating Capsule Navbar */}
-      <LandingNav />
-
-      {/* 2. Hero Section with 3D floating perspective cards */}
-      <HeroSection />
-
-      {/* 3. About Section with Catalis stats grid */}
-      <AboutSection />
-
-      {/* 4. Benefits Section (4-Card Bento Grid) */}
-      <BenefitsSection />
-
-      {/* 5. Spatial Interactive Showcase (Untouched Preservation) */}
-      <SpatialCardsCanvas />
-
-      {/* 6. Sticky Stacking Features Cards */}
-      <FeaturesSection />
-
-      {/* 7. Pricing Tiers with Featured Cobalt Plan */}
-      <PricingSection />
-
-      {/* 8. Testimonials with Floating Circular Avatars */}
-      <TestimonialsSection />
-
-      {/* 9. Grand Finale Join Us CTA Card */}
-      <JoinCTASection />
-
-      {/* 10. Catalis Multi-Column Footer with Newsletter */}
-      <LandingFooter />
-    </div>
+    <MarketingRoot>
+      <MarketingNav />
+      <main id="content">
+        <Hero />
+        <AgentBeat />
+        <HowItWorks />
+        <TradesCoverage />
+        <Proof />
+        <PricingExplainer />
+        <FinalCta />
+      </main>
+      <MarketingFooter />
+    </MarketingRoot>
   );
 }
